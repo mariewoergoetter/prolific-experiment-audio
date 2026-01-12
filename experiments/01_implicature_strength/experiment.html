@@ -226,41 +226,39 @@
     </div>
 
     <!-- trial slide -->
+
     <div class="slide" id="trial">
 
-  <p class="promptSen" id="trial-sentence">
-    {{sentence}}
-  </p>
+  <div class="trialWrap">
+    <div class="trialPrompt">
+      Please read the following sentence (or part of a sentence) and click on the continuation that makes more sense to you:
+    </div>
 
-  <div class="instruction">
-    <i>Please choose the continuation that sounds more natural.</i>
-  </div>
+    <div class="trialSentence" id="trial-sentence">
+      {{sentence}}
+    </div>
 
-  <div class="choices" style="text-align:left; max-width: 900px; margin: 0 auto;">
-    <p>
-      <label>
+    <div class="trialOptions">
+      <label class="choiceCard">
         <input type="radio" name="cont" value="opt1">
-        <span id="opt1_text">{{option 1}}</span>
+        <div class="choiceText" id="opt1_text">{{option 1}}</div>
       </label>
-    </p>
-    <p>
-      <label>
+
+      <label class="choiceCard">
         <input type="radio" name="cont" value="opt2">
-        <span id="opt2_text">{{option 2}}</span>
+        <div class="choiceText" id="opt2_text">{{option 2}}</div>
       </label>
-    </p>
+    </div>
+
+    <div class="center">
+      <button class="continueButton" onclick="_s.button()">Continue</button>
+    </div>
+
+    <div class="err">
+      <p>Make sure you selected an option before clicking 'Continue'.</p>
+    </div>
   </div>
 
-  <br>
-
-  <div class="center">
-    <button class="continueButton" onclick="_s.button()">Continue</button>
-  </div>
-
-  <div class="err">
-    <br>
-    <p>Make sure you selected an option before clicking 'Continue'.</p>
-  </div>
 </div>
 
 
