@@ -1,143 +1,204 @@
 .slider {
-  /* default is width 400 and margin 10 */
-	width: 400;
-	margin: 10px;
+  width: 400;
+  margin: 10px;
 }
+
 .hidden {
-    display: none; }
+  display: none;
+}
 
 .unhidden {
-    display: block; }
+  display: block;
+}
 
 .arcButton {
-    background-color: white; /* Green */
-    border: none;
-    color: black;
-    padding: 3px 0px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 22px;
-    margin: 0px 0px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-    cursor: pointer;
+  background-color: white; 
+  border: none;
+  color: black;
+  padding: 3px 0px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 22px;
+  margin: 0px 0px;
+  -webkit-transition-duration: 0.4s; 
+  transition-duration: 0.4s;
+  cursor: pointer;
 }
 
-.arcButton:hover{
-    background-color:#f44336; /*Green*/
+.arcButton:hover {
+  background-color: #f44336; 
 }
 
-.instruction{
-    color:#424242;
-    text-align: justify;
-    font-size: 17px;
-    padding-top: 0.5cm;
-    padding-bottom: 0.5cm;
-
-}
-.targetSen{
-    color:#2E9AFE;
+.instruction {
+  color: #424242;
+  text-align: justify;
+  font-size: 17px;
+  padding-top: 0.5cm;
+  padding-bottom: 0.5cm;
 }
 
-.notBoth{
-    color: red;
-    font-size:22;
+.targetSen {
+  color: #2E9AFE;
+}
+
+.notBoth {
+  color: red;
+  font-size: 22;
 }
 
 .originalSen {
-	color: #E7532B;
+  color: #E7532B;
 }
 
 .targetSen, .originalSen {
-	text-align:left;
-	font-size:20;
+  text-align: left;
+  font-size: 20;
 }
 
 .row {
-    padding-bottom: .5em;
+  padding-bottom: .5em;
 }
-
 
 .tr {
   padding: 0;
   text-align: left;
 }
-.retryButton{
-    font-color: black;
-    padding: 1px 8px;
 
-}
-.retryButton:hover{
-    background-color: #f44336;
-    padding: 1px 8px;
-}
-.continueButton{
-    padding: 1px 8px;
+.retryButton {
+  font-color: black;
+  padding: 1px 8px;
 }
 
-.continueButton:hover{
-   background-color: #008CBA;
-   padding: 1px 8px;
+.retryButton:hover {
+  background-color: #f44336;
+  padding: 1px 8px;
 }
+
+.continueButton {
+  padding: 1px 8px;
+}
+
+.continueButton:hover {
+  background-color: #008CBA;
+  padding: 1px 8px;
+}
+
 .slider_table {
-   margin-left: 0;
-   text-align: left;
-   padding-top: 0cm;
-   padding-bottom: 1cm;
+  margin-left: 0;
+  text-align: left;
+  padding-top: 0cm;
+  padding-bottom: 1cm;
 }
 
 .radio_buttons {
-   margin-left: 0;
-   text-align: left;
-   padding-top: 0cm;
-   padding-bottom: 1cm;
+  margin-left: 0;
+  text-align: left;
+  padding-top: 0cm;
+  padding-bottom: 1cm;
 }
 
 .input[type=radio] {
-    margin: 0;
-      display: block;
+  margin: 0;
+  display: block;
 }
 
-table.likertscale  {
-  /*border: 1px solid black;*/
+table.likertscale {
   text-align: center;
   width: 90%;
   align-self: left;
-  margin-left:auto;
-  margin-right:auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-tr,td {
-/*  border: 1px solid black;*/
+tr, td {
+
 }
 
 td:nth-child(1) {
- width: 200px
+  width: 200px;
 }
 
 td:nth-child(9) {
- width: 200px
+  width: 200px;
 }
 
 .left {
-	text-align: left;
+  text-align: left;
 }
 
 .center {
-	text-align: center;
+  text-align: center;
 }
 
 .right {
-	text-align: right;
+  text-align: right;
 }
 
-
 .legal {
-	font-size: 80%;
-	font-style: italic;
+  font-size: 80%;
+  font-style: italic;
 }
 
 .slide {
-	border: 1px solid #666;
+  border: 1px solid #666;
+}
+
+/* =========================================================
+   NEW STYLES FOR BINARY CONTINUATION TRIAL (CENTERED + BOXES)
+   ========================================================= */
+
+.trialWrap {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.trialPrompt {
+  font-size: 18px;
+  margin: 20px 0 22px 0;
+}
+
+.trialSentence {
+  font-size: 30px;
+  line-height: 1.35;
+  margin: 0 0 28px 0;
+}
+
+.trialOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.choiceCard {
+  width: 100%;
+  max-width: 780px;
+  border: 2px solid #ddd;
+  border-radius: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  background: #fff;
+}
+
+.choiceCard input[type="radio"] {
+  display: none;
+}
+
+.choiceText {
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.choiceCard:has(input[type="radio"]:checked) {
+  border-color: #666;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.choiceCard:hover {
+  border-color: #999;
 }
