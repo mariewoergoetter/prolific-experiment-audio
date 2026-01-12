@@ -92,78 +92,97 @@ function make_slides(f) {
     },
   });
 
+  // =========================
+  // UPDATED TRIAL SLIDE (binary continuation choice)
+  // Requires experiment.html trial slide to contain:
+  //   #trial-sentence
+  //   radio inputs name="cont" values "opt1"/"opt2"
+  //   #opt1_text and #opt2_text
+  // =========================
   slides.trial = slide({
     name: "trial",
 
-    start: function() {
-      var stim = {
-        "TGrep": "37224:9",
-        "Context": "Speaker A:  and, and i, you know, i still provide most of the things that  go on around the house.<p>Speaker B: right.<p>Speaker A: so, uh, yeah and for a while i was going to school too, and tha-, it was tough.<p>Speaker B: yeah,  i uh, i think that while it 's a good change for i think women to be able  to fulfill their potential in whatever they feel, you know, their expertise may be .<p>Speaker A: uh-huh.<p>Speaker B: uh-huh.<p>Speaker A: uh, i think sometimes other things suffer and tha-, i think it 's hard to find a balance there.<p>Speaker B: ",
-        "EntireSentence": "but in some ways i think we are expected  to do it all.",
-        "ButNotAllSentence": "but in <strong>some, but not all</strong> ways i think we are expected  to do it all."
-      }    
-    // The 7 lines above from "start:..." to the end of var stim = {...}" define a placeholder stimulus that you will have to delete when
-    // loading in the individual stimulus data. 
+    // rotate through stimulus list
+    present: exp.stimuli,
 
-    // To rotate through stimulus list, comment out the above 7 lines and  uncomment the following 2:
-    // present: exp.stimuli,
-    // present_handle : function(stim) {
+    // runs once per stimulus
+    present_handle: function(stim) {
 
-      // unselect all radio buttons at the beginning of each trial
-      // (by default, the selection of the radio persists across trials)
-      $("input[name='number']:checked").prop("checked", false);
-      $("#check-strange").prop("checked", false);
-
-      // store stimulus data
-      this.stim = stim;
-
-      // extract original and sentence with "but not all"
-      var original_sentence = stim.EntireSentence;
-      var target_sentence = stim.ButNotAllSentence;
-
-      //handle display of context 
-      // if (exp.condition == "context") {
-      //   // extract context data
-      //   var contexthtml = stim.Context;
-      //   // reformat the speaker information for context
-      //   contexthtml = contexthtml.replace(/Speaker A:/g, "<b>Speaker #1:</b>");
-      //   contexthtml = contexthtml.replace(/Speaker B:/g, "<b>Speaker #2:</b>");
-      //   $(".case").html(contexthtml);
-      // } else {
-      //   var contexthtml = "";
-      //   $(".case").html(contexthtml);
-      // }
-
-      // replace the placeholder in the HTML document with the relevant sentences for this trial
-      $("#trial-originalSen").html(original_sentence);
-      $("#trial-targetSen").html(target_sentence);
+      // hide error message
       $(".err").hide();
 
+      // clear previous selection
+      $("input[name='cont']:checked").prop("checked", false);
+
+      // store stimulus
+      this.stim = stim;
+
+      // show top sentence
+      $("#trial-sentence").html(stim.Sentence);
+
+      // randomize order of continuations
+      var opts = _.shuffle([
+        { key: "C1", text: stim.C1 },
+        { key: "C2", text: stim.C2 }
+      ]);
+
+      // remember which continuation is in which slot
+      this.opt1_key = opts[0].key;   // "C1" or "C2"
+      this.opt2_key = opts[1].key;
+
+      // render continuation texts
+      $("#opt1_text").html(opts[0].text);
+      $("#opt2_text").html(opts[1].text);
+
+      // optional response time
+      this.startTime = Date.now();
     },
 
     // handle click on "Continue" button
     button: function() {
-      this.radio = $("input[name='number']:checked").val();
-      this.strange = $("#check-strange:checked").val() === undefined ? 0 : 1;
-      if (this.radio) {
-        this.log_responses();
-        exp.go(); //use exp.go() if and only if there is no "present"ed data, ie no list of stimuli.
-        // _stream.apply(this); //use _stream.apply(this) if there is a list of "present" stimuli to rotate through
-      } else {
-        $('.err').show();
-      }
-    },
+      var choice = $("input[name='cont']:checked").val(); // "opt1" or "opt2"
 
-    // save response
-    log_responses: function() {
+      if (!choice) {
+        $(".err").show();
+        return;
+      }
+
+      // map choice to underlying continuation
+      var chosen_key = (choice === "opt1") ? this.opt1_key : this.opt2_key;
+      var chosen_text = (chosen_key === "C1") ? this.stim.C1 : this.stim.C2;
+
+      // optional response time
+      var rt_ms = Date.now() - this.startTime;
+
+      // log trial
       exp.data_trials.push({
-        "id": this.stim.TGrep,
-        // "sentence": this.stim.ButNotAllSentence,
-        // "slide_number_in_experiment": exp.phase, //exp.phase is a built-in trial number tracker
-        "response": this.radio,
-        "strangeSentence": this.strange
+        "slide_number_in_experiment": exp.phase,
+
+        // item metadata (make sure stimuli have these keys)
+        "item": this.stim.ItemID,
+        "variant": this.stim.Variant,
+
+        // presented material
+        "sentence": this.stim.Sentence,
+        "C1": this.stim.C1,
+        "C2": this.stim.C2,
+
+        // randomized display order
+        "opt1_key": this.opt1_key,
+        "opt2_key": this.opt2_key,
+
+        // response
+        "chosen_button": choice,   // opt1 / opt2
+        "chosen_key": chosen_key,  // C1 / C2
+        "chosen_text": chosen_text,
+
+        // timing
+        "rt_ms": rt_ms
       });
-    },
+
+      // advance within the stimulus list
+      _stream.apply(this);
+    }
   });
 
   // slide to collect subject information
@@ -184,7 +203,7 @@ function make_slides(f) {
     }
   });
 
-  // 
+  // final submission slide
   slides.thanks = slide({
     name: "thanks",
     start: function() {
@@ -210,11 +229,12 @@ function init() {
   exp.catch_trials = [];
   var stimuli = all_stims;
 
-  exp.stimuli = stimuli; //call _.shuffle(stimuli) to randomize the order;
+  // randomize trial order per participant
+  exp.stimuli = _.shuffle(stimuli);
   exp.n_trials = exp.stimuli.length;
 
   // exp.condition = _.sample(["context", "no-context"]); //can randomize between subjects conditions here
-  
+
   exp.system = {
     Browser: BrowserDetect.browser,
     OS: BrowserDetect.OS,
