@@ -1,7 +1,7 @@
 import csv
 
 CSV_FILE = "items_01.csv"
-OUTPUT_FILE = "experiments/01_implicature_strength/js/stimuli.js"
+OUTPUT_FILE = "experiments/01_focus/js/stimuli.js"
 
 #10 lists (2 items per category)
 LISTS = {
@@ -25,8 +25,8 @@ def variant_for_position(list_no, pos):
 
 rows = {}
 
-with open(CSV_FILE, newline="", encoding="utf-8") as f:
-    reader = csv.DictReader(f)
+with open(CSV_FILE, newline="", encoding="utf-8-sig") as f:
+    reader = csv.DictReader(f, delimiter=";")
     for r in reader:
         rid = str(r["ID"]).strip()
         rows[rid] = {
