@@ -45,7 +45,7 @@ for list_no in range(1, 11):
             ordered_items.append((group, rid))
 
     for pos, (group, rid) in enumerate(ordered_items):
-        variant = variant_for_list_and_position(list_no, pos)
+        variant = variant_for_position(list_no, pos)
         sentence = rows[rid]["neutral"] if variant == "neutral" else rows[rid]["cleft"]
 
         stims.append({
