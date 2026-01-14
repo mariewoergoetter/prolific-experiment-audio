@@ -1,4 +1,3 @@
-// set up experiment logic for each slide
 function make_slides(f) {
   var slides = {};
 
@@ -10,9 +9,7 @@ function make_slides(f) {
     }
   });
 
-  // =========================
-  // EXAMPLE 1 (UNCHANGED)
-  // =========================
+
   slides.example1 = slide({
     name: "example1",
 
@@ -42,9 +39,7 @@ function make_slides(f) {
     }
   });
 
-  // =========================
-  // EXAMPLE 2 (UNCHANGED)
-  // =========================
+
   slides.example2 = slide({
     name: "example2",
 
@@ -74,9 +69,7 @@ function make_slides(f) {
     }
   });
 
-  // =========================
-  // START EXP SLIDE
-  // =========================
+
   slides.startExp = slide({
     name: "startExp",
     button: function() {
@@ -84,9 +77,7 @@ function make_slides(f) {
     }
   });
 
-  // =========================
-  // TRIAL SLIDE (UNCHANGED LOGIC)
-  // =========================
+
   slides.trial = slide({
     name: "trial",
 
@@ -155,9 +146,7 @@ function make_slides(f) {
     }
   });
 
-  // =========================
-  // SUBJECT INFO
-  // =========================
+
   slides.subj_info = slide({
     name: "subj_info",
     submit: function(e) {
@@ -175,9 +164,7 @@ function make_slides(f) {
     }
   });
 
-  // =========================
-  // FINAL SLIDE
-  // =========================
+
   slides.thanks = slide({
     name: "thanks",
     start: function() {
@@ -196,19 +183,13 @@ function make_slides(f) {
   return slides;
 }
 
-/// =========================
-/// INITIALIZE EXPERIMENT
-/// =========================
+
 function init() {
 
   exp.trials = [];
   exp.catch_trials = [];
 
-  // =========================
-  // CHANGE IS ONLY HERE:
-  // ONE LIST PER PARTICIPANT
-  // 10 critical + 20 fillers
-  // =========================
+
   exp.list = _.sample([1,2,3,4,5,6,7,8,9,10]);
 
   var critical = all_stims.filter(function(s) {
