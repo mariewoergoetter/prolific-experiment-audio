@@ -190,7 +190,14 @@ function init() {
   exp.catch_trials = [];
 
 
-  exp.list = _.sample([1,2,3,4,5,6,7,8,9,10]);
+  var condition = new URLSearchParams(window.location.search).get("cond");
+  condition = condition === null ? NaN : parseInt(condition, 10);
+
+  if (!isNaN(condition) && condition >= 1 && condition <= 10) {
+  exp.list = condition;
+  } else {
+  exp.list = _.sample([1,2,3,4,5,6,7,8,9,10]); // fallback
+  }
 
   var critical = all_stims.filter(function(s) {
     return s.Type === "critical" && Number(s.List) === exp.list;
