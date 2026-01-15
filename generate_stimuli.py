@@ -3,20 +3,31 @@ import csv
 CSV_FILE = "items_01.csv"
 OUTPUT_FILE = "experiments/01_focus/js/stimuli.js"
 
-#10 lists (2 items per category)
-BASE_SETS = {
-  1: {"Subject":["1","2"],   "VP":["16","17"], "Object":["31","32"], "Adjective":["46","47"], "Adjunct":["61","62"]},
-  2: {"Subject":["3","4"],   "VP":["18","19"], "Object":["33","34"], "Adjective":["48","49"], "Adjunct":["63","64"]},
-  3: {"Subject":["5","6"],   "VP":["20","21"], "Object":["35","36"], "Adjective":["50","51"], "Adjunct":["65","66"]},
-  4: {"Subject":["7","8"],   "VP":["22","23"], "Object":["37","38"], "Adjective":["52","53"], "Adjunct":["67","68"]},
-  5: {"Subject":["9","10"],  "VP":["24","25"], "Object":["39","40"], "Adjective":["54","55"], "Adjunct":["69","70"]},
+GROUP_ID_RANGES = {
+    "Subject":   list(map(str, range(1, 16))),
+    "VP":        list(map(str, range(16, 31))),
+    "Object":    list(map(str, range(31, 46))),
+    "Adjective": list(map(str, range(46, 61))),
+    "Adjunct":   list(map(str, range(61, 76))),
 }
 
-def variant_for_position(list_no, pos):
-    if list_no % 2 == 1:
-        return "neutral" if pos % 2 == 0 else "cleft"
-    else:
-        return "cleft" if pos % 2 == 0 else "neutral"
+
+GROUP_INDEX = {
+    group: {rid: (i + 1) for i, rid in enumerate(rids)}
+    for group, rids in GROUP_ID_RANGES.items()
+}
+
+def variant_for_item(list_no: int, item_index_within_group: int) -> str:
+    return "cleft" if (list_no + item_index_within_group) % 2 == 0 else "neutral"
+
+def two_items_for_list(rids: list[str], list_no: int) -> list[str]:
+    i1 = list_no - 1
+    i2 = list_no % 15
+    return [rids[i1], rids[i2]]
+
+def js_escape(s: str) -> str:
+    return s.replace("\\", "\\\\").replace('"', '\\"')
+
 
 rows = {}
 
@@ -32,33 +43,41 @@ with open(CSV_FILE, newline="", encoding="utf-8-sig") as f:
             "C2": r["C2 (focus-contradicting)"].strip(),
         }
 
+missing = []
+for group, rids in GROUP_ID_RANGES.items():
+    for rid in rids:
+        if rid not in rows:
+            missing.append((group, rid))
+
+if missing:
+    msg = "\n".join([f"- Missing ID {rid} for group {group}" for group, rid in missing])
+    raise ValueError(
+        "Your CSV is missing required IDs for the 15-list design:\n" + msg
+    )
+
 
 stims = []
 
-for list_no in range(1, 11):
-    base_no = (list_no + 1) // 2
-    cats = BASE_SETS[base_no]
-
-    ordered_items = []
+for list_no in range(1, 16): 
     for group in ["Subject", "VP", "Object", "Adjective", "Adjunct"]:
-        for rid in cats[group]:
-            ordered_items.append((group, rid))
+        rids = GROUP_ID_RANGES[group]
+        chosen_rids = two_items_for_list(rids, list_no) 
 
-    for pos, (group, rid) in enumerate(ordered_items):
-        variant = variant_for_position(list_no, pos)
-        sentence = rows[rid]["neutral"] if variant == "neutral" else rows[rid]["cleft"]
+        for rid in chosen_rids:
+            idx = GROUP_INDEX[group][rid]  
+            variant = variant_for_item(list_no, idx)
+            sentence = rows[rid]["neutral"] if variant == "neutral" else rows[rid]["cleft"]
 
-        stims.append({
-            "ItemID": rid,
-            "Group": group,
-            "Type": "critical",
-            "List": list_no,
-            "Variant": variant,
-            "Sentence": sentence,
-            "C1": rows[rid]["C1"],
-            "C2": rows[rid]["C2"],
-        })
-
+            stims.append({
+                "ItemID": rid,
+                "Group": group,
+                "Type": "critical",
+                "List": list_no,
+                "Variant": variant,
+                "Sentence": sentence,
+                "C1": rows[rid]["C1"],
+                "C2": rows[rid]["C2"],
+            })
 
 fillers = [
   {"ItemID":"F01","Group":"Filler","Type":"filler",
@@ -164,10 +183,6 @@ fillers = [
 
 stims.extend(fillers)
 
-
-def js_escape(s):
-    return s.replace("\\", "\\\\").replace('"', '\\"')
-
 with open(OUTPUT_FILE, "w", encoding="utf-8") as out:
     out.write("var all_stims = [\n")
     for i, o in enumerate(stims):
@@ -178,10 +193,11 @@ with open(OUTPUT_FILE, "w", encoding="utf-8") as out:
                 out.write(f'    "{k}": {v},\n')
             else:
                 out.write(f'    "{k}": "{js_escape(str(v))}",\n')
-        out.write("  }" + ("," if i < len(stims)-1 else "") + "\n")
+        out.write("  }" + ("," if i < len(stims) - 1 else "") + "\n")
     out.write("];\n")
 
 print("Done.")
 print("Total items:", len(stims))
 print("Critical:", sum(1 for s in stims if s["Type"] == "critical"))
 print("Fillers:", sum(1 for s in stims if s["Type"] == "filler"))
+print("Lists:", sorted({int(s["List"]) for s in stims if s["Type"] == "critical"}))
