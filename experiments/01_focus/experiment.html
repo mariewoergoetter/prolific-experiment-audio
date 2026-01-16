@@ -52,167 +52,104 @@
     </div>
 
     <!-- first example slide -->
-    <div class="slide" id="example1">
-      <h3>
-        Example 1
-      </h3>
-      <p class="originalSen">
-        I had some of the banana yogurt.
-      </p>
-      <p class="targetSen">
-        I had <b>some, but not all</b> of the banana yogurt
-      </p>
-      <div class="instruction">
-        <i>How similar is the statement in blue (with 'but not all') to the statement in red (without 'but not all')?</i>
-      </div>
-      <table class="likertscale">
-        <tr>
-          <td>
-            very different meaning
-          </td>
-          <td>
-            <input type="radio" name="number" value="1">
-          </td>
-          <td>
-            <input type="radio" name="number" value="2">
-          </td>
-          <td>
-            <input type="radio" name="number" value="3">
-          </td>
-          <td>
-            <input type="radio" name="number" value="4">
-          </td>
-          <td>
-            <input type="radio" name="number" value="5">
-          </td>
-          <td>
-            <input type="radio" name="number" value="6">
-          </td>
-          <td>
-            <input type="radio" name="number" value="7">
-          </td>
-          <td>
-            same meaning
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            1
-          </td>
-          <td>
-            2
-          </td>
-          <td>
-            3
-          </td>
-          <td>
-            4
-          </td>
-          <td>
-            5
-          </td>
-          <td>
-            6
-          </td>
-          <td>
-            7
-          </td>
-          <td></td>
-        </tr>
-      </table><br>
-      <br>
-      <div class="center">
-        <button class="continueButton" onclick="_s.button()">Continue</button>
-      </div>
-      <div class="err">
-        <p>
-          In your rating, consider whether the sentence 'some, but not all' expresses the same thing as the red sentence. In this example the two sentences are very similar.
-        </p>
-      </div>
+<div class="slide" id="example1">
+  <h3>Example 1</h3>
+
+  <div class="trialWrap">
+    <div class="trialPrompt">
+      Please read the following sentence and click on the continuation that makes more sense to you:
     </div>
 
-    <!-- second example slide -->
-    <div class="slide" id="example2">
-      <h3>
-        Example 2
-      </h3>
-      <p class="originalSen">
-        There's probably some peanuts in the pantry.
-      </p>
-      <p class="targetSen">
-        There's probably <b>some, but not all</b> peanuts in the pantry.
-      </p>
-      <div class="instruction">
-        <i>How similar is the statement in blue (with 'but not all') to the statement in red (without 'but not all')?</i>
-      </div>
-      <table class="likertscale">
-        <tr>
-          <td>
-            very different meaning
-          </td>
-          <td>
-            <input type="radio" name="number" value="1">
-          </td>
-          <td>
-            <input type="radio" name="number" value="2">
-          </td>
-          <td>
-            <input type="radio" name="number" value="3">
-          </td>
-          <td>
-            <input type="radio" name="number" value="4">
-          </td>
-          <td>
-            <input type="radio" name="number" value="5">
-          </td>
-          <td>
-            <input type="radio" name="number" value="6">
-          </td>
-          <td>
-            <input type="radio" name="number" value="7">
-          </td>
-          <td>
-            same meaning
-          </td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            1
-          </td>
-          <td>
-            2
-          </td>
-          <td>
-            3
-          </td>
-          <td>
-            4
-          </td>
-          <td>
-            5
-          </td>
-          <td>
-            6
-          </td>
-          <td>
-            7
-          </td>
-          <td></td>
-        </tr>
-      </table><br>
-      <br>
-      <div class="center">
-        <button class="continueButton" onclick="_s.button()">Continue</button>
-      </div>
-      <div class="err">
-        <br>
-        <p>
-          In your rating, consider whether the sentence 'some, but not all' expresses the same thing as the red sentence. In this example the two sentences are very different.
-        </p>
-      </div>
+    <div class="instruction">
+      <i>
+        In some cases, both continuations are possible, but one fits the sentence
+        more naturally than the other. Choose the option that sounds better to you.
+      </i>
     </div>
+
+    <div class="trialSentence">
+      Emma took the earlier flight.
+    </div>
+
+    <div class="trialOptions">
+      <label class="choiceCard">
+        <input type="radio" name="example1_cont" value="opt1">
+        <div class="choiceText">
+          She wanted to avoid arriving late.
+        </div>
+      </label>
+
+      <label class="choiceCard">
+        <input type="radio" name="example1_cont" value="opt2">
+        <div class="choiceText">
+          The earlier flight was slightly cheaper.
+        </div>
+      </label>
+    </div>
+
+    <div class="center">
+      <button class="continueButton" onclick="_s.button()">Continue</button>
+    </div>
+
+    <div class="err">
+      <p>
+        Please select an option before continuing. In this example, both continuations
+        could be reasonable, but one provides a more natural explanation. Choose the
+        continuation that sounds better to you.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- second example slide -->
+<div class="slide" id="example2">
+  <h3>Example 2</h3>
+
+  <div class="trialWrap">
+    <div class="trialPrompt">
+      Please read the following sentence and click on the continuation that makes more sense to you:
+    </div>
+
+    <div class="instruction">
+      <i>
+        In other cases, one continuation clearly does not fit the sentence at all.
+        Choose the option that makes sense in context.
+      </i>
+    </div>
+
+    <div class="trialSentence">
+      The library closed earlier than usual.
+    </div>
+
+    <div class="trialOptions">
+      <label class="choiceCard">
+        <input type="radio" name="example2_cont" value="opt1">
+        <div class="choiceText">
+          There was a technical problem with the heating.
+        </div>
+      </label>
+
+      <label class="choiceCard">
+        <input type="radio" name="example2_cont" value="opt2">
+        <div class="choiceText">
+          The library has many books.
+        </div>
+      </label>
+    </div>
+
+    <div class="center">
+      <button class="continueButton" onclick="_s.button()">Continue</button>
+    </div>
+
+    <div class="err">
+      <p>
+        Please select an option before continuing. In this example, one continuation
+        gives a clear and relevant explanation, while the other does not make sense
+        in this context. Choose the continuation that fits the sentence.
+      </p>
+    </div>
+  </div>
+</div>
 
     <!-- main instructions slide -->
     <div class="slide" id="startExp">
