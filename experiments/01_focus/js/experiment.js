@@ -87,6 +87,7 @@ function make_slides(f) {
       $(".err").hide();
 
       $("input[name='cont']:checked").prop("checked", false);
+      $("#trial_feedback").val("");
 
       this.stim = stim;
 
@@ -139,7 +140,9 @@ function make_slides(f) {
         "chosen_key": chosen_key,
         "chosen_text": chosen_text,
 
-        "rt_ms": rt_ms
+        "rt_ms": rt_ms,
+
+        "item_feedback": $("#trial_feedback").val()
       });
 
       _stream.apply(this);
@@ -158,6 +161,7 @@ function make_slides(f) {
         gender: $("#gender").val(),
         education: $("#education").val(),
         fairprice: $("#fairprice").val(),
+        experiment_about: $("#experiment_about").val(),
         comments: $("#comments").val()
       };
       exp.go();
@@ -191,12 +195,12 @@ function init() {
 
 
   var condition = new URLSearchParams(window.location.search).get("cond");
-  condition = condition === null ? NaN : parseInt(condition, 10);
+  condition = condition === null ? NaN : parseInt(condition, 15);
 
-  if (!isNaN(condition) && condition >= 1 && condition <= 10) {
+  if (!isNaN(condition) && condition >= 1 && condition <= 15) {
   exp.list = condition;
   } else {
-  exp.list = _.sample([1,2,3,4,5,6,7,8,9,10]); // fallback
+  exp.list = _.sample([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]); // fallback
   }
 
   var critical = all_stims.filter(function(s) {
