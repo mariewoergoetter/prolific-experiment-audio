@@ -80,106 +80,108 @@ for list_no in range(1, 16):
             })
 
 fillers = [
-  {"ItemID":"F01","Group":"Filler","Type":"filler",
-   "Sentence":"The train arrived later than expected.",
-   "C1":"There had been an accident on the tracks earlier.",
-   "C2":"The train usually arrives on time."},
 
-  {"ItemID":"F02","Group":"Filler","Type":"filler",
-   "Sentence":"Lena bought a new laptop last week.",
-   "C1":"Her old one had stopped working completely.",
-   "C2":"She compared several models online beforehand."},
-
-  {"ItemID":"F03","Group":"Filler","Type":"filler",
-   "Sentence":"The meeting was moved to the afternoon.",
-   "C1":"Several people were unavailable in the morning.",
-   "C2":"The meeting was scheduled to last an hour."},
-
-  {"ItemID":"F04","Group":"Filler","Type":"filler",
-   "Sentence":"Tom cooked dinner for everyone.",
-   "C1":"He enjoys trying out new recipes.",
-   "C2":"He used ingredients he already had at home."},
-
-  {"ItemID":"F05","Group":"Filler","Type":"filler",
+  {"ItemID":"F01","Group":"Filler","Type":"filler","FillerType":"clear",
    "Sentence":"The children stayed inside all day.",
    "C1":"It was raining heavily outside.",
-   "C2":"They had planned to go outside earlier."},
+   "C2":"The children like eating pasta."},
 
-  {"ItemID":"F06","Group":"Filler","Type":"filler",
-   "Sentence":"Emma took the earlier flight.",
-   "C1":"She wanted to avoid arriving late.",
-   "C2":"The earlier flight was slightly cheaper."},
-
-  {"ItemID":"F07","Group":"Filler","Type":"filler",
-   "Sentence":"The library closed earlier than usual.",
-   "C1":"There was a technical problem with the heating.",
-   "C2":"The staff announced the closing time in advance."},
-
-  {"ItemID":"F08","Group":"Filler","Type":"filler",
-   "Sentence":"Daniel changed his workout routine.",
-   "C1":"His old one had become too repetitive.",
-   "C2":"He exercises several times a week."},
-
-  {"ItemID":"F09","Group":"Filler","Type":"filler",
-   "Sentence":"The restaurant was fully booked.",
-   "C1":"A large group had made a reservation.",
-   "C2":"The restaurant is popular on weekends."},
-
-  {"ItemID":"F10","Group":"Filler","Type":"filler",
-   "Sentence":"Laura decided to work from home.",
-   "C1":"She wasn’t feeling very well.",
-   "C2":"She logged into her email that morning."},
-
-  {"ItemID":"F11","Group":"Filler","Type":"filler",
-   "Sentence":"The concert started later than planned.",
-   "C1":"There were technical issues with the sound system.",
-   "C2":"The band had rehearsed earlier that day."},
-
-  {"ItemID":"F12","Group":"Filler","Type":"filler",
-   "Sentence":"Max brought a jacket with him.",
-   "C1":"The weather forecast was uncertain.",
-   "C2":"The jacket matched his shoes."},
-
-  {"ItemID":"F13","Group":"Filler","Type":"filler",
-   "Sentence":"The shop closed early that evening.",
-   "C1":"There was a power outage in the area.",
-   "C2":"Customers had already left the shop."},
-
-  {"ItemID":"F14","Group":"Filler","Type":"filler",
-   "Sentence":"Sophie chose the window seat.",
-   "C1":"She likes having a view during the flight.",
-   "C2":"The window seat was still available."},
-
-  {"ItemID":"F15","Group":"Filler","Type":"filler",
-   "Sentence":"The lecture ended earlier than expected.",
-   "C1":"The main topics had already been covered.",
-   "C2":"The lecturer spoke very clearly."},
-
-  {"ItemID":"F16","Group":"Filler","Type":"filler",
-   "Sentence":"Jonas ordered a coffee.",
-   "C1":"He needed something to stay awake.",
-   "C2":"The café also served fresh pastries."},
-
-  {"ItemID":"F17","Group":"Filler","Type":"filler",
-   "Sentence":"The package arrived in the morning.",
-   "C1":"It had been shipped earlier than planned.",
-   "C2":"The delivery service operates every day."},
-
-  {"ItemID":"F18","Group":"Filler","Type":"filler",
-   "Sentence":"Mia stayed after class.",
-   "C1":"She wanted to ask the teacher a question.",
-   "C2":"Other students had already left."},
-
-  {"ItemID":"F19","Group":"Filler","Type":"filler",
+  {"ItemID":"F02","Group":"Filler","Type":"filler","FillerType":"clear",
    "Sentence":"The alarm went off unexpectedly.",
    "C1":"Someone had opened the back door.",
    "C2":"The alarm system was recently installed."},
 
-  {"ItemID":"F20","Group":"Filler","Type":"filler",
+  {"ItemID":"F03","Group":"Filler","Type":"filler","FillerType":"clear",
    "Sentence":"Alex missed the bus.",
    "C1":"He left the house later than usual.",
-   "C2":"The bus route passes through the city centre."}
-]
+   "C2":"The bus route passes through the city centre."},
+
+  {"ItemID":"F04","Group":"Filler","Type":"filler","FillerType":"clear",
+   "Sentence":"The concert started later than planned.",
+   "C1":"There were technical issues with the sound system.",
+   "C2":"The band practices every week."},
+
+  {"ItemID":"F05","Group":"Filler","Type":"filler","FillerType":"clear",
+   "Sentence":"The shop closed early that evening.",
+   "C1":"There was a power outage in the area.",
+   "C2":"The shop sells clothing and shoes."},
+
+  {"ItemID":"F06","Group":"Filler","Type":"filler","FillerType":"clear",
+   "Sentence":"Mia stayed after class.",
+   "C1":"She wanted to ask the teacher a question.",
+   "C2":"The classroom has large windows."},
+
+  {"ItemID":"F07","Group":"Filler","Type":"filler","FillerType":"clear",
+   "Sentence":"Jonas ordered a coffee.",
+   "C1":"He needed something to stay awake.",
+   "C2":"Coffee is served in many cafés."},
+
+  {"ItemID":"F08","Group":"Filler","Type":"filler","FillerType":"clear",
+   "Sentence":"The restaurant was fully booked.",
+   "C1":"A large group had made a reservation.",
+   "C2":"The restaurant has a long menu."},
+
+  {"ItemID":"F09","Group":"Filler","Type":"filler","FillerType":"clear",
+   "Sentence":"The lecture ended earlier than expected.",
+   "C1":"The main topics had already been covered.",
+   "C2":"The lecturer has taught there for years."},
+
+  {"ItemID":"F10","Group":"Filler","Type":"filler","FillerType":"clear",
+   "Sentence":"The package arrived in the morning.",
+   "C1":"It had been shipped earlier than planned.",
+   "C2":"The delivery service operates every day."},
+
+  {"ItemID":"F11","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"Lena bought a new laptop last week.",
+   "C1":"Her old one had stopped working completely.",
+   "C2":"She compared several models online beforehand."},
+
+  {"ItemID":"F12","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"Daniel changed his workout routine.",
+   "C1":"His old one had become too repetitive.",
+   "C2":"He exercises several times a week."},
+
+  {"ItemID":"F13","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"Sophie chose the window seat.",
+   "C1":"She likes having a view during the flight.",
+   "C2":"The window seat was still available."},
+
+  {"ItemID":"F14","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"Max brought a jacket with him.",
+   "C1":"The weather forecast was uncertain.",
+   "C2":"The jacket matched his shoes."},
+
+  {"ItemID":"F15","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"Tom cooked dinner for everyone.",
+   "C1":"He enjoys trying out new recipes.",
+   "C2":"He used ingredients he already had at home."},
+
+  {"ItemID":"F16","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"The train arrived later than expected.",
+   "C1":"There had been an accident on the tracks earlier.",
+   "C2":"The train usually arrives on time."},
+
+  {"ItemID":"F17","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"Laura decided to work from home.",
+   "C1":"She wasn’t feeling very well.",
+   "C2":"She logged into her email that morning."},
+
+  {"ItemID":"F18","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"The restaurant opened a new location.",
+   "C1":"The original one had become very popular.",
+   "C2":"The new location is closer to the city centre."},
+
+  {"ItemID":"F19","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"The children finished their homework early.",
+   "C1":"They wanted to go outside and play.",
+   "C2":"Their homework was not very long."},
+
+  {"ItemID":"F20","Group":"Filler","Type":"filler","FillerType":"nuanced",
+   "Sentence":"The package was delivered to the neighbour.",
+   "C1":"No one was home at the time.",
+   "C2":"The neighbour lives next door."}
+];
+
 
 stims.extend(fillers)
 
