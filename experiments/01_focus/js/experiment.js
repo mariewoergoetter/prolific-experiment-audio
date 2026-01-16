@@ -11,63 +11,45 @@ function make_slides(f) {
 
 
   slides.example1 = slide({
-    name: "example1",
+  name: "example1",
 
-    start: function() {
-      $('.err').hide();
-    },
+  start: function() {
+    $("#example1 .err").hide();
+    $("input[name='example1_cont']:checked").prop("checked", false);
+  },
 
-    button: function() {
-      this.radio = $("input[name='number']:checked").val();
-      if (this.radio == "5" || this.radio == "6" || this.radio == "7") {
-        this.log_responses();
-        exp.go();
-      } else {
-        $('.err').show();
-        this.log_responses();
-      }
-    },
-
-    log_responses: function() {
-      exp.data_trials.push({
-        "slide_number_in_experiment": exp.phase,
-        "id": "example1",
-        "response": this.radio,
-        "strangeSentence": "",
-        "sentence": ""
-      });
+  button: function() {
+    var choice = $("input[name='example1_cont']:checked").val();
+    if (!choice) {
+      $("#example1 .err").show();
+      return;
     }
-  });
+    $("#example1 .err").hide();
+    exp.go();
+  }
+});
 
 
-  slides.example2 = slide({
-    name: "example2",
 
-    start: function() {
-      $(".err").hide();
-    },
+slides.example2 = slide({
+  name: "example2",
 
-    button: function() {
-      this.radio = $("input[name='number']:checked").val();
-      if (this.radio == "1" || this.radio == "2" || this.radio == "3") {
-        this.log_responses();
-        exp.go();
-      } else {
-        $('.err').show();
-        this.log_responses();
-      }
-    },
+  start: function() {
+    $("#example2 .err").hide();
+    $("input[name='example2_cont']:checked").prop("checked", false);
+  },
 
-    log_responses: function() {
-      exp.data_trials.push({
-        "slide_number_in_experiment": exp.phase,
-        "id": "example2",
-        "response": this.radio,
-        "strangeSentence": "",
-        "sentence": ""
-      });
+  button: function() {
+    var choice = $("input[name='example2_cont']:checked").val();
+    if (!choice) {
+      $("#example2 .err").show();
+      return;
     }
-  });
+    $("#example2 .err").hide();
+    exp.go();
+  }
+});
+
 
 
   slides.startExp = slide({
@@ -195,7 +177,7 @@ function init() {
 
 
   var condition = new URLSearchParams(window.location.search).get("cond");
-  condition = condition === null ? NaN : parseInt(condition, 15);
+  condition = condition === null ? NaN : parseInt(condition, 10);
 
   if (!isNaN(condition) && condition >= 1 && condition <= 15) {
   exp.list = condition;
