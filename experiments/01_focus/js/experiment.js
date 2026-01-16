@@ -103,27 +103,28 @@ slides.example2 = slide({
 
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
-
+  
         "list_assigned": exp.list,
         "item_list": this.stim.List,
         "type": this.stim.Type,
         "group": this.stim.Group,
         "item": this.stim.ItemID,
         "variant": this.stim.Variant,
-
+  
+        "filler_type": this.stim.FillerType || null,
+  
         "sentence": this.stim.Sentence,
         "C1": this.stim.C1,
         "C2": this.stim.C2,
-
+  
         "opt1_key": this.opt1_key,
         "opt2_key": this.opt2_key,
-
+  
         "chosen_button": choice,
         "chosen_key": chosen_key,
         "chosen_text": chosen_text,
-
+  
         "rt_ms": rt_ms,
-
         "item_feedback": $("#trial_feedback").val()
       });
 
