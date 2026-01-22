@@ -9,45 +9,98 @@ function make_slides(f) {
     }
   });
 
-
-  slides.example1 = slide({
+// Example 1 (binary choice)
+slides.example1 = slide({
   name: "example1",
 
-  start: function() {
-    $("#example1 .err").hide();
-    $("input[name='example1_cont']:checked").prop("checked", false);
+  start: function () {
+    $(".err").hide();
+    $("input[name='example1_choice']").prop("checked", false);
   },
 
-  button: function() {
-    var choice = $("input[name='example1_cont']:checked").val();
-    if (!choice) {
-      $("#example1 .err").show();
+  button: function () {
+    this.choice = $("input[name='example1_choice']:checked").val();
+
+    // require a response
+    if (!this.choice) {
+      $(".err").show().html("<p>Please select an option to continue.</p>");
       return;
     }
-    $("#example1 .err").hide();
-    exp.go();
-  }
+
+    // CORRECT answer: choose the continuation that matches the intended interpretation
+    // (set this to "C1" or "C2" depending on which one you want to be the 'right' training choice)
+    const correct = "C1";
+
+    if (this.choice === correct) {
+      $(".err").hide();
+      this.log_responses();
+      exp.go();
+    } else {
+      // wrong: show explanation + do NOT move on
+      $(".err")
+        .show()
+        .html(
+          "<p><b>Not quite.</b> In this example, the two sentences are meant to be <b>very similar</b> in meaning. Please choose the option that reflects that.</p>"
+        );
+      this.log_responses();
+    }
+  },
+
+  log_responses: function () {
+    exp.data_trials.push({
+      slide_number_in_experiment: exp.phase,
+      id: "example1",
+      response: this.choice || "",
+      strangeSentence: "",
+      sentence: "",
+    });
+  },
 });
 
 
-
+// Example 2 (binary choice)
 slides.example2 = slide({
   name: "example2",
 
-  start: function() {
-    $("#example2 .err").hide();
-    $("input[name='example2_cont']:checked").prop("checked", false);
+  start: function () {
+    $(".err").hide();
+    $("input[name='example2_choice']").prop("checked", false);
   },
 
-  button: function() {
-    var choice = $("input[name='example2_cont']:checked").val();
-    if (!choice) {
-      $("#example2 .err").show();
+  button: function () {
+    this.choice = $("input[name='example2_choice']:checked").val();
+
+    if (!this.choice) {
+      $(".err").show().html("<p>Please select an option to continue.</p>");
       return;
     }
-    $("#example2 .err").hide();
-    exp.go();
-  }
+
+    // CORRECT answer for training
+    const correct = "C2";
+
+    if (this.choice === correct) {
+      $(".err").hide();
+      this.log_responses();
+      exp.go();
+    } else {
+      $(".err")
+        .show()
+        .html(
+          "<p><b>Not quite.</b> In this example, the two sentences are meant to be <b>very different</b> in meaning. Please choose the option that reflects that.</p>"
+        );
+      this.log_responses();
+    }
+  },
+
+  log_responses: function () {
+    exp.data_trials.push({
+      slide_number_in_experiment: exp.phase,
+      id: "example2",
+      response: this.choice || "",
+      strangeSentence: "",
+      sentence: "",
+    });
+  },
 });
 
 
