@@ -140,9 +140,6 @@ slides.example2 = slide({
         language: $("#language").val(),
         enjoyment: $("#enjoyment").val(),
         asses: $('input[name="assess"]:checked').val(),
-        age: $("#age").val(),
-        gender: $("#gender").val(),
-        education: $("#education").val(),
         fairprice: $("#fairprice").val(),
         experiment_about: $("#experiment_about").val(),
         comments: $("#comments").val()
