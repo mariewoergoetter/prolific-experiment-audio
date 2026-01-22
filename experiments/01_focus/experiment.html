@@ -55,96 +55,66 @@
 <div class="slide" id="example1">
   <h3>Example 1</h3>
 
-  <div class="trialWrap">
-    <div class="trialPrompt">
-      Please read the following sentence and click on the continuation that sounds more natural to you:
-    </div>
+  <p class="originalSen">I had some of the banana yogurt.</p>
+  <p class="targetSen">I had <b>some, but not all</b> of the banana yogurt.</p>
 
-    <div class="instruction">
-      <i>
-        In some cases, both continuations are possible, but one fits the sentence
-        more naturally than the other. Choose the option that sounds more natural to you.
-      </i>
-    </div>
-
-    <div class="trialSentence">
-      The meeting was moved to the afternoon.
-    </div>
-
-    <div class="trialOptions">
-      <label class="choiceCard">
-        <input type="radio" name="example1_cont" value="opt1">
-        <div class="choiceText">
-          Several people were unavailable in the morning.
-        </div>
-      </label>
-
-      <label class="choiceCard">
-        <input type="radio" name="example1_cont" value="opt2">
-        <div class="choiceText">
-          The meeting was scheduled to last an hour.
-        </div>
-      </label>
-    </div>
-
-    <div class="center">
-      <button class="continueButton" onclick="_s.button()">Continue</button>
-    </div>
-
-    <div class="err">
-      <p>
-        Please select an option before continuing.
-      </p>
-    </div>
+  <div class="instruction">
+    <i>
+      Choose the option that best matches how similar the blue sentence is to the red sentence.
+    </i>
   </div>
+
+  <div class="trialOptions">
+    <label class="choiceCard">
+      <input type="radio" name="example1_choice" value="C1" />
+      <div class="choiceText">Very similar / almost the same meaning</div>
+    </label>
+
+    <label class="choiceCard">
+      <input type="radio" name="example1_choice" value="C2" />
+      <div class="choiceText">Very different meaning</div>
+    </label>
+  </div>
+
+  <div class="center">
+    <button class="continueButton" onclick="_s.button()">Continue</button>
+  </div>
+
+  <div class="err"></div>
 </div>
 
-<!-- second example slide -->
+
 <div class="slide" id="example2">
   <h3>Example 2</h3>
 
-  <div class="trialWrap">
-    <div class="trialPrompt">
-    </div>
+  <p class="originalSen">There's probably some peanuts in the pantry.</p>
+  <p class="targetSen">There's probably <b>some, but not all</b> peanuts in the pantry.</p>
 
-    <div class="instruction">
-      <i>
-        In other cases, one continuation does not fit the sentence.
-        Choose the option that makes sense in context.
-      </i>
-    </div>
-
-    <div class="trialSentence">
-      The library closed earlier than usual.
-    </div>
-
-    <div class="trialOptions">
-      <label class="choiceCard">
-        <input type="radio" name="example2_cont" value="opt1">
-        <div class="choiceText">
-          There was a technical problem with the heating.
-        </div>
-      </label>
-
-      <label class="choiceCard">
-        <input type="radio" name="example2_cont" value="opt2">
-        <div class="choiceText">
-          The library has many books.
-        </div>
-      </label>
-    </div>
-
-    <div class="center">
-      <button class="continueButton" onclick="_s.button()">Continue</button>
-    </div>
-
-    <div class="err">
-      <p>
-        Please select an option before continuing.
-      </p>
-    </div>
+  <div class="instruction">
+    <i>
+      Choose the option that best matches how similar the blue sentence is to the red sentence.
+    </i>
   </div>
+
+  <div class="trialOptions">
+    <label class="choiceCard">
+      <input type="radio" name="example2_choice" value="C1" />
+      <div class="choiceText">Very similar / almost the same meaning</div>
+    </label>
+
+    <label class="choiceCard">
+      <input type="radio" name="example2_choice" value="C2" />
+      <div class="choiceText">Very different meaning</div>
+    </label>
+  </div>
+
+  <div class="center">
+    <button class="continueButton" onclick="_s.button()">Continue</button>
+  </div>
+
+  <div class="err"></div>
 </div>
+
 
     <!-- main instructions slide -->
     <div class="slide" id="startExp">
