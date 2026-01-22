@@ -144,9 +144,6 @@ td:nth-child(9) {
   border: 1px solid #666;
 }
 
-/* =========================================================
-   NEW STYLES FOR BINARY CONTINUATION TRIAL (CENTERED + BOXES)
-   ========================================================= */
 
 .trialWrap {
   max-width: 900px;
@@ -195,8 +192,9 @@ td:nth-child(9) {
 }
 
 .choiceCard:has(input[type="radio"]:checked) {
-  border-color: #666;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+  border-color: #4A90E2;
+  background-color: #EAF3FF;   /* light blue */
+  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.15);
 }
 
 .choiceCard:hover {
