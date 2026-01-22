@@ -1,6 +1,19 @@
+/* experiment.js
+ *
+ * Assumes the standard sebschu / web-based-experiments template globals exist:
+ *  - slide(), exp.go(), utils.get_exp_length(), _stream.apply(this)
+ *  - BrowserDetect
+ *  - proliferate.submit()
+ *  - underscore (_) and jQuery ($)
+ *  - all_stims (loaded from stimuli.js)
+ */
+
 function make_slides(f) {
   var slides = {};
 
+  // -------------------------
+  // Initial slide (timer start)
+  // -------------------------
   slides.i0 = slide({
     name: "i0",
     start: function() {
@@ -8,6 +21,9 @@ function make_slides(f) {
     }
   });
 
+  // -------------------------
+  // Example 1 (must pick "opt1")
+  // -------------------------
   slides.example1 = slide({
     name: "example1",
 
@@ -26,6 +42,7 @@ function make_slides(f) {
         return;
       }
 
+      // Restriction: only the "right" continuation lets them proceed
       if (choice !== "opt1") {
         $("#example1 .err")
           .text("Not quite — the other continuation is more appropriate in this context.")
@@ -38,6 +55,9 @@ function make_slides(f) {
     }
   });
 
+  // -------------------------
+  // Example 2 (must pick "opt1")
+  // -------------------------
   slides.example2 = slide({
     name: "example2",
 
@@ -68,14 +88,9 @@ function make_slides(f) {
     }
   });
 
-  return slides;
-}
-
-
-
-
-
-
+  // -------------------------
+  // Start experiment slide
+  // -------------------------
   slides.startExp = slide({
     name: "startExp",
     button: function() {
@@ -83,22 +98,28 @@ function make_slides(f) {
     }
   });
 
-
+  // -------------------------
+  // Main trial slide (binary choice between two continuations)
+  // -------------------------
   slides.trial = slide({
     name: "trial",
 
     present: exp.stimuli,
 
     present_handle: function(stim) {
+      // Hide any error messages on the slide
       $(".err").hide();
 
-      $("input[name='cont']:checked").prop("checked", false);
+      // Reset choice + optional comments field
+      $("input[name='cont']").prop("checked", false);
       $("#trial_feedback").val("");
 
       this.stim = stim;
 
+      // Insert sentence
       $("#trial-sentence").html(stim.Sentence);
 
+      // Shuffle which continuation appears on top
       var opts = _.shuffle([
         { key: "C1", text: stim.C1 },
         { key: "C2", text: stim.C2 }
@@ -127,36 +148,39 @@ function make_slides(f) {
 
       exp.data_trials.push({
         "slide_number_in_experiment": exp.phase,
-  
+
         "list_assigned": exp.list,
         "item_list": this.stim.List,
         "type": this.stim.Type,
         "group": this.stim.Group,
         "item": this.stim.ItemID,
         "variant": this.stim.Variant,
-  
+
         "filler_type": this.stim.FillerType || null,
-  
+
         "sentence": this.stim.Sentence,
         "C1": this.stim.C1,
         "C2": this.stim.C2,
-  
+
         "opt1_key": this.opt1_key,
         "opt2_key": this.opt2_key,
-  
+
         "chosen_button": choice,
         "chosen_key": chosen_key,
         "chosen_text": chosen_text,
-  
+
         "rt_ms": rt_ms,
         "item_feedback": $("#trial_feedback").val()
       });
 
+      // Advance to next stimulus / slide
       _stream.apply(this);
     }
   });
 
-
+  // -------------------------
+  // Subject info slide
+  // -------------------------
   slides.subj_info = slide({
     name: "subj_info",
     submit: function(e) {
@@ -172,7 +196,9 @@ function make_slides(f) {
     }
   });
 
-
+  // -------------------------
+  // Thanks + submit
+  // -------------------------
   slides.thanks = slide({
     name: "thanks",
     start: function() {
@@ -191,22 +217,22 @@ function make_slides(f) {
   return slides;
 }
 
-
 function init() {
-
   exp.trials = [];
   exp.catch_trials = [];
 
-
+  // --- list assignment via URL param "cond", else random fallback
   var condition = new URLSearchParams(window.location.search).get("cond");
   condition = condition === null ? NaN : parseInt(condition, 10);
 
+  // NOTE: You currently have 15 lists in your code. Adjust if needed.
   if (!isNaN(condition) && condition >= 1 && condition <= 15) {
-  exp.list = condition;
+    exp.list = condition;
   } else {
-  exp.list = _.sample([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]); // fallback
+    exp.list = _.sample([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
   }
 
+  // --- select stims for assigned list
   var critical = all_stims.filter(function(s) {
     return s.Type === "critical" && Number(s.List) === exp.list;
   });
@@ -215,9 +241,11 @@ function init() {
     return s.Type === "filler";
   });
 
+  // --- shuffle order
   exp.stimuli = _.shuffle(critical.concat(fillers));
   exp.n_trials = exp.stimuli.length;
 
+  // --- system info
   exp.system = {
     Browser: BrowserDetect.browser,
     OS: BrowserDetect.OS,
@@ -227,6 +255,7 @@ function init() {
     screenUW: exp.width
   };
 
+  // --- experiment flow
   exp.structure = [
     "i0",
     "example1",
@@ -237,16 +266,21 @@ function init() {
     "thanks"
   ];
 
+  // --- data
   exp.data_trials = [];
 
+  // --- build slides
   exp.slides = make_slides(exp);
   exp.nQs = utils.get_exp_length();
 
-  $('.slide').hide();
+  // hide all slides at start
+  $(".slide").hide();
 
+  // start button (if you have one on the first screen)
   $("#start_button").click(function() {
     exp.go();
   });
 
+  // auto-start (template behavior)
   exp.go();
 }
