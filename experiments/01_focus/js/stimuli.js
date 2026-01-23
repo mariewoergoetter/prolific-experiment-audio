@@ -26,7 +26,7 @@ var all_stims = [
     "List": 1,
     "Variant": "cleft",
     "Sentence": "It was decorating the flat that Zayn was engaged in.",
-    "C1": "The cleaning had been done by his flatmate already.",
+    "C1": "His flatmate had cleaned it already.",
     "C2": "He also cleaned it.",
   },
   {
@@ -46,7 +46,7 @@ var all_stims = [
     "List": 1,
     "Variant": "cleft",
     "Sentence": "It was a cheese board that Julia made.",
-    "C1": "The sandwiches were made by her mum.",
+    "C1": "Her mum made the sandwiches.",
     "C2": "She made some sandwiches as well.",
   },
   {
@@ -87,7 +87,7 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was in the living room that Nick arranged snacks.",
     "C1": "The kitchen counter was still cluttered with ingredients.",
-    "C2": "Nick arranged more snacks in the kitchen.",
+    "C2": "He arranged more snacks in the kitchen.",
   },
   {
     "ItemID": "62",
@@ -176,7 +176,7 @@ var all_stims = [
     "List": 2,
     "Variant": "neutral",
     "Sentence": "Sarah showed scanned the digital ticket.",
-    "C1": "She had lost her printed one.",
+    "C1": "She had lost her printed version.",
     "C2": "She also scanned a printed version.",
   },
   {
@@ -266,7 +266,7 @@ var all_stims = [
     "List": 3,
     "Variant": "cleft",
     "Sentence": "It was the digital ticket that Sarah scanned.",
-    "C1": "She had lost her printed one.",
+    "C1": "She had lost her printed version.",
     "C2": "She also scanned a printed version.",
   },
   {
@@ -376,8 +376,8 @@ var all_stims = [
     "List": 4,
     "Variant": "neutral",
     "Sentence": "Marie ordered the stainless steel pan.",
-    "C1": "She didn't like the non-stick one she previously had.",
-    "C2": "She also got a non-stick pan.",
+    "C1": "She didn't like the non-stick one.",
+    "C2": "She also got a non-stick one.",
   },
   {
     "ItemID": "64",
@@ -466,8 +466,8 @@ var all_stims = [
     "List": 5,
     "Variant": "cleft",
     "Sentence": "It was the stainless steel pan that Marie ordered.",
-    "C1": "She didn't like the non-stick one she previously had.",
-    "C2": "She also got a non-stick pan.",
+    "C1": "She didn't like the non-stick one.",
+    "C2": "She also got a non-stick one.",
   },
   {
     "ItemID": "51",
@@ -777,7 +777,7 @@ var all_stims = [
     "Variant": "neutral",
     "Sentence": "Richard labelled the cards with a golden pen.",
     "C1": "He couldn't find the silver one.",
-    "C2": "He labelled a few with a silver one as well.",
+    "C2": "He labelled a few with a silver one too.",
   },
   {
     "ItemID": "68",
@@ -797,7 +797,7 @@ var all_stims = [
     "Variant": "neutral",
     "Sentence": "John had his lunch at the desk.",
     "C1": "He was still busy finishing some tasks.",
-    "C2": "He had the rest of his lunch in the kitchen as soon as he was finished with his tasks.",
+    "C2": "He had the rest of it in the kitchen after the call.",
   },
   {
     "ItemID": "9",
@@ -836,7 +836,7 @@ var all_stims = [
     "List": 9,
     "Variant": "neutral",
     "Sentence": "Julian was engaged in editing the video.",
-    "C1": "The exporting and uploading was done by his friend.",
+    "C1": "His friend had exported and uploaded it.",
     "C2": "He also took care of the exporting and uploading.",
   },
   {
@@ -856,7 +856,7 @@ var all_stims = [
     "List": 9,
     "Variant": "neutral",
     "Sentence": "Sebastian edited the introduction.",
-    "C1": "The rest of the paper had been already edited by his colleague.",
+    "C1": "His colleague had edited the rest of the paper..",
     "C2": "He also edited the related work section.",
   },
   {
@@ -867,7 +867,7 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was with a golden pen that Richard labelld the cards.",
     "C1": "He couldn't find the silver one.",
-    "C2": "He labelled a few with a silver one as well.",
+    "C2": "He labelled a few with a silver one too.",
   },
   {
     "ItemID": "55",
@@ -887,7 +887,7 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was at the desk where John had his lunch.",
     "C1": "He was still busy finishing some tasks.",
-    "C2": "He had the rest of his lunch in the kitchen as soon as he was finished with his tasks.",
+    "C2": "He had the rest of it in the kitchen after the call.",
   },
   {
     "ItemID": "70",
@@ -926,7 +926,7 @@ var all_stims = [
     "List": 10,
     "Variant": "cleft",
     "Sentence": "It was editing the video that Julian was engaged in.",
-    "C1": "The exporting and uploading was done by his friend.",
+    "C1": "His friend had exported and uploaded it.",
     "C2": "He also took care of the exporting and uploading.",
   },
   {
@@ -936,7 +936,7 @@ var all_stims = [
     "List": 10,
     "Variant": "neutral",
     "Sentence": "Lisa was concerned with proofreading the paper.",
-    "C1": "The writing had been done by one of her students.",
+    "C1": "One of her students had written it.",
     "C2": "She had also written it.",
   },
   {
@@ -946,7 +946,7 @@ var all_stims = [
     "List": 10,
     "Variant": "cleft",
     "Sentence": "It was the introduction that Sebastian edited.",
-    "C1": "The rest of the paper had been already edited by his colleague.",
+    "C1": "His colleague had edited the rest of the paper..",
     "C2": "He also edited the related work section.",
   },
   {
@@ -1016,7 +1016,7 @@ var all_stims = [
     "List": 11,
     "Variant": "neutral",
     "Sentence": "Taylor organised the charity raffle.",
-    "C1": "The others on the team didn't have any experience with suchlike events.",
+    "C1": "His colleagues didn't have any experience with suchlike events.",
     "C2": "One of his colleagues supported him with it.",
   },
   {
@@ -1026,7 +1026,7 @@ var all_stims = [
     "List": 11,
     "Variant": "cleft",
     "Sentence": "It was proofreading the paper that Lisa was concerned with.",
-    "C1": "The writing had been done by one of her students.",
+    "C1": "One of her students had written it.",
     "C2": "She had also written it.",
   },
   {
@@ -1106,7 +1106,7 @@ var all_stims = [
     "List": 12,
     "Variant": "cleft",
     "Sentence": "It was Taylor who organised the charity raffle.",
-    "C1": "The others on the team didn't have any experience with suchlike events.",
+    "C1": "His colleagues didn't have any experience with suchlike events.",
     "C2": "One of his colleagues supported him with it.",
   },
   {
@@ -1196,8 +1196,8 @@ var all_stims = [
     "List": 12,
     "Variant": "neutral",
     "Sentence": "Chloe stored the leftovers in the freezer.",
-    "C1": "The was no space left in the fridge.",
-    "C2": "She also left some out on the counter.",
+    "C1": "There was no space left in the fridge.",
+    "C2": "She also left some on the counter.",
   },
   {
     "ItemID": "13",
@@ -1286,8 +1286,8 @@ var all_stims = [
     "List": 13,
     "Variant": "cleft",
     "Sentence": "It was in the freezer that Chloe stored the leftovers.",
-    "C1": "The was no space left in the fridge.",
-    "C2": "She also left some out on the counter.",
+    "C1": "There was no space left in the fridge.",
+    "C2": "She also left some on the counter.",
   },
   {
     "ItemID": "74",
@@ -1436,7 +1436,7 @@ var all_stims = [
     "List": 15,
     "Variant": "cleft",
     "Sentence": "It was decorating the flat that Zayn was engaged in.",
-    "C1": "The cleaning had been done by his flatmate already.",
+    "C1": "His flatmate had cleaned it already.",
     "C2": "He also cleaned it.",
   },
   {
@@ -1456,7 +1456,7 @@ var all_stims = [
     "List": 15,
     "Variant": "cleft",
     "Sentence": "It was a cheese board that Julia made.",
-    "C1": "The sandwiches were made by her mum.",
+    "C1": "Her mum made the sandwiches.",
     "C2": "She made some sandwiches as well.",
   },
   {
@@ -1497,7 +1497,7 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was in the living room that Nick arranged snacks.",
     "C1": "The kitchen counter was still cluttered with ingredients.",
-    "C2": "Nick arranged more snacks in the kitchen.",
+    "C2": "He arranged more snacks in the kitchen.",
   },
   {
     "ItemID": "F01",
