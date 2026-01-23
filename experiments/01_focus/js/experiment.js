@@ -1,19 +1,7 @@
-/* experiment.js
- *
- * Assumes the standard sebschu / web-based-experiments template globals exist:
- *  - slide(), exp.go(), utils.get_exp_length(), _stream.apply(this)
- *  - BrowserDetect
- *  - proliferate.submit()
- *  - underscore (_) and jQuery ($)
- *  - all_stims (loaded from stimuli.js)
- */
-
 function make_slides(f) {
   var slides = {};
 
-  // -------------------------
-  // Initial slide (timer start)
-  // -------------------------
+
   slides.i0 = slide({
     name: "i0",
     start: function() {
@@ -21,9 +9,6 @@ function make_slides(f) {
     }
   });
 
-  // -------------------------
-  // Example 1 (must pick "opt1")
-  // -------------------------
   slides.example1 = slide({
     name: "example1",
 
@@ -55,9 +40,7 @@ function make_slides(f) {
     }
   });
 
-  // -------------------------
-  // Example 2 (must pick "opt1")
-  // -------------------------
+
   slides.example2 = slide({
     name: "example2",
 
@@ -183,11 +166,20 @@ function make_slides(f) {
   // -------------------------
   slides.subj_info = slide({
     name: "subj_info",
+
+    start: function() {
+      $("#language").val("");
+      $("#experiment_about").val("");
+      $("#comments").val("");
+      $("#enjoyment").val("-1");
+      $("#fairprice").val("-1");
+      $('input[name="assess"]').prop("checked", false);
+    },
     submit: function(e) {
       exp.subj_data = {
         language: $("#language").val(),
         enjoyment: $("#enjoyment").val(),
-        asses: $('input[name="assess"]:checked').val(),
+        assess: $('input[name="assess"]:checked').val(),
         fairprice: $("#fairprice").val(),
         experiment_about: $("#experiment_about").val(),
         comments: $("#comments").val()
