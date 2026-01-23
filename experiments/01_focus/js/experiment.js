@@ -31,6 +31,7 @@ function make_slides(f) {
       if (choice !== "opt1") {
         $("#example1 .err")
           .text("Not quite — the other continuation is more appropriate in this context.")
+          .css("color", "red")
           .show();
         return;
       }
