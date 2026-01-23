@@ -200,3 +200,7 @@ td:nth-child(9) {
 .choiceCard:hover {
   border-color: #999;
 }
+
+.err {
+  color: red !important;
+}
