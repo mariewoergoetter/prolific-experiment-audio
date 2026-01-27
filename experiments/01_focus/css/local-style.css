@@ -75,14 +75,24 @@
   padding: 1px 8px;
 }
 
-.continueButton {
-  padding: 1px 8px;
+#start_button,
+.continueButton,
+#subj_info button {
+  font-size: 22px;
+  padding: 16px 44px;
+  min-width: 260px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
-.continueButton:hover {
+.continueButton:hover,
+#start_button:hover,
+#subj_info button:hover {
   background-color: #008CBA;
-  padding: 1px 8px;
+  color: white;
 }
+
 
 .slider_table {
   margin-left: 0;
