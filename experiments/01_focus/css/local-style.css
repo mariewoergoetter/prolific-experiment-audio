@@ -213,4 +213,5 @@ td:nth-child(9) {
 
 .err {
   color: red !important;
+  margin-top: 18px;
 }
