@@ -221,12 +221,6 @@ td:nth-child(9) { width: 200px; }
   line-height: 1.3;
 }
 
-/* slider row */
-.likertSliderRow {
-  display: flex;
-  justify-content: center;
-  margin: 14px 0 6px;
-}
 
 /* numbers below the slider */
 .likertTicks {
@@ -314,26 +308,23 @@ td:nth-child(9) { width: 200px; }
   cursor: pointer;
 }
 
-/* =========================================================
-   PROMINENT Likert ticks (ON the track)
-========================================================= */
 
-
-/* =========================================================
-   7 black dots aligned with the 7 discrete positions
-========================================================= */
 
 .likertSliderRow{
-  position: relative; /* needed for overlay positioning */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 6px;
+  min-height: 24px;   /* IMPORTANT: gives overlay room to render */
 }
 
-/* overlay sits on top of the track */
+/* overlay sits exactly over the slider width (80%) */
 .likertDots{
   position: absolute;
-  left: 10%;
-  right: 10%;
+  width: 80%;         /* match slider width */
+  left: 50%;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   z-index: 3;
   pointer-events: none;
 
@@ -342,19 +333,20 @@ td:nth-child(9) { width: 200px; }
   align-items: center;
 }
 
-/* the dots */
+/* dots */
 .likertDots span{
-  width: 6px;
-  height: 6px;
+  width: 7px;         /* slightly bigger so you can see them */
+  height: 7px;
   border-radius: 50%;
   background: #000;
   display: block;
 }
 
-/* slider stays above dots so the thumb is draggable */
+/* slider above dots */
 .likertSliderRow input[type="range"]{
   position: relative;
   z-index: 4;
+  width: 80%;         /* ensure it really is 80% */
 }
 
 
