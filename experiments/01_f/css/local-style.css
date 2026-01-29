@@ -1,5 +1,9 @@
+/* -----------------------------
+   Base / existing styles (kept)
+------------------------------ */
+
 .slider {
-  width: 400;             
+  width: 400;              /* keeping your original (note: no unit) */
   margin: 10px;
 }
 
@@ -37,14 +41,14 @@
 
 .notBoth {
   color: red;
-  font-size: 22;           
+  font-size: 22;           /* keeping your original (note: no unit) */
 }
 
 .originalSen { color: #E7532B; }
 
 .targetSen, .originalSen {
   text-align: left;
-  font-size: 20;           
+  font-size: 20;           /* keeping your original (note: no unit) */
 }
 
 .row { padding-bottom: .5em; }
@@ -55,7 +59,7 @@
 }
 
 .retryButton {
-  font-color: black;      
+  font-color: black;       /* keeping your original (note: invalid CSS property) */
   padding: 1px 8px;
 }
 
@@ -78,7 +82,7 @@
 .continueButton:hover,
 #start_button:hover,
 #subj_info button:hover {
-  background-color: #444;  
+  background-color: #444;  /* fixed: was ##444 */
   color: white;
 }
 
@@ -117,8 +121,10 @@ td:nth-child(9) { width: 200px; }
   font-style: italic;
 }
 
+/* Force slides hidden by default (cocolab will show current one) */
 .slide {
   border: 1px solid #666;
+  display: none;
 }
 
 .trialWrap {
@@ -137,6 +143,11 @@ td:nth-child(9) { width: 200px; }
   line-height: 1.35;
   margin: 0 0 28px 0;
 }
+
+/* -----------------------------
+   Old radio-choice card styles
+   (kept for safety; harmless if unused)
+------------------------------ */
 
 .trialOptions {
   display: flex;
@@ -173,12 +184,20 @@ td:nth-child(9) { width: 200px; }
 
 .choiceCard:hover { border-color: #999; }
 
+/* -----------------------------
+   Error message styling
+------------------------------ */
 
 .err {
   color: red !important;
   margin-top: 18px;
+  display: none; /* hidden by default; shown via JS when needed */
 }
 
+
+/* =========================================================
+   Likert slider layout for left/right continuations
+========================================================= */
 
 .likertWrap {
   margin-top: 18px;
@@ -202,16 +221,14 @@ td:nth-child(9) { width: 200px; }
   line-height: 1.3;
 }
 
+/* slider row */
 .likertSliderRow {
   display: flex;
   justify-content: center;
   margin: 14px 0 6px;
 }
 
-.likertSliderRow input[type="range"] {
-  width: 80%;
-}
-
+/* numbers below the slider */
 .likertTicks {
   display: flex;
   justify-content: space-between;
@@ -225,5 +242,75 @@ td:nth-child(9) { width: 200px; }
   text-align: center;
   margin-top: 6px;
   color: #666;
+}
+
+/* push Continue and comments further down */
+.trialWrap .center {
+  margin-top: 40px;
+}
+
+.trialFeedback {
+  margin-top: 42px;
+}
+
+
+/* =========================================================
+   Range slider: neutral track, no blue fill
+   (Chrome/Safari + Firefox)
+========================================================= */
+
+.likertSliderRow input[type="range"]{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80%;
+  height: 6px;
+  background: transparent;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* WebKit track */
+.likertSliderRow input[type="range"]::-webkit-slider-runnable-track{
+  height: 6px;
+  background: #ddd;
+  border-radius: 999px;
+}
+
+/* WebKit thumb */
+.likertSliderRow input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #444;
+  border: 2px solid #fff;
+  margin-top: -6px; /* centers thumb on 6px track */
+  cursor: pointer;
+}
+
+/* Firefox track */
+.likertSliderRow input[type="range"]::-moz-range-track{
+  height: 6px;
+  background: #ddd;
+  border-radius: 999px;
+}
+
+/* Firefox filled part: make it identical to track */
+.likertSliderRow input[type="range"]::-moz-range-progress{
+  height: 6px;
+  background: #ddd;
+  border-radius: 999px;
+}
+
+/* Firefox thumb */
+.likertSliderRow input[type="range"]::-moz-range-thumb{
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #444;
+  border: 2px solid #fff;
+  cursor: pointer;
 }
 
