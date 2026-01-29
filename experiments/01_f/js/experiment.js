@@ -1,6 +1,8 @@
 /* =====================================================
    experiment.js — Likert slider (7-point), midpoint allowed,
-   slider turns blue after moving, and ONLY the current slide shows.
+   ONLY the slider THUMB (circle) turns blue after moving (via .moved class),
+   tick marks are handled in CSS,
+   and ONLY the current slide is shown (robust exp.go wrapper).
 ===================================================== */
 
 function make_slides(f) {
@@ -19,10 +21,11 @@ function make_slides(f) {
   /* =====================================================
      EXAMPLE 1
      Correct continuation = LEFT
-     Now midpoint (4) is allowed:
+     Midpoint allowed:
        - Accept: 1–4
        - Reject: 5–7
      Must move slider at least once.
+     Slider thumb turns blue once moved: addClass("moved")
   ===================================================== */
   slides.example1 = slide({
     name: "example1",
@@ -38,7 +41,7 @@ function make_slides(f) {
         .off("input")
         .on("input", () => {
           this.moved = true;
-          $("#ex1_slider").addClass("moved");
+          $("#ex1_slider").addClass("moved"); // thumb becomes blue (CSS)
         });
     },
 
@@ -87,7 +90,7 @@ function make_slides(f) {
         .off("input")
         .on("input", () => {
           this.moved = true;
-          $("#ex2_slider").addClass("moved");
+          $("#ex2_slider").addClass("moved"); // thumb becomes blue (CSS)
         });
     },
 
@@ -128,7 +131,6 @@ function make_slides(f) {
      MAIN TRIAL SLIDE (LIKERT)
      - Midpoint (4) allowed
      - Must move slider at least once
-     - Slider turns blue after moving (.moved class)
      - If 4 chosen => chosen_side="mid", chosen_key/text = null
   ===================================================== */
   slides.trial = slide({
@@ -136,16 +138,14 @@ function make_slides(f) {
     present: exp.stimuli,
 
     present_handle: function (stim) {
-      // Hide any visible error text
-      $("#trial .err").hide();
+      $("#trial .err").hide().css("color", "red");
 
       this.stim = stim;
       this.startTime = Date.now();
 
-      // Reset feedback
       $("#trial_feedback").val("");
 
-      // Reset slider
+      // Reset slider state
       this.moved = false;
       $("#trial_slider")
         .val(4)
@@ -153,7 +153,7 @@ function make_slides(f) {
         .off("input")
         .on("input", () => {
           this.moved = true;
-          $("#trial_slider").addClass("moved");
+          $("#trial_slider").addClass("moved"); // thumb becomes blue (CSS)
         });
 
       // Insert sentence
@@ -176,7 +176,9 @@ function make_slides(f) {
       var v = parseInt($("#trial_slider").val(), 10);
 
       if (!this.moved) {
-        $("#trial .err").text("Please move the slider to make a selection.").show();
+        $("#trial .err")
+          .text("Please move the slider to make a selection.")
+          .show();
         return;
       }
 
@@ -225,7 +227,6 @@ function make_slides(f) {
         item_feedback: $("#trial_feedback").val()
       });
 
-      // Advance
       _stream.apply(this);
     }
   });
@@ -281,7 +282,7 @@ function make_slides(f) {
 }
 
 /* =====================================================
-   INIT — includes robust slide show/hide so only current slide is visible
+   INIT — robust slide show/hide so only current slide is visible
 ===================================================== */
 function init() {
   exp.trials = [];
@@ -357,11 +358,26 @@ function init() {
   // Wrap exp.go so EVERY transition ends with exactly one visible slide
   var _orig_go = exp.go.bind(exp);
   exp.go = function () {
-    hideAllSlidesForce();  // clean slate
+    hideAllSlidesForce();
     _orig_go();
 
-    // cocolab convention: currently shown slide = structure[phase - 1]
-    var shown = exp.structure[exp.phase - 1] || exp.structure[0];
+    // Robustly determine which slide should be visible
+    var candidates = [
+      exp.structure[exp.phase],
+      exp.structure[exp.phase - 1],
+      exp.structure[exp.phase - 2],
+      exp.structure[0]
+    ].filter(Boolean);
+
+    var shown = null;
+    for (var i = 0; i < candidates.length; i++) {
+      if (document.getElementById(candidates[i])) {
+        shown = candidates[i];
+        break;
+      }
+    }
+    if (!shown) return;
+
     showSlideForce(shown);
   };
 
