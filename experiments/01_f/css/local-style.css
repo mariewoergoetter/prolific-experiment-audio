@@ -324,7 +324,7 @@ td:nth-child(9) { width: 200px; }
   width: 80%;         /* match slider width */
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) translateY(-12px);
+  transform: translate(-50%, -50%) translateY(-10px);
   z-index: 3;
   pointer-events: none;
 
@@ -335,8 +335,8 @@ td:nth-child(9) { width: 200px; }
 
 /* dots */
 .likertDots span{
-  width: 20px;         /* slightly bigger so you can see them */
-  height: 20px;
+  width: 15px;         /* slightly bigger so you can see them */
+  height: 15px;
   border-radius: 50%;
   background: #ddd;
   display: block;
