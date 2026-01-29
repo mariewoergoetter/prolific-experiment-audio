@@ -1,10 +1,12 @@
+
+
 function make_slides(f) {
   var slides = {};
 
 
   slides.i0 = slide({
     name: "i0",
-    start: function() {
+    start: function () {
       exp.startT = Date.now();
     }
   });
@@ -12,26 +14,29 @@ function make_slides(f) {
   slides.example1 = slide({
     name: "example1",
 
-    start: function() {
-      $("#example1 .err").hide();
-      $("input[name='example1_cont']").prop("checked", false);
+    start: function () {
+      $("#example1 .err").hide().css("color", "red");
+      $("#ex1_slider").val(4);
+
+      this.moved = false;
+      $("#ex1_slider")
+        .off("input")
+        .on("input", () => { this.moved = true; });
     },
 
-    button: function() {
-      var choice = $("input[name='example1_cont']:checked").val();
+    button: function () {
+      var v = parseInt($("#ex1_slider").val(), 10);
 
-      if (!choice) {
+      if (!this.moved || v === 4) {
         $("#example1 .err")
-          .text("Please select an option before continuing.")
+          .text("Please move the slider away from the middle position (4).")
           .show();
         return;
       }
 
-      // Restriction: only the "right" continuation lets them proceed
-      if (choice !== "opt1") {
+      if (v >= 5) {
         $("#example1 .err")
-          .text("Not quite — the other continuation is more appropriate in this context.")
-          .css("color", "red")
+          .text("Not quite — move the slider toward the more appropriate continuation.")
           .show();
         return;
       }
@@ -45,25 +50,29 @@ function make_slides(f) {
   slides.example2 = slide({
     name: "example2",
 
-    start: function() {
-      $("#example2 .err").hide();
-      $("input[name='example2_cont']").prop("checked", false);
+    start: function () {
+      $("#example2 .err").hide().css("color", "red");
+      $("#ex2_slider").val(4);
+
+      this.moved = false;
+      $("#ex2_slider")
+        .off("input")
+        .on("input", () => { this.moved = true; });
     },
 
-    button: function() {
-      var choice = $("input[name='example2_cont']:checked").val();
+    button: function () {
+      var v = parseInt($("#ex2_slider").val(), 10);
 
-      if (!choice) {
+      if (!this.moved || v === 4) {
         $("#example2 .err")
-          .text("Please select an option before continuing.")
+          .text("Please move the slider away from the middle position (4).")
           .show();
         return;
       }
 
-      if (choice !== "opt1") {
+      if (v >= 5) {
         $("#example2 .err")
-          .text("Not quite — the other continuation is more appropriate in this context.")
-          .css("color", "red")
+          .text("Not quite — move the slider toward the more appropriate continuation.")
           .show();
         return;
       }
@@ -73,103 +82,103 @@ function make_slides(f) {
     }
   });
 
-  // -------------------------
-  // Start experiment slide
-  // -------------------------
+
   slides.startExp = slide({
     name: "startExp",
-    button: function() {
+    button: function () {
       exp.go();
     }
   });
 
-  // -------------------------
-  // Main trial slide (binary choice between two continuations)
-  // -------------------------
+
   slides.trial = slide({
     name: "trial",
-
     present: exp.stimuli,
 
-    present_handle: function(stim) {
-      // Hide any error messages on the slide
+    present_handle: function (stim) {
       $(".err").hide();
 
-      // Reset choice + optional comments field
-      $("input[name='cont']").prop("checked", false);
-      $("#trial_feedback").val("");
-
       this.stim = stim;
+      this.startTime = Date.now();
 
-      // Insert sentence
+      $("#trial_feedback").val("");
+      $("#trial_slider").val(4);
+
+      this.moved = false;
+      $("#trial_slider")
+        .off("input")
+        .on("input", () => { this.moved = true; });
+
       $("#trial-sentence").html(stim.Sentence);
 
-      // Shuffle which continuation appears on top
+     
       var opts = _.shuffle([
         { key: "C1", text: stim.C1 },
         { key: "C2", text: stim.C2 }
       ]);
 
-      this.opt1_key = opts[0].key;
-      this.opt2_key = opts[1].key;
+      this.left_key = opts[0].key;
+      this.right_key = opts[1].key;
 
-      $("#opt1_text").html(opts[0].text);
-      $("#opt2_text").html(opts[1].text);
-
-      this.startTime = Date.now();
+      $("#left_text").html(opts[0].text);
+      $("#right_text").html(opts[1].text);
     },
 
-    button: function() {
-      var choice = $("input[name='cont']:checked").val();
+    button: function () {
+      var v = parseInt($("#trial_slider").val(), 10);
 
-      if (!choice) {
+      if (!this.moved || v === 4) {
         $(".err").show();
         return;
       }
 
-      var chosen_key = (choice === "opt1") ? this.opt1_key : this.opt2_key;
-      var chosen_text = (chosen_key === "C1") ? this.stim.C1 : this.stim.C2;
       var rt_ms = Date.now() - this.startTime;
 
+      var chosen_side = (v <= 3) ? "left" : "right";
+      var chosen_key =
+        (chosen_side === "left") ? this.left_key : this.right_key;
+
+      var chosen_text =
+        (chosen_key === "C1") ? this.stim.C1 :
+        (chosen_key === "C2") ? this.stim.C2 :
+        null;
+
       exp.data_trials.push({
-        "slide_number_in_experiment": exp.phase,
+        slide_number_in_experiment: exp.phase,
 
-        "list_assigned": exp.list,
-        "item_list": this.stim.List,
-        "type": this.stim.Type,
-        "group": this.stim.Group,
-        "item": this.stim.ItemID,
-        "variant": this.stim.Variant,
+        list_assigned: exp.list,
+        item_list: this.stim.List,
+        type: this.stim.Type,
+        group: this.stim.Group,
+        item: this.stim.ItemID,
+        variant: this.stim.Variant,
+        filler_type: this.stim.FillerType || null,
 
-        "filler_type": this.stim.FillerType || null,
+        sentence: this.stim.Sentence,
+        C1: this.stim.C1,
+        C2: this.stim.C2,
 
-        "sentence": this.stim.Sentence,
-        "C1": this.stim.C1,
-        "C2": this.stim.C2,
+        left_key: this.left_key,
+        right_key: this.right_key,
 
-        "opt1_key": this.opt1_key,
-        "opt2_key": this.opt2_key,
+        slider_value: v,        
+        chosen_side: chosen_side, 
+        chosen_key: chosen_key, 
+        chosen_text: chosen_text,
 
-        "chosen_button": choice,
-        "chosen_key": chosen_key,
-        "chosen_text": chosen_text,
-
-        "rt_ms": rt_ms,
-        "item_feedback": $("#trial_feedback").val()
+        rt_ms: rt_ms,
+        item_feedback: $("#trial_feedback").val()
       });
 
-      // Advance to next stimulus / slide
       _stream.apply(this);
     }
   });
 
-  // -------------------------
-  // Subject info slide
-  // -------------------------
+
   slides.subj_info = slide({
     name: "subj_info",
 
-    start: function() {
+    start: function () {
       $("#language").val("");
       $("#experiment_about").val("");
       $("#comments").val("");
@@ -177,7 +186,8 @@ function make_slides(f) {
       $("#fairprice").val("-1");
       $('input[name="assess"]').prop("checked", false);
     },
-    submit: function(e) {
+
+    submit: function () {
       exp.subj_data = {
         language: $("#language").val(),
         enjoyment: $("#enjoyment").val(),
@@ -190,19 +200,18 @@ function make_slides(f) {
     }
   });
 
-  // -------------------------
-  // Thanks + submit
-  // -------------------------
+
   slides.thanks = slide({
     name: "thanks",
-    start: function() {
+
+    start: function () {
       exp.data = {
-        "trials": exp.data_trials,
-        "catch_trials": exp.catch_trials,
-        "system": exp.system,
-        "list_assigned": exp.list,
-        "subject_information": exp.subj_data,
-        "time_in_minutes": (Date.now() - exp.startT) / 60000
+        trials: exp.data_trials,
+        catch_trials: exp.catch_trials,
+        system: exp.system,
+        list_assigned: exp.list,
+        subject_information: exp.subj_data,
+        time_in_minutes: (Date.now() - exp.startT) / 60000
       };
       proliferate.submit(exp.data);
     }
@@ -211,35 +220,32 @@ function make_slides(f) {
   return slides;
 }
 
+
 function init() {
   exp.trials = [];
   exp.catch_trials = [];
+  exp.data_trials = [];
 
-  // --- list assignment via URL param "cond", else random fallback
   var condition = new URLSearchParams(window.location.search).get("cond");
   condition = condition === null ? NaN : parseInt(condition, 10);
 
-  // NOTE: You currently have 15 lists in your code. Adjust if needed.
   if (!isNaN(condition) && condition >= 1 && condition <= 15) {
     exp.list = condition;
   } else {
     exp.list = _.sample([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
   }
 
-  // --- select stims for assigned list
-  var critical = all_stims.filter(function(s) {
-    return s.Type === "critical" && Number(s.List) === exp.list;
-  });
+  var critical = all_stims.filter(s =>
+    s.Type === "critical" && Number(s.List) === exp.list
+  );
 
-  var fillers = all_stims.filter(function(s) {
-    return s.Type === "filler";
-  });
+  var fillers = all_stims.filter(s =>
+    s.Type === "filler"
+  );
 
-  // --- shuffle order
   exp.stimuli = _.shuffle(critical.concat(fillers));
   exp.n_trials = exp.stimuli.length;
 
-  // --- system info
   exp.system = {
     Browser: BrowserDetect.browser,
     OS: BrowserDetect.OS,
@@ -249,7 +255,6 @@ function init() {
     screenUW: exp.width
   };
 
-  // --- experiment flow
   exp.structure = [
     "i0",
     "example1",
@@ -260,21 +265,15 @@ function init() {
     "thanks"
   ];
 
-  // --- data
-  exp.data_trials = [];
-
-  // --- build slides
   exp.slides = make_slides(exp);
   exp.nQs = utils.get_exp_length();
 
-  // hide all slides at start
   $(".slide").hide();
 
-  // start button (if you have one on the first screen)
-  $("#start_button").click(function() {
+  $("#start_button").click(function () {
     exp.go();
   });
 
-  // auto-start (template behavior)
-  exp.go();
+
 }
+
