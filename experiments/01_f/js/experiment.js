@@ -27,11 +27,16 @@ function make_slides(f) {
     start: function () {
       $("#example1 .err").hide().css("color", "red");
       $("#ex1_slider").val(4);
+      $("#ex1_slider").removeClass("moved");
+
 
       this.moved = false;
       $("#ex1_slider")
         .off("input")
-        .on("input", () => { this.moved = true; });
+        .on("input", () => {
+          this.moved = true;
+          $("#ex1_slider").addClass("moved");
+        });
     },
 
     button: function () {
@@ -67,11 +72,17 @@ function make_slides(f) {
     start: function () {
       $("#example2 .err").hide().css("color", "red");
       $("#ex2_slider").val(4);
+      $("#ex1_slider").removeClass("moved");
+
 
       this.moved = false;
       $("#ex2_slider")
         .off("input")
-        .on("input", () => { this.moved = true; });
+        .on("input", () => {
+          this.moved = true;
+          $("#ex2_slider").addClass("moved");
+        });
+
     },
 
     button: function () {
@@ -121,11 +132,17 @@ function make_slides(f) {
 
       $("#trial_feedback").val("");
       $("#trial_slider").val(4);
+      $("#ex1_slider").removeClass("moved");
+
 
       this.moved = false;
       $("#trial_slider")
         .off("input")
-        .on("input", () => { this.moved = true; });
+        .on("input", () => {
+          this.moved = true;
+          $("#trial_slider").addClass("moved");
+         });
+
 
       $("#trial-sentence").html(stim.Sentence);
 
