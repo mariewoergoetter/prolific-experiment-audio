@@ -44,7 +44,7 @@ function make_slides(f) {
 
       if (!this.moved || v === 4) {
         $("#example1 .err")
-          .text("Please move the slider away from the middle position (4).")
+          .text("Please move the slider towards the conitnuation that sounds more natural to you.")
           .show();
         return;
       }
