@@ -318,28 +318,40 @@ td:nth-child(9) { width: 200px; }
    PROMINENT Likert ticks (ON the track)
 ========================================================= */
 
-.likertSliderRow {
+
+.likertSliderRow{
   position: relative;
 }
 
-/* overlay ticks directly on the track */
-.likertSliderRow::before {
-  content: "";
+/* ticks on top of the track */
+.likertTicksOverlay{
   position: absolute;
   left: 10%;
   right: 10%;
   top: 50%;
   transform: translateY(-50%);
-  height: 12px;
+  height: 14px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
   pointer-events: none;
   z-index: 3;
+}
 
-  /* 7 thick, dark ticks */
-  background-image: repeating-linear-gradient(
-    to right,
-    #555 0 2px,
-    transparent 2px calc(100% / 6)
-  );
+.likertTicksOverlay span{
+  display: block;
+  width: 2px;      /* thicker = more prominent */
+  height: 12px;    /* taller = more prominent */
+  background: #555;
+  border-radius: 1px;
+}
+
+/* keep the slider itself above the ticks (esp. thumb) */
+.likertSliderRow input[type="range"]{
+  position: relative;
+  z-index: 4;
 }
 
 
