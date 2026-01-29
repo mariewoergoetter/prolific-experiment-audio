@@ -1,5 +1,3 @@
-
-
 function make_slides(f) {
   var slides = {};
 
@@ -268,9 +266,16 @@ function init() {
   exp.slides = make_slides(exp);
   exp.nQs = utils.get_exp_length();
 
+
   $(".slide").hide();
-  $("#start_button").click(function () { exp.go(); });
-  exp.go(); // show i0
+
+  $("#start_button").off("click").on("click", function () {
+    exp.go(); 
+  });
+
+  exp.go();
+}
+
 
   });
 
