@@ -250,7 +250,7 @@ function init() {
   exp.catch_trials = [];
   exp.data_trials = [];
 
-  /* ---- list assignment via URL ?cond= ---- */
+  // --- list assignment via URL param "cond", else random fallback
   var condition = new URLSearchParams(window.location.search).get("cond");
   condition = condition === null ? NaN : parseInt(condition, 10);
 
@@ -260,19 +260,19 @@ function init() {
     exp.list = _.sample([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
   }
 
-  /* ---- stimuli selection ---- */
-  var critical = all_stims.filter(s =>
-    s.Type === "critical" && Number(s.List) === exp.list
-  );
+  // --- select stims for assigned list
+  var critical = all_stims.filter(function(s) {
+    return s.Type === "critical" && Number(s.List) === exp.list;
+  });
 
-  var fillers = all_stims.filter(s =>
-    s.Type === "filler"
-  );
+  var fillers = all_stims.filter(function(s) {
+    return s.Type === "filler";
+  });
 
   exp.stimuli = _.shuffle(critical.concat(fillers));
   exp.n_trials = exp.stimuli.length;
 
-  /* ---- system info ---- */
+  // --- system info
   exp.system = {
     Browser: BrowserDetect.browser,
     OS: BrowserDetect.OS,
@@ -282,7 +282,7 @@ function init() {
     screenUW: exp.width
   };
 
-  /* ---- experiment structure ---- */
+  // --- experiment flow
   exp.structure = [
     "i0",
     "example1",
@@ -293,16 +293,49 @@ function init() {
     "thanks"
   ];
 
+  // --- build slides
   exp.slides = make_slides(exp);
   exp.nQs = utils.get_exp_length();
 
-  $(".slide").hide();
+  /* ======================================================
+     FORCE SHOW/HIDE (overrides any CSS display !important)
+  ======================================================= */
+  function hideAllSlidesForce() {
+    document.querySelectorAll(".slide").forEach(function(el) {
+      el.style.setProperty("display", "none", "important");
+    });
+  }
+  function showSlideForce(id) {
+    hideAllSlidesForce();
+    var el = document.getElementById(id);
+    if (el) el.style.setProperty("display", "block", "important");
+  }
 
-  $("#start_button").click(function () {
+  // Hide everything immediately (even if CSS fights it)
+  hideAllSlidesForce();
+
+  // Wrap exp.go so EVERY transition ends with exactly one visible slide
+  var _orig_go = exp.go.bind(exp);
+  exp.go = function() {
+    // ensure we start from a clean slate
+    hideAllSlidesForce();
+
+    // run the normal engine
+    _orig_go();
+
+    // In cocolab, exp.phase is typically incremented after showing,
+    // so the slide that is now current is exp.structure[exp.phase - 1]
+    var shown = exp.structure[exp.phase - 1] || exp.structure[0];
+    showSlideForce(shown);
+  };
+
+  // Start button (from i0 -> example1)
+  $("#start_button").off("click").on("click", function() {
     exp.go();
   });
 
-  /* IMPORTANT:
-     Do NOT auto-start — wait for Start button */
+  // Show ONLY the intro slide at load
+  exp.go();
 }
+
 
