@@ -324,7 +324,7 @@ td:nth-child(9) { width: 200px; }
   width: 80%;         /* match slider width */
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%) translateY(-8px);
+  transform: translate(-50%, -50%) translateY(-9px);
   z-index: 3;
   pointer-events: none;
 
