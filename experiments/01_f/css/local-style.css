@@ -314,33 +314,32 @@ td:nth-child(9) { width: 200px; }
   cursor: pointer;
 }
 
-.likertSliderRow{
+/* =========================================================
+   PROMINENT Likert ticks (ON the track)
+========================================================= */
+
+.likertSliderRow {
   position: relative;
 }
 
-/* the actual <input type="range"> */
-.likertSliderRow input[type="range"]{
-  position: relative;
-  z-index: 2; /* keep it above the tick marks */
-}
-
-/* draw 7 small vertical ticks under the track */
-.likertSliderRow::after{
+/* overlay ticks directly on the track */
+.likertSliderRow::before {
   content: "";
   position: absolute;
-  left: 10%;          /* match your slider width (80%) centered */
+  left: 10%;
   right: 10%;
   top: 50%;
   transform: translateY(-50%);
-  height: 10px;
-  z-index: 1;
+  height: 12px;
   pointer-events: none;
+  z-index: 3;
 
-  /* 7 ticks = 6 gaps => every 16.666% */
+  /* 7 thick, dark ticks */
   background-image: repeating-linear-gradient(
     to right,
-    rgba(0,0,0,0.35) 0 1px,
-    transparent 1px calc(100% / 6)
+    #555 0 2px,
+    transparent 2px calc(100% / 6)
   );
 }
+
 
