@@ -343,3 +343,14 @@ td:nth-child(9) { width: 200px; }
 }
 
 
+/* =========================================================
+   FORCE blue thumb once slider is moved
+========================================================= */
+
+input[type="range"].moved::-webkit-slider-thumb {
+  background: #2E9AFE !important;
+}
+
+input[type="range"].moved::-moz-range-thumb {
+  background: #2E9AFE !important;
+}
