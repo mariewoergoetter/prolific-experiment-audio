@@ -319,50 +319,55 @@ td:nth-child(9) { width: 200px; }
 ========================================================= */
 
 
+/* =========================================================
+   7 black dots aligned with the 7 discrete positions
+========================================================= */
+
 .likertSliderRow{
-  position: relative;
+  position: relative; /* needed for overlay positioning */
 }
 
-/* ticks on top of the track */
-.likertTicksOverlay{
+/* overlay sits on top of the track */
+.likertDots{
   position: absolute;
   left: 10%;
   right: 10%;
   top: 50%;
   transform: translateY(-50%);
-  height: 14px;
+  z-index: 3;
+  pointer-events: none;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  pointer-events: none;
-  z-index: 3;
 }
 
-.likertTicksOverlay span{
+/* the dots */
+.likertDots span{
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #000;
   display: block;
-  width: 2px;      /* thicker = more prominent */
-  height: 12px;    /* taller = more prominent */
-  background: #555;
-  border-radius: 1px;
 }
 
-/* keep the slider itself above the ticks (esp. thumb) */
+/* slider stays above dots so the thumb is draggable */
 .likertSliderRow input[type="range"]{
   position: relative;
   z-index: 4;
 }
 
 
+
 /* =========================================================
    FORCE blue thumb once slider is moved
 ========================================================= */
 
-input[type="range"].moved::-webkit-slider-thumb {
+/* Blue thumb ONLY after moved */
+.likertSliderRow input[type="range"].moved::-webkit-slider-thumb{
+  background: #2E9AFE !important;
+}
+.likertSliderRow input[type="range"].moved::-moz-range-thumb{
   background: #2E9AFE !important;
 }
 
-input[type="range"].moved::-moz-range-thumb {
-  background: #2E9AFE !important;
-}
