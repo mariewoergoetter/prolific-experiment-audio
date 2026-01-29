@@ -132,7 +132,7 @@ function make_slides(f) {
 
       $("#trial_feedback").val("");
       $("#trial_slider").val(4);
-      $("#ex1_slider").removeClass("moved");
+      $("#trial_slider").removeClass("moved");
 
 
       this.moved = false;
