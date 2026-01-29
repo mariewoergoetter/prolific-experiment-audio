@@ -2,251 +2,234 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>
-      Language Experiment
-    </title><!--JS-->
-    <!-- external general utilities -->
+    <title>Language Experiment</title>
+
     <script src="shared/js/jquery-1.11.1.min.js"></script>
     <script src="shared/full-projects/jquery-ui/jquery-ui.min.js"></script>
     <script src="shared/js/underscore-min.js"></script>
-    
-    <!-- experiment logic -->
+
     <script src="shared/js/exp-V2.js"></script>
     <script src="shared/js/stream-V2.js"></script>
 
-    <!-- utilities to submit data to proliferate -->
+
     <script src="https://proliferate.alps.science/static/js/proliferate.js"></script>
 
-    <!-- general utilities -->
     <script src="shared/js/browserCheck.js"></script>
     <script src="shared/js/utils.js"></script>
-    <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">
-    <link href="shared/css/cocolab-style.css" rel="stylesheet" type="text/css">
-    <link href="css/local-style.css" rel="stylesheet" type="text/css">
 
-    <!-- experiment file -->
+    <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+    <link href="shared/css/cocolab-style.css" rel="stylesheet">
+    <link href="css/local-style.css" rel="stylesheet">
+
     <script src="js/experiment.js"></script>
-
-    <!-- stimulus file -->
     <script src="js/stimuli.js"></script>
   </head>
 
   <body onload="init()">
     <noscript>This task requires JavaScript.</noscript>
-    
-    <!-- initial slide -->
+
+
     <div class="slide" id="i0">
       <p class="left">
-        You will read some sentences. <strong>Your task is to choose the continuation that sounds more natural, given the stated sentence.</strong><br>
-        <br>
-        The experiment will take approximately 10 minutes. Let's start with two examples!
-      </p><button id="start_button" type="button">Start experiment</button>
+        You will read some sentences.
+        <strong>Your task is to indicate which continuation sounds more natural.</strong><br><br>
+        Use the slider to move toward the continuation that fits better.<br><br>
+        The experiment takes about 10 minutes. We’ll start with two examples.
+      </p>
+
+      <button id="start_button" type="button">Start experiment</button>
+
       <p class="left legal">
-        <strong><br>
-        <br>
-        <br>
-        LEGAL INFORMATION</strong>:<br>
-        <br>
+        <strong>LEGAL INFORMATION</strong><br><br>
         TODO: IRB CONSENT FORM HERE
       </p>
     </div>
 
-<div class="slide" id="example1">
-  <h3>Example 1</h3>
 
-  <div class="trialWrap">
-    <div class="trialPrompt">
-      Please read the following sentence and click on the continuation that sounds more natural to you:
-    </div>
+    <div class="slide" id="example1">
+      <h3>Example 1</h3>
 
-    <div class="trialSentence">
-      The meeting was moved to the afternoon.
-    </div>
-
-    <div class="trialOptions">
-      <label class="choiceCard">
-        <input type="radio" name="example1_cont" value="opt1">
-        <div class="choiceText">
-          Several people were unavailable in the morning.
+      <div class="trialWrap">
+        <div class="trialPrompt">
+          Read the sentence and move the slider toward the more natural continuation.
         </div>
-      </label>
 
-      <label class="choiceCard">
-        <input type="radio" name="example1_cont" value="opt2">
-        <div class="choiceText">
-          The meeting was scheduled to last an hour.
+        <div class="trialSentence">
+          The meeting was moved to the afternoon.
         </div>
-      </label>
-    </div>
 
-    <div class="center">
-      <button class="continueButton" onclick="_s.button()">Continue</button>
-    </div>
+        <div class="likertWrap">
+          <div class="likertEndpoints">
+            <div class="likertEnd">
+              Several people were unavailable in the morning.
+            </div>
+            <div class="likertEnd">
+              The meeting was scheduled to last an hour.
+            </div>
+          </div>
 
-    <div class="err"></div>
-  </div>
-</div>
+          <div class="likertSliderRow">
+            <input type="range" min="1" max="7" step="1" value="4" id="ex1_slider">
+          </div>
 
-<div class="slide" id="example2">
-  <h3>Example 2</h3>
-
-  <div class="trialWrap">
-    <div class="trialPrompt">
-      Please read the following sentence and click on the continuation that sounds more natural to you:
-    </div>
-
-    <div class="trialSentence">
-      The library closed earlier than usual.
-    </div>
-
-    <div class="trialOptions">
-      <label class="choiceCard">
-        <input type="radio" name="example2_cont" value="opt1">
-        <div class="choiceText">
-          There was a technical problem with the heating.
+          <div class="likertTicks">
+            <span>1</span><span>2</span><span>3</span>
+            <span>4</span>
+            <span>5</span><span>6</span><span>7</span>
+          </div>
         </div>
-      </label>
 
-      <label class="choiceCard">
-        <input type="radio" name="example2_cont" value="opt2">
-        <div class="choiceText">
-          The library has many books.
+        <div class="center">
+          <button class="continueButton" onclick="_s.button()">Continue</button>
         </div>
-      </label>
+
+        <div class="err"></div>
+      </div>
     </div>
 
-    <div class="center">
-      <button class="continueButton" onclick="_s.button()">Continue</button>
+    <div class="slide" id="example2">
+      <h3>Example 2</h3>
+
+      <div class="trialWrap">
+        <div class="trialPrompt">
+          Read the sentence and move the slider toward the more natural continuation.
+        </div>
+
+        <div class="trialSentence">
+          The library closed earlier than usual.
+        </div>
+
+        <div class="likertWrap">
+          <div class="likertEndpoints">
+            <div class="likertEnd">
+              There was a technical problem with the heating.
+            </div>
+            <div class="likertEnd">
+              The library has many books.
+            </div>
+          </div>
+
+          <div class="likertSliderRow">
+            <input type="range" min="1" max="7" step="1" value="4" id="ex2_slider">
+          </div>
+
+          <div class="likertTicks">
+            <span>1</span><span>2</span><span>3</span>
+            <span>4</span>
+            <span>5</span><span>6</span><span>7</span>
+          </div>
+        </div>
+
+        <div class="center">
+          <button class="continueButton" onclick="_s.button()">Continue</button>
+        </div>
+
+        <div class="err"></div>
+      </div>
     </div>
 
-    <div class="err"></div>
-  </div>
-</div>
 
-
-
-    <!-- main instructions slide -->
     <div class="slide" id="startExp">
-      <br>
-      <br>
-      <p id="instruct-text" class="left">
-        Great! Now we can start the real experiment. You will now read 30 sentences. Your task is to choose the continuation that sounds more natural given the presented sentence. 
+      <p class="left">
+        Great! Now the real experiment begins.<br><br>
+        You will see 30 sentences. For each one, move the slider toward the continuation that sounds more natural.
       </p>
+
       <div class="center">
         <button class="continueButton" onclick="_s.button()">Continue</button>
       </div>
     </div>
 
-    <!-- trial slide -->
 
     <div class="slide" id="trial">
+      <div class="trialWrap">
+        <div class="trialPrompt">
+          Move the slider toward the continuation that sounds more natural.
+        </div>
 
-  <div class="trialWrap">
-    <div class="trialPrompt">
-      Please read the following sentence and click on the continuation that sounds more natural to you:
+        <div class="trialSentence" id="trial-sentence">
+          {{sentence}}
+        </div>
+
+        <div class="likertWrap">
+          <div class="likertEndpoints">
+            <div class="likertEnd" id="left_text">{{left}}</div>
+            <div class="likertEnd" id="right_text">{{right}}</div>
+          </div>
+
+          <div class="likertSliderRow">
+            <input type="range" min="1" max="7" step="1" value="4" id="trial_slider">
+          </div>
+
+          <div class="likertTicks">
+            <span>1</span><span>2</span><span>3</span>
+            <span>4</span>
+            <span>5</span><span>6</span><span>7</span>
+          </div>
+
+          <div class="likertHint">
+            <small>1 = clearly left continuation • 7 = clearly right continuation</small>
+          </div>
+        </div>
+
+        <div class="center">
+          <button class="continueButton" onclick="_s.button()">Continue</button>
+        </div>
+
+        <div class="err">
+          Please move the slider away from the middle position (4).
+        </div>
+
+        <div class="trialFeedback">
+          <p><small>Optional comments:</small></p>
+          <textarea id="trial_feedback" rows="4" cols="60"
+            placeholder="Optional comments about this item"></textarea>
+        </div>
+      </div>
     </div>
 
-    <div class="trialSentence" id="trial-sentence">
-      {{sentence}}
-    </div>
-
-    <div class="trialOptions">
-      <label class="choiceCard">
-        <input type="radio" name="cont" value="opt1">
-        <div class="choiceText" id="opt1_text">{{option 1}}</div>
-      </label>
-
-      <label class="choiceCard">
-        <input type="radio" name="cont" value="opt2">
-        <div class="choiceText" id="opt2_text">{{option 2}}</div>
-      </label>
-    </div>
-
-    <div class="center">
-      <button class="continueButton" onclick="_s.button()">Continue</button>
-    </div>
-
-    <div class="err">
-      <p>Make sure you selected an option before clicking 'Continue'.</p>
-    </div>
-
-    <div class="trialFeedback">
-      <p class="feedbackLabel">
-        <small>Optional comments:</small>
-      </p>
-      <textarea id="trial_feedback" rows="4" cols="60"
-        placeholder="If you have any comments about these sentences or would like to justify your choice, you can let us know here."></textarea>
-    </div>
-
-  </div>
-
-</div>
-
-
-    <!-- subject information slide -->
     <div class="slide" id="subj_info">
       <div class="long_form">
-        <div class="subj_info_title">
-          Additional information
-        </div>
-        <p class="info">
-          Answering these questions is optional, but will help us understand your answers.
-        </p>
-        <p>
-          Did you read the instructions and do you think you did the experiment correctly?
-        </p><label><input type="radio" name="assess" value="No">No</label> <label><input type="radio" name="assess" value="Yes">Yes</label> <label><input type="radio" name="assess" value="Confused">I was confused</label>
-        <p>
-          Native language: <input type="text" id="language">
-        </p><label>(the language(s) spoken at home when you were a child)</label>
-        <p>
-          Do you think the payment was fair?
-        </p><select id="fairprice">
-          <option value="-1">
-          </option>
-          <option value="0">
-            The payment was too low
-          </option>
-          <option value="1">
-            The payment was fair
-          </option>
-        </select>
-        <p>
-          Did you enjoy the experiment?
-        </p><select id="enjoyment">
-          <option value="-1">
-          </option>
-          <option value="0">
-            Worse than the average experiment
-          </option>
-          <option value="1">
-            An average experiment
-          </option>
-          <option value="2">
-            Better than average experiment
-          </option>
+        <div class="subj_info_title">Additional information</div>
+
+        <p>Did you read the instructions carefully?</p>
+        <label><input type="radio" name="assess" value="No"> No</label>
+        <label><input type="radio" name="assess" value="Yes"> Yes</label>
+        <label><input type="radio" name="assess" value="Confused"> I was confused</label>
+
+        <p>Native language:</p>
+        <input type="text" id="language">
+
+        <p>Was the payment fair?</p>
+        <select id="fairprice">
+          <option value="-1"></option>
+          <option value="0">Too low</option>
+          <option value="1">Fair</option>
         </select>
 
-        <p>
-          What do you think this experiment was about?
-        </p>
+        <p>Did you enjoy the experiment?</p>
+        <select id="enjoyment">
+          <option value="-1"></option>
+          <option value="0">Worse than average</option>
+          <option value="1">Average</option>
+          <option value="2">Better than average</option>
+        </select>
+
+        <p>What do you think this experiment was about?</p>
         <textarea id="experiment_about" rows="3" cols="50"></textarea>
-        
-        <p>
-          We would be interested in any comments you have about this experiment. Please type them here:
-        </p>
+
+        <p>Any additional comments?</p>
         <textarea id="comments" rows="3" cols="50"></textarea><br>
+
         <button onclick="_s.submit()">Submit</button>
       </div>
     </div>
 
-    <!-- final slide -->
     <div id="thanks" class="slide js">
-      <p class="big">
-        Thanks for your time!
-      </p>
+      <p class="big">Thanks for your time!</p>
     </div>
 
-    <!-- progress bar -->
+
     <div class="progress">
       <span>Progress:</span>
       <div class="bar-wrapper">
@@ -255,3 +238,4 @@
     </div>
   </body>
 </html>
+
