@@ -324,7 +324,7 @@ td:nth-child(9) { width: 200px; }
   width: 80%;         /* match slider width */
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateY(-3px);
   z-index: 3;
   pointer-events: none;
 
@@ -338,7 +338,7 @@ td:nth-child(9) { width: 200px; }
   width: 7px;         /* slightly bigger so you can see them */
   height: 7px;
   border-radius: 50%;
-  background: #000;
+  background: #ddd;
   display: block;
 }
 
