@@ -1591,92 +1591,62 @@ var all_stims = [
   },
   {
     "ItemID": "F11",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "Lena bought a new laptop last week.",
-    "C1": "Her old one had stopped working completely.",
-    "C2": "She compared several models online beforehand.",
+    "C1": "She spent some time comparing different models."            // CHANGED
+    "C2": "She spent some time browsing different brands and designs."
   },
   {
     "ItemID": "F12",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "Daniel changed his workout routine.",
-    "C1": "His old one had become too repetitive.",
-    "C2": "He exercises several times a week.",
+    "C1": "He now follows a different weekly schedule."               // CHANGED
+    "C2": "He now follows a mix of strength and cardio exercises."
   },
   {
     "ItemID": "F13",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "Sophie chose the window seat.",
-    "C1": "She likes having a view during the flight.",
-    "C2": "The window seat was still available.",
+    "C1": "She settled in and looked out as the plane prepared for take-off." // CHANGED
+    "C2": "The seat was next to the wing and close to the aisle."
   },
   {
     "ItemID": "F14",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "Max brought a jacket with him.",
-    "C1": "The weather forecast was uncertain.",
-    "C2": "The jacket matched his shoes.",
+    "C1": "He carried it over his arm as he left the house."           // CHANGED
+    "C2": "It was a lightweight jacket he often carries in his bag."
   },
   {
     "ItemID": "F15",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "Tom cooked dinner for everyone.",
-    "C1": "He enjoys trying out new recipes.",
-    "C2": "He used ingredients he already had at home.",
+    "C1": "He spent the evening in the kitchen preparing the meal."    // CHANGED
+    "C2": "He prepared a simple meal using vegetables and pasta."
   },
   {
     "ItemID": "F16",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "The train arrived later than expected.",
-    "C1": "There had been an accident on the tracks earlier.",
-    "C2": "The train usually arrives on time.",
+    "C1": "Passengers were already waiting on the platform."           // CHANGED
+    "C2": "Some people checked the departure board for updates."
   },
   {
     "ItemID": "F17",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "Laura decided to work from home.",
-    "C1": "She wasn’t feeling very well.",
-    "C2": "She logged into her email that morning.",
+    "C1": "She set up her laptop at the kitchen table."                // CHANGED
+    "C2": "She logged into her email shortly after starting her day."  // CHANGED
   },
   {
     "ItemID": "F18",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "The restaurant opened a new location.",
-    "C1": "The original one had become very popular.",
-    "C2": "The new location is closer to the city centre.",
+    "C1": "The new space has a larger dining area."                     // CHANGED
+    "C2": "The interior features modern decor and bright lighting."
   },
   {
     "ItemID": "F19",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "The children finished their homework early.",
-    "C1": "They wanted to go outside and play.",
-    "C2": "Their homework was not very long.",
+    "C1": "Their backpacks were already packed by the door."           // CHANGED
+    "C2": "They gathered their things in the living room."
   },
   {
     "ItemID": "F20",
-    "Group": "Filler",
-    "Type": "filler",
-    "FillerType": "nuanced",
     "Sentence": "The package was delivered to the neighbour.",
-    "C1": "No one was home at the time.",
-    "C2": "The neighbour lives next door.",
+    "C1": "The neighbour signed for it at the door."                   // CHANGED
+    "C2": "It was later placed in the hallway by the entrance."
   }
 ];
