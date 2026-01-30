@@ -162,16 +162,22 @@ function make_slides(f) {
     button: function () {
       var v = parseInt($("#trial_slider").val(), 10);
 
-      if (!this.moved || v === 4) {
+
+      if (!this.moved) {
         $(".err").show();
         return;
       }
 
+
       var rt_ms = Date.now() - this.startTime;
 
-      var chosen_side = (v <= 3) ? "left" : "right";
+      var chosen_side = (v <= 3) ? "left" : (v >= 5) ? "right" : "middle";
+
       var chosen_key =
-        (chosen_side === "left") ? this.left_key : this.right_key;
+        (chosen_side === "left")  ? this.left_key :
+        (chosen_side === "right") ? this.right_key :
+        "NEUTRAL";
+
 
       var chosen_text =
         (chosen_key === "C1") ? this.stim.C1 :
