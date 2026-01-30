@@ -331,20 +331,15 @@ function init() {
   // Hide everything immediately (even if CSS fights it)
   hideAllSlidesForce();
 
-  // Wrap exp.go so EVERY transition ends with exactly one visible slide
-  var _orig_go = exp.go.bind(exp);
-  exp.go = function() {
-    // ensure we start from a clean slate
-    hideAllSlidesForce();
+   var _orig_go = exp.go.bind(exp);
+   exp.go = function() {
+     hideAllSlidesForce();
+     _orig_go();
 
-    // run the normal engine
-    _orig_go();
-
-    // In cocolab, exp.phase is typically incremented after showing,
-    // so the slide that is now current is exp.structure[exp.phase - 1]
-    var shown = exp.structure[exp.phase - 1] || exp.structure[0];
-    showSlideForce(shown);
-  };
+  // Robust: cocolab sets the current slide in window._s
+     var shown = (window._s && window._s.name) ? window._s.name : exp.structure[0];
+     showSlideForce(shown);
+   };
 
   // Start button (from i0 -> example1)
   $("#start_button").off("click").on("click", function() {
