@@ -1591,62 +1591,93 @@ var all_stims = [
   },
   {
     "ItemID": "F11",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "Lena bought a new laptop last week.",
-    "C1": "She spent some time comparing different models."            // CHANGED
+    "C1": "She spent some time comparing different models.", // CHANGED
     "C2": "She spent some time browsing different brands and designs."
   },
   {
     "ItemID": "F12",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "Daniel changed his workout routine.",
-    "C1": "He now follows a different weekly schedule."               // CHANGED
+    "C1": "He now follows a different weekly schedule.", // CHANGED
     "C2": "He now follows a mix of strength and cardio exercises."
   },
   {
     "ItemID": "F13",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "Sophie chose the window seat.",
-    "C1": "She settled in and looked out as the plane prepared for take-off." // CHANGED
+    "C1": "She settled in and looked out as the plane prepared for take-off.", // CHANGED
     "C2": "The seat was next to the wing and close to the aisle."
   },
   {
     "ItemID": "F14",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "Max brought a jacket with him.",
-    "C1": "He carried it over his arm as he left the house."           // CHANGED
+    "C1": "He carried it over his arm as he left the house.", // CHANGED
     "C2": "It was a lightweight jacket he often carries in his bag."
   },
   {
     "ItemID": "F15",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "Tom cooked dinner for everyone.",
-    "C1": "He spent the evening in the kitchen preparing the meal."    // CHANGED
+    "C1": "He spent the evening in the kitchen preparing the meal.", // CHANGED
     "C2": "He prepared a simple meal using vegetables and pasta."
   },
   {
     "ItemID": "F16",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "The train arrived later than expected.",
-    "C1": "Passengers were already waiting on the platform."           // CHANGED
+    "C1": "Passengers were already waiting on the platform.", // CHANGED
     "C2": "Some people checked the departure board for updates."
   },
   {
     "ItemID": "F17",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "Laura decided to work from home.",
-    "C1": "She set up her laptop at the kitchen table."                // CHANGED
-    "C2": "She logged into her email shortly after starting her day."  // CHANGED
+    "C1": "She set up her laptop at the kitchen table.", // CHANGED
+    "C2": "She logged into her email shortly after starting her day." // CHANGED
   },
   {
     "ItemID": "F18",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "The restaurant opened a new location.",
-    "C1": "The new space has a larger dining area."                     // CHANGED
+    "C1": "The new space has a larger dining area.", // CHANGED
     "C2": "The interior features modern decor and bright lighting."
   },
   {
     "ItemID": "F19",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "The children finished their homework early.",
-    "C1": "Their backpacks were already packed by the door."           // CHANGED
+    "C1": "Their backpacks were already packed by the door.", // CHANGED
     "C2": "They gathered their things in the living room."
   },
   {
     "ItemID": "F20",
+    "Group": "Filler",
+    "Type": "filler",
+    "FillerType": "clear",
     "Sentence": "The package was delivered to the neighbour.",
-    "C1": "The neighbour signed for it at the door."                   // CHANGED
+    "C1": "The neighbour signed for it at the door.", // CHANGED
     "C2": "It was later placed in the hallway by the entrance."
   }
+
 ];
