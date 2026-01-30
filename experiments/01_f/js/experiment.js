@@ -51,7 +51,7 @@ function make_slides(f) {
 
       if (v >= 5) {
         $("#example1 .err")
-          .text("Not quite — move the slider toward the more appropriate continuation.")
+          .text("Not quite — in this example, the other continuation is more relevant to the sentence. Try again.")
           .show();
         return;
       }
