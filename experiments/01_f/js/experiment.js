@@ -44,7 +44,7 @@ function make_slides(f) {
 
       if (!this.moved || v === 4) {
         $("#example1 .err")
-          .text("Please move the slider towards the conitnuation that sounds more natural to you.")
+          .text("Please move the slider towards the conitnuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation.")
           .show();
         return;
       }
@@ -90,14 +90,14 @@ function make_slides(f) {
 
       if (!this.moved || v === 4) {
         $("#example2 .err")
-          .text("Please move the slider towards the conitnuation that sounds more natural to you.")
+          .text("Please move the slider towards the conitnuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation.")
           .show();
         return;
       }
 
       if (v >= 5) {
         $("#example2 .err")
-          .text("Not quite — move the slider toward the more appropriate continuation.")
+          .text("Not quite — in this example, the other continuation is more relevant to the sentence. Try again.")
           .show();
         return;
       }
