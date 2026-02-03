@@ -1,11 +1,3 @@
-/* css/local-style.css
-   (Your existing CSS + A/B-under-sentence layout tweaks)
-*/
-
-/* -----------------------------
-   Base / existing styles (kept)
------------------------------- */
-
 .slider {
   width: 600px;
   margin: 10px;
@@ -107,26 +99,26 @@
 
 
 .legalFrame {
-  margin-top: 40px;          /* space from experiment description */
+  margin-top: 40px;          
   padding: 22px 26px;
-  border: 1px solid #999;    /* the ONLY frame */
+  border: 1px solid #999;   
   border-radius: 6px;
   background: #fafafa;
-  font-size: 0.8em;          /* smaller text */
+  font-size: 0.8em;          
   line-height: 1.45;
   color: #444;
   max-width: 900px;
 }
 
 .legal {
-  font-size: 70%;        /* smaller than before */
+  font-size: 70%;        
   font-style: italic;
-  margin-top: 50px;      /* MORE space from description */
+  margin-top: 50px;      
   line-height: 1.4;
   color: #555;
 }
 
-/* Force slides hidden by default (cocolab will show current one) */
+
 .slide {
   border: none;
   display: none;
@@ -146,21 +138,16 @@
 .trialSentence {
   font-size: 30px;
   line-height: 1.35;
-  margin: 0 0 18px 0; /* slightly less because we add A/B block */
+  margin: 0 0 18px 0; 
 }
 
-/* -----------------------------
-   Error message styling
------------------------------- */
+
 .err {
   color: red !important;
   margin-top: 18px;
   display: none;
 }
 
-/* =========================================================
-   Likert slider layout (keep your slider styling!)
-========================================================= */
 
 .likertWrap { margin-top: 10px; }
 
@@ -171,7 +158,6 @@
   margin-bottom: 10px;
 }
 
-/* NEW: endpoints as plain text labels (no boxes) */
 .likertEndpointsAB { margin-top: 6px; }
 
 .likertEndLabel {
@@ -185,13 +171,10 @@
   color: #222;
 }
 
-/* push Continue and comments further down */
+
 .trialWrap .center { margin-top: 60px; }
 .trialFeedback { margin-top: 80px; }
 
-/* =========================================================
-   Range slider: your existing styling (unchanged)
-========================================================= */
 
 .likertSliderRow input[type="range"]{
   -webkit-appearance: none;
@@ -204,14 +187,14 @@
   padding: 0;
 }
 
-/* WebKit track */
+
 .likertSliderRow input[type="range"]::-webkit-slider-runnable-track{
   height: 6px;
   background: #ddd;
   border-radius: 999px;
 }
 
-/* WebKit thumb */
+
 .likertSliderRow input[type="range"]::-webkit-slider-thumb{
   -webkit-appearance: none;
   appearance: none;
@@ -224,21 +207,21 @@
   cursor: pointer;
 }
 
-/* Firefox track */
+
 .likertSliderRow input[type="range"]::-moz-range-track{
   height: 6px;
   background: #ddd;
   border-radius: 999px;
 }
 
-/* Firefox filled part: make it identical to track */
+
 .likertSliderRow input[type="range"]::-moz-range-progress{
   height: 6px;
   background: #ddd;
   border-radius: 999px;
 }
 
-/* Firefox thumb */
+
 .likertSliderRow input[type="range"]::-moz-range-thumb{
   width: 18px;
   height: 18px;
@@ -256,7 +239,7 @@
   min-height: 24px;
 }
 
-/* overlay sits exactly over the slider width (80%) */
+
 .likertDots{
   position: absolute;
   width: 80%;
@@ -271,7 +254,7 @@
   align-items: center;
 }
 
-/* dots */
+
 .likertDots span{
   width: 13px;
   height: 13px;
@@ -280,16 +263,13 @@
   display: block;
 }
 
-/* slider above dots */
+
 .likertSliderRow input[type="range"]{
   position: relative;
   z-index: 4;
-  width: 80%;
+  width: 100%;
 }
 
-/* =========================================================
-   FORCE blue thumb once slider is moved (unchanged)
-========================================================= */
 
 .likertSliderRow input[type="range"].moved::-webkit-slider-thumb{
   background: #2E9AFE !important;
@@ -322,29 +302,23 @@
   text-align: left;
 }
 
-/* keep your existing slider width */
+
 .likertScaleRow .likertSliderRow{
   width: 80%;
 }
 
 
-/* =========================================================
-   NEW: A/B continuation lines under the target sentence
-   - smaller font than the target sentence
-   - enough spacing
-========================================================= */
-
 .abUnderSentence{
   max-width: 900px;
-  margin: 0 auto 22px auto;  /* space before endpoints/slider */
+  margin: 0 auto 22px auto;  
   text-align: center;
-  font-size: 22px;           /* smaller than target sentence */
+  font-size: 22px;           
   line-height: 1.55;
   color: #000;
 }
 
 .abLine{
-  margin: 8px 0;             /* spacing between A and B lines */
+  margin: 8px 0;           
 }
 
 .abLabel{
