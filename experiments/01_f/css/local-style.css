@@ -105,6 +105,19 @@
 .center { text-align: center; }
 .right { text-align: right; }
 
+
+.legalFrame {
+  margin-top: 40px;          /* space from experiment description */
+  padding: 22px 26px;
+  border: 1px solid #999;    /* the ONLY frame */
+  border-radius: 6px;
+  background: #fafafa;
+  font-size: 0.8em;          /* smaller text */
+  line-height: 1.45;
+  color: #444;
+  max-width: 900px;
+}
+
 .legal {
   font-size: 70%;        /* smaller than before */
   font-style: italic;
@@ -115,7 +128,7 @@
 
 /* Force slides hidden by default (cocolab will show current one) */
 .slide {
-  border: 1px solid #666;
+  border: none;
   display: none;
 }
 
