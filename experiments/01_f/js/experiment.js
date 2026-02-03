@@ -1,14 +1,7 @@
-/* js/experiment.js
-   =====================================================
-   EXPERIMENT.JS — Likert slider version (7-point), A/B labeling
-   ===================================================== */
-
 function make_slides(f) {
   var slides = {};
 
-  /* -------------------------
-     INTRO
-  ------------------------- */
+
   slides.i0 = slide({
     name: "i0",
     start: function () {
@@ -16,12 +9,7 @@ function make_slides(f) {
     }
   });
 
-  /* =====================================================
-     EXAMPLE 1
-     Correct continuation = A (left side)
-     Accept slider values: 1–3
-     Reject: 4, 5–7
-  ===================================================== */
+
   slides.example1 = slide({
     name: "example1",
 
@@ -51,7 +39,6 @@ function make_slides(f) {
         return;
       }
 
-      // Correct is A (1–3). If they choose B-side, retry.
       if (v >= 5) {
         $("#example1 .err")
           .text("Not quite. In this example, continuation A is more natural because it is more related to the original sentence by adding relevant information, whereas B is less directly related. Please try again.")
@@ -64,19 +51,14 @@ function make_slides(f) {
     }
   });
 
-  /* =====================================================
-     EXAMPLE 2
-     Correct continuation = A (left side)
-     Accept slider values: 1–3
-     Reject: 4, 5–7
-  ===================================================== */
+
   slides.example2 = slide({
     name: "example2",
 
     start: function () {
       $("#example2 .err").hide().css("color", "red");
       $("#ex2_slider").val(4);
-      $("#ex2_slider").removeClass("moved"); // fixed bug (was ex1_slider)
+      $("#ex2_slider").removeClass("moved"); 
 
       this.moved = false;
       $("#ex2_slider")
@@ -111,9 +93,7 @@ function make_slides(f) {
     }
   });
 
-  /* -------------------------
-     START EXPERIMENT
-  ------------------------- */
+
   slides.startExp = slide({
     name: "startExp",
     button: function () {
@@ -121,9 +101,7 @@ function make_slides(f) {
     }
   });
 
-  /* =====================================================
-     MAIN TRIAL SLIDE (LIKERT) — A/B labeling
-  ===================================================== */
+
   slides.trial = slide({
     name: "trial",
     present: exp.stimuli,
@@ -148,13 +126,11 @@ function make_slides(f) {
 
       $("#trial-sentence").html(stim.Sentence);
 
-      // Shuffle which continuation is A vs B
       var opts = _.shuffle([
         { key: "C1", text: stim.C1 },
         { key: "C2", text: stim.C2 }
       ]);
 
-      // A is the LEFT option; B is the RIGHT option
       this.A_key = opts[0].key;
       this.B_key = opts[1].key;
 
@@ -172,7 +148,6 @@ function make_slides(f) {
 
       var rt_ms = Date.now() - this.startTime;
 
-      // Map slider to A/B (A=1–3, B=5–7, 4=NEUTRAL)
       var chosen_option =
         v <= 3 ? "A" :
         v >= 5 ? "B" :
@@ -203,13 +178,12 @@ function make_slides(f) {
         C1: this.stim.C1,
         C2: this.stim.C2,
 
-        // A/B mapping for this trial
         A_key: this.A_key,
         B_key: this.B_key,
 
-        slider_value: v,              // 1–7
-        chosen_option: chosen_option, // A / B / NEUTRAL
-        chosen_key: chosen_key,       // C1 / C2 / NEUTRAL
+        slider_value: v,            
+        chosen_option: chosen_option, 
+        chosen_key: chosen_key,       
         chosen_text: chosen_text,
 
         rt_ms: rt_ms,
@@ -220,9 +194,7 @@ function make_slides(f) {
     }
   });
 
-  /* -------------------------
-     SUBJECT INFO
-  ------------------------- */
+
   slides.subj_info = slide({
     name: "subj_info",
 
@@ -248,9 +220,7 @@ function make_slides(f) {
     }
   });
 
-  /* -------------------------
-     THANKS + SUBMIT
-  ------------------------- */
+
   slides.thanks = slide({
     name: "thanks",
 
@@ -270,15 +240,12 @@ function make_slides(f) {
   return slides;
 }
 
-/* =====================================================
-   INIT
-===================================================== */
+
 function init() {
   exp.trials = [];
   exp.catch_trials = [];
   exp.data_trials = [];
 
-  // --- list assignment via URL param "cond", else random fallback
   var condition = new URLSearchParams(window.location.search).get("cond");
   condition = condition === null ? NaN : parseInt(condition, 10);
 
@@ -288,7 +255,6 @@ function init() {
     exp.list = _.sample([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
   }
 
-  // --- select stims for assigned list
   var critical = all_stims.filter(function (s) {
     return s.Type === "critical" && Number(s.List) === exp.list;
   });
@@ -300,7 +266,7 @@ function init() {
   exp.stimuli = _.shuffle(critical.concat(fillers));
   exp.n_trials = exp.stimuli.length;
 
-  // --- system info
+
   exp.system = {
     Browser: BrowserDetect.browser,
     OS: BrowserDetect.OS,
@@ -310,16 +276,14 @@ function init() {
     screenUW: exp.width
   };
 
-  // --- experiment flow
+
   exp.structure = ["i0", "example1", "example2", "startExp", "trial", "subj_info", "thanks"];
 
-  // --- build slides
+
   exp.slides = make_slides(exp);
   exp.nQs = utils.get_exp_length();
 
-  /* ======================================================
-     FORCE SHOW/HIDE (overrides any CSS display !important)
-  ======================================================= */
+
   function hideAllSlidesForce() {
     document.querySelectorAll(".slide").forEach(function (el) {
       el.style.setProperty("display", "none", "important");
@@ -342,11 +306,10 @@ function init() {
     showSlideForce(shown);
   };
 
-  // Start button (from i0 -> example1)
   $("#start_button").off("click").on("click", function () {
     exp.go();
   });
 
-  // Show ONLY the intro slide at load
+
   exp.go();
 }
