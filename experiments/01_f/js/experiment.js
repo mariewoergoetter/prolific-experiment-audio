@@ -1,6 +1,7 @@
-/* =====================================================
-   EXPERIMENT.JS — Likert slider version (7-point)
-===================================================== */
+/* js/experiment.js
+   =====================================================
+   EXPERIMENT.JS — Likert slider version (7-point), A/B labeling
+   ===================================================== */
 
 function make_slides(f) {
   var slides = {};
@@ -17,7 +18,7 @@ function make_slides(f) {
 
   /* =====================================================
      EXAMPLE 1
-     Correct continuation = LEFT
+     Correct continuation = A (left side)
      Accept slider values: 1–3
      Reject: 4, 5–7
   ===================================================== */
@@ -28,7 +29,6 @@ function make_slides(f) {
       $("#example1 .err").hide().css("color", "red");
       $("#ex1_slider").val(4);
       $("#ex1_slider").removeClass("moved");
-
 
       this.moved = false;
       $("#ex1_slider")
@@ -44,14 +44,17 @@ function make_slides(f) {
 
       if (!this.moved || v === 4) {
         $("#example1 .err")
-          .text("Please move the slider towards the conitnuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation.")
+          .text(
+            "Please move the slider towards the continuation (A or B) that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation."
+          )
           .show();
         return;
       }
 
+      // Correct is A (1–3). If they choose B-side, retry.
       if (v >= 5) {
         $("#example1 .err")
-          .text("Not quite — in this example, the other continuation is more relevant to the sentence. Try again.")
+          .text("Not quite — in this example, A is the more natural continuation. Try again.")
           .show();
         return;
       }
@@ -63,8 +66,9 @@ function make_slides(f) {
 
   /* =====================================================
      EXAMPLE 2
-     Correct continuation = LEFT
+     Correct continuation = A (left side)
      Accept slider values: 1–3
+     Reject: 4, 5–7
   ===================================================== */
   slides.example2 = slide({
     name: "example2",
@@ -72,8 +76,7 @@ function make_slides(f) {
     start: function () {
       $("#example2 .err").hide().css("color", "red");
       $("#ex2_slider").val(4);
-      $("#ex1_slider").removeClass("moved");
-
+      $("#ex2_slider").removeClass("moved"); // fixed bug (was ex1_slider)
 
       this.moved = false;
       $("#ex2_slider")
@@ -82,7 +85,6 @@ function make_slides(f) {
           this.moved = true;
           $("#ex2_slider").addClass("moved");
         });
-
     },
 
     button: function () {
@@ -90,14 +92,16 @@ function make_slides(f) {
 
       if (!this.moved || v === 4) {
         $("#example2 .err")
-          .text("Please move the slider towards the conitnuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation.")
+          .text(
+            "Please move the slider towards the continuation (A or B) that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation."
+          )
           .show();
         return;
       }
 
       if (v >= 5) {
         $("#example2 .err")
-          .text("Not quite — in this example, the other continuation is more relevant to the sentence. Try again.")
+          .text("Not quite — in this example, A is the more natural continuation. Try again.")
           .show();
         return;
       }
@@ -118,7 +122,7 @@ function make_slides(f) {
   });
 
   /* =====================================================
-     MAIN TRIAL SLIDE (LIKERT)
+     MAIN TRIAL SLIDE (LIKERT) — A/B labeling
   ===================================================== */
   slides.trial = slide({
     name: "trial",
@@ -134,54 +138,54 @@ function make_slides(f) {
       $("#trial_slider").val(4);
       $("#trial_slider").removeClass("moved");
 
-
       this.moved = false;
       $("#trial_slider")
         .off("input")
         .on("input", () => {
           this.moved = true;
           $("#trial_slider").addClass("moved");
-         });
-
+        });
 
       $("#trial-sentence").html(stim.Sentence);
 
-      // Shuffle which continuation is left vs right
+      // Shuffle which continuation is A vs B
       var opts = _.shuffle([
         { key: "C1", text: stim.C1 },
         { key: "C2", text: stim.C2 }
       ]);
 
-      this.left_key = opts[0].key;
-      this.right_key = opts[1].key;
+      // A is the LEFT option; B is the RIGHT option
+      this.A_key = opts[0].key;
+      this.B_key = opts[1].key;
 
-      $("#left_text").html(opts[0].text);
-      $("#right_text").html(opts[1].text);
+      $("#A_text").html(opts[0].text);
+      $("#B_text").html(opts[1].text);
     },
 
     button: function () {
       var v = parseInt($("#trial_slider").val(), 10);
-
 
       if (!this.moved) {
         $(".err").show();
         return;
       }
 
-
       var rt_ms = Date.now() - this.startTime;
 
-      var chosen_side = (v <= 3) ? "left" : (v >= 5) ? "right" : "middle";
-
-      var chosen_key =
-        (chosen_side === "left")  ? this.left_key :
-        (chosen_side === "right") ? this.right_key :
+      // Map slider to A/B (A=1–3, B=5–7, 4=NEUTRAL)
+      var chosen_option =
+        v <= 3 ? "A" :
+        v >= 5 ? "B" :
         "NEUTRAL";
 
+      var chosen_key =
+        chosen_option === "A" ? this.A_key :
+        chosen_option === "B" ? this.B_key :
+        "NEUTRAL";
 
       var chosen_text =
-        (chosen_key === "C1") ? this.stim.C1 :
-        (chosen_key === "C2") ? this.stim.C2 :
+        chosen_key === "C1" ? this.stim.C1 :
+        chosen_key === "C2" ? this.stim.C2 :
         null;
 
       exp.data_trials.push({
@@ -199,12 +203,13 @@ function make_slides(f) {
         C1: this.stim.C1,
         C2: this.stim.C2,
 
-        left_key: this.left_key,
-        right_key: this.right_key,
+        // A/B mapping for this trial
+        A_key: this.A_key,
+        B_key: this.B_key,
 
-        slider_value: v,          // 1–7
-        chosen_side: chosen_side, // left / right
-        chosen_key: chosen_key,   // C1 / C2
+        slider_value: v,              // 1–7
+        chosen_option: chosen_option, // A / B / NEUTRAL
+        chosen_key: chosen_key,       // C1 / C2 / NEUTRAL
         chosen_text: chosen_text,
 
         rt_ms: rt_ms,
@@ -284,11 +289,11 @@ function init() {
   }
 
   // --- select stims for assigned list
-  var critical = all_stims.filter(function(s) {
+  var critical = all_stims.filter(function (s) {
     return s.Type === "critical" && Number(s.List) === exp.list;
   });
 
-  var fillers = all_stims.filter(function(s) {
+  var fillers = all_stims.filter(function (s) {
     return s.Type === "filler";
   });
 
@@ -306,15 +311,7 @@ function init() {
   };
 
   // --- experiment flow
-  exp.structure = [
-    "i0",
-    "example1",
-    "example2",
-    "startExp",
-    "trial",
-    "subj_info",
-    "thanks"
-  ];
+  exp.structure = ["i0", "example1", "example2", "startExp", "trial", "subj_info", "thanks"];
 
   // --- build slides
   exp.slides = make_slides(exp);
@@ -324,7 +321,7 @@ function init() {
      FORCE SHOW/HIDE (overrides any CSS display !important)
   ======================================================= */
   function hideAllSlidesForce() {
-    document.querySelectorAll(".slide").forEach(function(el) {
+    document.querySelectorAll(".slide").forEach(function (el) {
       el.style.setProperty("display", "none", "important");
     });
   }
@@ -334,26 +331,22 @@ function init() {
     if (el) el.style.setProperty("display", "block", "important");
   }
 
-  // Hide everything immediately (even if CSS fights it)
   hideAllSlidesForce();
 
-   var _orig_go = exp.go.bind(exp);
-   exp.go = function() {
-     hideAllSlidesForce();
-     _orig_go();
+  var _orig_go = exp.go.bind(exp);
+  exp.go = function () {
+    hideAllSlidesForce();
+    _orig_go();
 
-  // Robust: cocolab sets the current slide in window._s
-     var shown = (window._s && window._s.name) ? window._s.name : exp.structure[0];
-     showSlideForce(shown);
-   };
+    var shown = window._s && window._s.name ? window._s.name : exp.structure[0];
+    showSlideForce(shown);
+  };
 
   // Start button (from i0 -> example1)
-  $("#start_button").off("click").on("click", function() {
+  $("#start_button").off("click").on("click", function () {
     exp.go();
   });
 
   // Show ONLY the intro slide at load
   exp.go();
 }
-
-
