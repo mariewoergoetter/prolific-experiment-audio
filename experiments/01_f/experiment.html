@@ -1,7 +1,8 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Language Experiment</title>
 
     <script src="shared/js/jquery-1.11.1.min.js"></script>
@@ -11,15 +12,14 @@
     <script src="shared/js/exp-V2.js"></script>
     <script src="shared/js/stream-V2.js"></script>
 
-
     <script src="https://proliferate.alps.science/static/js/proliferate.js"></script>
 
     <script src="shared/js/browserCheck.js"></script>
     <script src="shared/js/utils.js"></script>
 
-    <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-    <link href="shared/css/cocolab-style.css" rel="stylesheet">
-    <link href="css/local-style.css" rel="stylesheet">
+    <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
+    <link href="shared/css/cocolab-style.css" rel="stylesheet" />
+    <link href="css/local-style.css" rel="stylesheet" />
 
     <script src="js/experiment.js"></script>
     <script src="js/stimuli.js"></script>
@@ -28,54 +28,82 @@
   <body onload="init()">
     <noscript>This task requires JavaScript.</noscript>
 
-
+    <!-- INTRO -->
     <div class="slide" id="i0">
       <p class="left">
         You will read some sentences.
-        <strong>Your task is to indicate which continuation sounds more natural to you, given the stated sentence.</strong><br><br>
-        Use the slider to move toward the continuation that fits better in your opinion. The closer you move the slider toward one side, the stronger your preference for that continuation.<br><br>
+        <strong>Your task is to indicate which continuation (A or B) sounds more natural to you, given the stated sentence.</strong><br /><br />
+        Use the slider to move toward the continuation that fits better in your opinion. The closer you move the slider toward one side,
+        the stronger your preference for that continuation.<br /><br />
         The experiment takes about 7 minutes. We’ll start with two examples.
       </p>
 
       <button id="start_button" type="button">Start experiment</button>
 
-      <p class="left legal">
-        <strong>LEGAL INFORMATION</strong><br><br>
-        TODO: IRB CONSENT FORM HERE
-      </p>
+<p><strong>Legal Information</strong></p>
+
+<p>Your participation in this study is voluntary. You may refuse to participate at any time, without having to give a reason, and you may withdraw your agreement to participate once the study has already started. There will be no negative consequences for you if you refuse to participate or if you withdraw from this study early.</p>
+
+
+<p>PURPOSE OF RESEARCH STUDY<br>
+The goal of the project is to evaluate the language abilities of AI models.</p>
+
+<p>PROCEDURES<br>
+On each page, you will read a sentence and two possible continuations. Your task is to choose which one of the two continuations sounds more natural.</p>
+
+<p>RISKS/DISCOMFORTS<br>
+The risks associated with participation in this study are no greater than those encountered in daily life.</p>
+
+<p>BENEFITS<br>
+There are no direct benefits to you from participating in this study. This study may benefit society if the results lead to a better understanding of the limits of modern technology.</p>
+
+<p>CONFIDENTIALITY<br>
+Any study records that identify you will be kept confidential. The records from your participation may be reviewed by people responsible for making sure that research is done properly. Otherwise, records that identify you will be available only to people working on the study, unless you give permission for other people to see the records.
+Any study records that include identifiable information will be kept in a password-protected database. On all records of test results we will use a code number rather than your Prolific ID.</p>
+
+<p>COMPENSATION<br>
+You will receive compensation as posted on Prolific.</p>
+
+<p>IF YOU HAVE QUESTIONS OR CONCERNS<br>
+You can ask questions about this research study now or at any time during the study, by contacting the researchers via Prolific or by emailing Dr. Sebastian Schuster at sebastian.schuster@univie.ac.at.</p>
     </div>
 
-
+    <!-- EXAMPLE 1 -->
     <div class="slide" id="example1">
       <h3>Example 1</h3>
 
       <div class="trialWrap">
         <div class="trialPrompt">
-          Read the sentence and move the slider toward the continuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation.
+          Read the sentence and move the slider toward the continuation (A or B) that sounds more natural to you. The closer you move the slider
+          toward one side, the stronger your preference for that continuation.
         </div>
 
-        <div class="trialSentence">
-          The meeting was moved to the afternoon.
+        <div class="trialSentence">The meeting was moved to the afternoon.</div>
+
+        <div class="abUnderSentence">
+          <div class="abLine">
+            <span class="abLabel">A:</span>
+            <span class="abText">Several people were unavailable in the morning.</span>
+          </div>
+          <div class="abLine">
+            <span class="abLabel">B:</span>
+            <span class="abText">The meeting was scheduled to last an hour.</span>
+          </div>
         </div>
 
         <div class="likertWrap">
-          <div class="likertEndpoints">
-            <div class="likertEnd">
-              Several people were unavailable in the morning.
-            </div>
-            <div class="likertEnd">
-              The meeting was scheduled to last an hour.
-            </div>
+          <div class="likertEndpoints likertEndpointsAB">
+            <div class="likertEndLabel">A sounds<br />much more natural</div>
+            <div class="likertEndLabel">B sounds<br />much more natural</div>
           </div>
 
-        <div class="likertSliderRow">
-          <div class="likertDots" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <div class="likertSliderRow">
+            <div class="likertDots" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <input type="range" min="1" max="7" step="1" value="4" id="ex1_slider" />
           </div>
-          <input type="range" min="1" max="7" step="1" value="4" id="ex1_slider">
         </div>
-        </div>
-
 
         <div class="center">
           <button class="continueButton" onclick="_s.button()">Continue</button>
@@ -85,36 +113,42 @@
       </div>
     </div>
 
+    <!-- EXAMPLE 2 -->
     <div class="slide" id="example2">
       <h3>Example 2</h3>
 
       <div class="trialWrap">
         <div class="trialPrompt">
-          Read the sentence and move the slider toward the continuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation. 
+          Read the sentence and move the slider toward the continuation (A or B) that sounds more natural to you. The closer you move the slider
+          toward one side, the stronger your preference for that continuation.
         </div>
 
-        <div class="trialSentence">
-          The library closed earlier than usual.
+        <div class="trialSentence">The library closed earlier than usual.</div>
+
+        <div class="abUnderSentence">
+          <div class="abLine">
+            <span class="abLabel">A:</span>
+            <span class="abText">There was a technical problem with the heating.</span>
+          </div>
+          <div class="abLine">
+            <span class="abLabel">B:</span>
+            <span class="abText">The library has many books.</span>
+          </div>
         </div>
 
         <div class="likertWrap">
-          <div class="likertEndpoints">
-            <div class="likertEnd">
-              There was a technical problem with the heating.
-            </div>
-            <div class="likertEnd">
-              The library has many books.
-            </div>
+          <div class="likertEndpoints likertEndpointsAB">
+            <div class="likertEndLabel">A sounds<br />much more natural</div>
+            <div class="likertEndLabel">B sounds<br />much more natural</div>
           </div>
 
-        <div class="likertSliderRow">
-          <div class="likertDots" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <div class="likertSliderRow">
+            <div class="likertDots" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <input type="range" min="1" max="7" step="1" value="4" id="ex2_slider" />
           </div>
-          <input type="range" min="1" max="7" step="1" value="4" id="ex2_slider">
         </div>
-        </div>
-
 
         <div class="center">
           <button class="continueButton" onclick="_s.button()">Continue</button>
@@ -124,11 +158,12 @@
       </div>
     </div>
 
-
+    <!-- START EXP -->
     <div class="slide" id="startExp">
       <p class="left">
-        Great! Now the real experiment begins.<br><br>
-        You will see 30 sentences. For each one, move the slider toward the continuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation.
+        Great! Now the real experiment begins.<br /><br />
+        You will see 30 sentences. For each one, move the slider toward the continuation (A or B) that sounds more natural to you. The closer you move
+        the slider toward one side, the stronger your preference for that continuation.
       </p>
 
       <div class="center">
@@ -136,32 +171,40 @@
       </div>
     </div>
 
-
+    <!-- TRIAL -->
     <div class="slide" id="trial">
       <div class="trialWrap">
         <div class="trialPrompt">
-          Move the slider toward the continuation that sounds more natural. The closer you move the slider toward one side, the stronger your preference for that continuation.
+          Move the slider toward the continuation (A or B) that sounds more natural. The closer you move the slider toward one side, the stronger your
+          preference for that continuation.
         </div>
 
-        <div class="trialSentence" id="trial-sentence">
-          {{sentence}}
+        <div class="trialSentence" id="trial-sentence">{{sentence}}</div>
+
+        <!-- A/B lines under target sentence -->
+        <div class="abUnderSentence">
+          <div class="abLine">
+            <span class="abLabel">A:</span>
+            <span class="abText" id="A_text">{{A}}</span>
+          </div>
+          <div class="abLine">
+            <span class="abLabel">B:</span>
+            <span class="abText" id="B_text">{{B}}</span>
+          </div>
         </div>
 
         <div class="likertWrap">
-          <div class="likertEndpoints">
-            <div class="likertEnd" id="left_text">{{left}}</div>
-            <div class="likertEnd" id="right_text">{{right}}</div>
+          <div class="likertEndpoints likertEndpointsAB">
+            <div class="likertEndLabel">A sounds<br />much more natural</div>
+            <div class="likertEndLabel">B sounds<br />much more natural</div>
           </div>
 
-        <div class="likertSliderRow">
-          <div class="likertDots" aria-hidden="true">
-            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          <div class="likertSliderRow">
+            <div class="likertDots" aria-hidden="true">
+              <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <input type="range" min="1" max="7" step="1" value="4" id="trial_slider" />
           </div>
-          <input type="range" min="1" max="7" step="1" value="4" id="trial_slider">
-        </div>
-        </div>
-
-
         </div>
 
         <div class="center">
@@ -169,28 +212,34 @@
         </div>
 
         <div class="err">
-          Please move the slider towards the continuation that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation.
+          Please move the slider towards the continuation (A or B) that sounds more natural to you. The closer you move the slider toward one side, the
+          stronger your preference for that continuation.
         </div>
 
         <div class="trialFeedback">
           <p><small>Optional comments:</small></p>
-          <textarea id="trial_feedback" rows="4" cols="60"
-            placeholder="If you have any comments about these sentences or would like to justify your choice, you can let us know here."></textarea>
+          <textarea
+            id="trial_feedback"
+            rows="4"
+            cols="60"
+            placeholder="If you have any comments about these sentences or would like to justify your choice, you can let us know here."
+          ></textarea>
         </div>
       </div>
     </div>
 
+    <!-- SUBJECT INFO -->
     <div class="slide" id="subj_info">
       <div class="long_form">
         <div class="subj_info_title">Additional information</div>
 
         <p>Did you read the instructions carefully?</p>
-        <label><input type="radio" name="assess" value="No"> No</label>
-        <label><input type="radio" name="assess" value="Yes"> Yes</label>
-        <label><input type="radio" name="assess" value="Confused"> I was confused</label>
+        <label><input type="radio" name="assess" value="No" /> No</label>
+        <label><input type="radio" name="assess" value="Yes" /> Yes</label>
+        <label><input type="radio" name="assess" value="Confused" /> I was confused</label>
 
         <p>Native language:</p>
-        <input type="text" id="language">
+        <input type="text" id="language" />
 
         <p>Was the payment fair?</p>
         <select id="fairprice">
@@ -211,16 +260,16 @@
         <textarea id="experiment_about" rows="3" cols="50"></textarea>
 
         <p>Any additional comments?</p>
-        <textarea id="comments" rows="3" cols="50"></textarea><br>
+        <textarea id="comments" rows="3" cols="50"></textarea><br />
 
         <button onclick="_s.submit()">Submit</button>
       </div>
     </div>
 
+    <!-- THANKS -->
     <div id="thanks" class="slide js">
       <p class="big">Thanks for your time!</p>
     </div>
-
 
     <div class="progress">
       <span>Progress:</span>
@@ -230,4 +279,3 @@
     </div>
   </body>
 </html>
-
