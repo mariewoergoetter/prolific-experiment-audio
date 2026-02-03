@@ -1,14 +1,12 @@
 function make_slides(f) {
   var slides = {};
 
-
   slides.i0 = slide({
     name: "i0",
     start: function () {
       exp.startT = Date.now();
     }
   });
-
 
   slides.example1 = slide({
     name: "example1",
@@ -51,14 +49,13 @@ function make_slides(f) {
     }
   });
 
-
   slides.example2 = slide({
     name: "example2",
 
     start: function () {
       $("#example2 .err").hide().css("color", "red");
       $("#ex2_slider").val(4);
-      $("#ex2_slider").removeClass("moved"); 
+      $("#ex2_slider").removeClass("moved");
 
       this.moved = false;
       $("#ex2_slider")
@@ -93,14 +90,12 @@ function make_slides(f) {
     }
   });
 
-
   slides.startExp = slide({
     name: "startExp",
     button: function () {
       exp.go();
     }
   });
-
 
   slides.trial = slide({
     name: "trial",
@@ -148,19 +143,46 @@ function make_slides(f) {
 
       var rt_ms = Date.now() - this.startTime;
 
+      // Which side did the participant choose?
       var chosen_option =
         v <= 3 ? "A" :
         v >= 5 ? "B" :
         "NEUTRAL";
 
+      // Which continuation key corresponds to that side?
       var chosen_key =
         chosen_option === "A" ? this.A_key :
         chosen_option === "B" ? this.B_key :
         "NEUTRAL";
 
+      // Store the chosen text (or null for NEUTRAL)
       var chosen_text =
         chosen_key === "C1" ? this.stim.C1 :
         chosen_key === "C2" ? this.stim.C2 :
+        null;
+
+      // =====================================================
+      // NEW: map response to -3..+3 relative to expected choice
+      // =====================================================
+
+      // "Expected/wanted" continuation key for this item:
+      // - If your stimuli define it (e.g., ExpectedKey), use that.
+      // - Otherwise default to C1.
+      var expected_key = this.stim.ExpectedKey || this.stim.Expected || "C1";
+
+      // Where the expected continuation appears on this trial (A or B)
+      var expected_option =
+        expected_key === this.A_key ? "A" :
+        expected_key === this.B_key ? "B" :
+        null;
+
+      // Raw signed distance from midpoint: A negative, B positive
+      var raw_score = v - 4; // {1..7} -> {-3..+3}
+
+      // Flip sign so that + always means "toward expected"
+      var score_rel_expected =
+        expected_option === "A" ? -raw_score :
+        expected_option === "B" ?  raw_score :
         null;
 
       exp.data_trials.push({
@@ -181,9 +203,16 @@ function make_slides(f) {
         A_key: this.A_key,
         B_key: this.B_key,
 
-        slider_value: v,            
-        chosen_option: chosen_option, 
-        chosen_key: chosen_key,       
+        slider_value: v,
+
+        // NEW saved variables
+        raw_score: raw_score,                     // -3..+3 (A neg, B pos)
+        expected_key: expected_key,               // usually "C1"
+        expected_option: expected_option,         // "A" or "B"
+        score_rel_expected: score_rel_expected,   // -3..+3 where + = expected
+
+        chosen_option: chosen_option,
+        chosen_key: chosen_key,
         chosen_text: chosen_text,
 
         rt_ms: rt_ms,
@@ -193,7 +222,6 @@ function make_slides(f) {
       _stream.apply(this);
     }
   });
-
 
   slides.subj_info = slide({
     name: "subj_info",
@@ -220,7 +248,6 @@ function make_slides(f) {
     }
   });
 
-
   slides.thanks = slide({
     name: "thanks",
 
@@ -239,7 +266,6 @@ function make_slides(f) {
 
   return slides;
 }
-
 
 function init() {
   exp.trials = [];
@@ -266,7 +292,6 @@ function init() {
   exp.stimuli = _.shuffle(critical.concat(fillers));
   exp.n_trials = exp.stimuli.length;
 
-
   exp.system = {
     Browser: BrowserDetect.browser,
     OS: BrowserDetect.OS,
@@ -276,13 +301,10 @@ function init() {
     screenUW: exp.width
   };
 
-
   exp.structure = ["i0", "example1", "example2", "startExp", "trial", "subj_info", "thanks"];
-
 
   exp.slides = make_slides(exp);
   exp.nQs = utils.get_exp_length();
-
 
   function hideAllSlidesForce() {
     document.querySelectorAll(".slide").forEach(function (el) {
@@ -309,7 +331,6 @@ function init() {
   $("#start_button").off("click").on("click", function () {
     exp.go();
   });
-
 
   exp.go();
 }
