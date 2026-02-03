@@ -45,7 +45,7 @@ function make_slides(f) {
       if (!this.moved || v === 4) {
         $("#example1 .err")
           .text(
-            "Please move the slider towards the continuation (A or B) that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation."
+            "Move the slider toward the continuation that sounds more natural to you. The further you move the slider to the side, the more natural that option sounds compared to the other."
           )
           .show();
         return;
@@ -54,7 +54,7 @@ function make_slides(f) {
       // Correct is A (1–3). If they choose B-side, retry.
       if (v >= 5) {
         $("#example1 .err")
-          .text("Not quite — in this example, A is the more natural continuation. Try again.")
+          .text("Not quite. In this example, continuation A is more natural because it is more related to the original sentence by adding relevant information, whereas B is less directly related. Please try again.")
           .show();
         return;
       }
@@ -93,7 +93,7 @@ function make_slides(f) {
       if (!this.moved || v === 4) {
         $("#example2 .err")
           .text(
-            "Please move the slider towards the continuation (A or B) that sounds more natural to you. The closer you move the slider toward one side, the stronger your preference for that continuation."
+            "Move the slider toward the continuation that sounds more natural to you. The further you move the slider to the side, the more natural that option sounds compared to the other."
           )
           .show();
         return;
@@ -101,7 +101,7 @@ function make_slides(f) {
 
       if (v >= 5) {
         $("#example2 .err")
-          .text("Not quite — in this example, A is the more natural continuation. Try again.")
+          .text("Not quite. In this example, continuation A is more natural because it is more related to the original sentence by adding relevant information, whereas B is less directly related. Please try again.")
           .show();
         return;
       }
