@@ -168,7 +168,12 @@ function make_slides(f) {
       // "Expected/wanted" continuation key for this item:
       // - If your stimuli define it (e.g., ExpectedKey), use that.
       // - Otherwise default to C1.
-      var expected_key = this.stim.ExpectedKey || this.stim.Expected || "C1";
+      var expected_key =
+        this.stim.ExpectedKey || this.stim.Expected ||
+          ((this.stim.Type === "critical" && this.stim.Variant === "neutral")
+          ? "C2"
+          : "C1");
+
 
       // Where the expected continuation appears on this trial (A or B)
       var expected_option =
