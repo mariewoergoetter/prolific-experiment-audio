@@ -1407,17 +1407,17 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was Kate who showed the new students around.",
     "C1": "She is the only one who knows the building inside out.",
-    "C2": "Paul also gave them a tour.",
+    "C2": "Paul also gave them a tour."
   },
   {
     "ItemID": "1",
     "Group": "Subject",
     "Type": "critical",
     "List": 15,
-    "Variant": "cleft",
-    "Sentence": "It was Marie who baked cupcakes for the party.",
+    "Variant": "neutral",
+    "Sentence": "Marie baked cupcakes for the party.",
     "C1": "Sebastian’s oven had stopped working earlier that day.",
-    "C2": "Sebastian baked some too.",
+    "C2": "Sebastian baked some too."
   },
   {
     "ItemID": "30",
@@ -1427,17 +1427,17 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was handing out the drinks that Jonathan was engaged in.",
     "C1": "The glasses had all been poured beforehand.",
-    "C2": "He was also pouring them.",
+    "C2": "He was also pouring them."
   },
   {
     "ItemID": "16",
     "Group": "VP",
     "Type": "critical",
     "List": 15,
-    "Variant": "cleft",
-    "Sentence": "It was decorating the flat that Zayn was engaged in.",
+    "Variant": "neutral",
+    "Sentence": "Zayn was engaged in decorating the flat.",
     "C1": "His flatmate had cleaned it already.",
-    "C2": "He also cleaned it.",
+    "C2": "He also cleaned it."
   },
   {
     "ItemID": "45",
@@ -1447,17 +1447,17 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was a loaf of sourdough that Sunil baked.",
     "C1": "He didn't have time to bake anything else.",
-    "C2": "He also baked some muffins.",
+    "C2": "He also baked some muffins."
   },
   {
     "ItemID": "31",
     "Group": "Object",
     "Type": "critical",
     "List": 15,
-    "Variant": "cleft",
-    "Sentence": "It was a cheese board that Julia made.",
+    "Variant": "neutral",
+    "Sentence": "Julia made a cheese board.",
     "C1": "Her mum made the sandwiches.",
-    "C2": "She made some sandwiches as well.",
+    "C2": "She made some sandwiches as well."
   },
   {
     "ItemID": "60",
@@ -1467,17 +1467,17 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was fresh flowers that Ruby placed by the entrance.",
     "C1": "The artificial ones were still in the attic.",
-    "C2": "She put a couple of artificial ones in the vases as well.",
+    "C2": "She put a couple of artificial ones in the vases as well."
   },
   {
     "ItemID": "46",
     "Group": "Adjective",
     "Type": "critical",
     "List": 15,
-    "Variant": "cleft",
-    "Sentence": "It was Austrian wine that Sebastian brought to the party.",
+    "Variant": "neutral",
+    "Sentence": "Sebastian brought Austrian wine to the party.",
     "C1": "The Italian wine was sold out.",
-    "C2": "He also brought Italian wine.",
+    "C2": "He also brought Italian wine."
   },
   {
     "ItemID": "75",
@@ -1487,17 +1487,17 @@ var all_stims = [
     "Variant": "cleft",
     "Sentence": "It was at the front door that Jack greeted the guests.",
     "C1": "The hallway was too cramped.",
-    "C2": "He also greeted some guests in the hallway.",
+    "C2": "He also greeted some guests in the hallway."
   },
   {
     "ItemID": "61",
     "Group": "Adjunct",
     "Type": "critical",
     "List": 15,
-    "Variant": "cleft",
-    "Sentence": "It was in the living room that Nick arranged snacks.",
+    "Variant": "neutral",
+    "Sentence": "Nick arranged the snacks in the living room.",
     "C1": "The kitchen counter was still cluttered with ingredients.",
-    "C2": "He arranged more snacks in the kitchen.",
+    "C2": "He arranged more snacks in the kitchen."
   },
   {
     "ItemID": "F01",
