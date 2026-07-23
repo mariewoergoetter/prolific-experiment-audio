@@ -1,205 +1,410 @@
 import csv
+from pathlib import Path
 
-CSV_FILE = "items_01.csv"
-OUTPUT_FILE = "experiments/01_focus/js/stimuli.js"
+
+CRITICAL_CSV = Path("data/exp1_dataset_with_audio_paths.csv")
+FILLER_CSV = Path("data/exp1_fillers_with_audio_paths.csv")
+OUTPUT_FILE = Path("experiments/01_f/js/stimuli.js")
+
 
 GROUP_ID_RANGES = {
-    "Subject":   list(map(str, range(1, 16))),
-    "VP":        list(map(str, range(16, 31))),
-    "Object":    list(map(str, range(31, 46))),
+    "Subject": list(map(str, range(1, 16))),
+    "VP": list(map(str, range(16, 31))),
+    "Object": list(map(str, range(31, 46))),
     "Adjective": list(map(str, range(46, 61))),
-    "Adjunct":   list(map(str, range(61, 76))),
+    "Adjunct": list(map(str, range(61, 76))),
 }
 
 
 GROUP_INDEX = {
-    group: {rid: (i + 1) for i, rid in enumerate(rids)}
-    for group, rids in GROUP_ID_RANGES.items()
+    group: {
+        item_id: index + 1
+        for index, item_id in enumerate(item_ids)
+    }
+    for group, item_ids in GROUP_ID_RANGES.items()
 }
 
-def variant_for_item(list_no: int, item_index_within_group: int) -> str:
-    return "cleft" if (list_no + item_index_within_group) % 2 == 0 else "neutral"
 
-def two_items_for_list(rids: list[str], list_no: int) -> list[str]:
-    i1 = list_no - 1
-    i2 = list_no % 15
-    return [rids[i1], rids[i2]]
+def clean(value) -> str:
+    if value is None:
+        return ""
 
-def js_escape(s: str) -> str:
-    return s.replace("\\", "\\\\").replace('"', '\\"')
+    return str(value).strip()
 
 
-rows = {}
-
-with open(CSV_FILE, newline="", encoding="utf-8-sig") as f:
-    reader = csv.DictReader(f, delimiter=";")
-    for r in reader:
-        rid = str(r["ID"]).strip()
-        rows[rid] = {
-            "Group": r["group"].strip(),
-            "neutral": r["neutral_s"].strip(),
-            "cleft": r["focus_s"].strip(),
-            "C1": r["C1 (focus-supported)"].strip(),
-            "C2": r["C2 (focus-contradicting)"].strip(),
-        }
-
-missing = []
-for group, rids in GROUP_ID_RANGES.items():
-    for rid in rids:
-        if rid not in rows:
-            missing.append((group, rid))
-
-if missing:
-    msg = "\n".join([f"- Missing ID {rid} for group {group}" for group, rid in missing])
-    raise ValueError(
-        "Your CSV is missing required IDs for the 15-list design:\n" + msg
+def js_escape(value: str) -> str:
+    return (
+        value
+        .replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\r", "")
     )
 
 
-stims = []
+def variant_for_item(
+    list_number: int,
+    item_index_within_group: int,
+) -> str:
+    """
+    Counterbalance neutral and focus versions across lists.
+    """
+    if (list_number + item_index_within_group) % 2 == 0:
+        return "focus"
 
-for list_no in range(1, 16): 
-    for group in ["Subject", "VP", "Object", "Adjective", "Adjunct"]:
-        rids = GROUP_ID_RANGES[group]
-        chosen_rids = two_items_for_list(rids, list_no) 
+    return "neutral"
 
-        for rid in chosen_rids:
-            idx = GROUP_INDEX[group][rid]  
-            variant = variant_for_item(list_no, idx)
-            sentence = rows[rid]["neutral"] if variant == "neutral" else rows[rid]["cleft"]
 
-            stims.append({
-                "ItemID": rid,
-                "Group": group,
-                "Type": "critical",
-                "List": list_no,
-                "Variant": variant,
-                "Sentence": sentence,
-                "C1": rows[rid]["C1"],
-                "C2": rows[rid]["C2"],
+def two_items_for_list(
+    item_ids: list[str],
+    list_number: int,
+) -> list[str]:
+    """
+    Select two cyclic items from each syntactic group.
+    """
+    first_index = list_number - 1
+    second_index = list_number % len(item_ids)
+
+    return [
+        item_ids[first_index],
+        item_ids[second_index],
+    ]
+
+
+def read_critical_items() -> dict[str, dict]:
+    items = {}
+
+    with CRITICAL_CSV.open(
+        newline="",
+        encoding="utf-8-sig",
+    ) as file:
+        reader = csv.DictReader(file, delimiter=";")
+
+        required_columns = {
+            "ID",
+            "group",
+            "neutral_s",
+            "focus_s",
+            "f_marking (via all caps)",
+            "C1 (focus-supported)",
+            "C2 (focus-contradicting)",
+            "neutral_audio_path",
+            "focus_audio_path",
+        }
+
+        missing_columns = required_columns - set(
+            reader.fieldnames or []
+        )
+
+        if missing_columns:
+            raise ValueError(
+                "Critical CSV is missing columns: "
+                + ", ".join(sorted(missing_columns))
+            )
+
+        for row in reader:
+            item_id = clean(row["ID"])
+
+            items[item_id] = {
+                "Group": clean(row["group"]),
+                "NeutralSentence": clean(row["neutral_s"]),
+                "CleftSentence": clean(row["focus_s"]),
+                "FocusedSentence": clean(
+                    row["f_marking (via all caps)"]
+                ),
+                "C1": clean(
+                    row["C1 (focus-supported)"]
+                ),
+                "C2": clean(
+                    row["C2 (focus-contradicting)"]
+                ),
+                "NeutralAudioPath": clean(
+                    row["neutral_audio_path"]
+                ),
+                "FocusAudioPath": clean(
+                    row["focus_audio_path"]
+                ),
+            }
+
+    return items
+
+
+def validate_critical_items(
+    items: dict[str, dict],
+) -> None:
+    missing_items = []
+
+    for group, item_ids in GROUP_ID_RANGES.items():
+        for item_id in item_ids:
+            if item_id not in items:
+                missing_items.append((group, item_id))
+
+    if missing_items:
+        formatted = "\n".join(
+            f"- Missing ID {item_id} for group {group}"
+            for group, item_id in missing_items
+        )
+
+        raise ValueError(
+            "The critical CSV is missing required items:\n"
+            + formatted
+        )
+
+    for item_id, item in items.items():
+        if not item["NeutralAudioPath"]:
+            raise ValueError(
+                f"Item {item_id} has no neutral audio path."
+            )
+
+        if not item["FocusAudioPath"]:
+            raise ValueError(
+                f"Item {item_id} has no focus audio path."
+            )
+
+
+def create_critical_stimuli(
+    items: dict[str, dict],
+) -> list[dict]:
+    stimuli = []
+
+    group_order = [
+        "Subject",
+        "VP",
+        "Object",
+        "Adjective",
+        "Adjunct",
+    ]
+
+    for list_number in range(1, 16):
+        for group in group_order:
+            selected_ids = two_items_for_list(
+                GROUP_ID_RANGES[group],
+                list_number,
+            )
+
+            for item_id in selected_ids:
+                item_index = GROUP_INDEX[group][item_id]
+
+                variant = variant_for_item(
+                    list_number,
+                    item_index,
+                )
+
+                item = items[item_id]
+
+                if variant == "focus":
+                    audio_path = item["FocusAudioPath"]
+                else:
+                    audio_path = item["NeutralAudioPath"]
+
+                stimuli.append({
+                    "ItemID": item_id,
+                    "Group": group,
+                    "Type": "critical",
+                    "List": list_number,
+                    "Variant": variant,
+                    "AudioPath": audio_path,
+
+                    # Retained for analysis/debugging only.
+                    "NeutralSentence": item["NeutralSentence"],
+                    "CleftSentence": item["CleftSentence"],
+                    "FocusedSentence": item["FocusedSentence"],
+
+                    "C1": item["C1"],
+                    "C2": item["C2"],
+                })
+
+    return stimuli
+
+
+def read_fillers() -> list[dict]:
+    fillers = []
+
+    with FILLER_CSV.open(
+        newline="",
+        encoding="utf-8-sig",
+    ) as file:
+        reader = csv.DictReader(file, delimiter=";")
+
+        required_columns = {
+            "ItemID",
+            "Type",
+            "FillerType",
+            "Sentence",
+            "C1",
+            "C2",
+            "audio_path",
+        }
+
+        missing_columns = required_columns - set(
+            reader.fieldnames or []
+        )
+
+        if missing_columns:
+            raise ValueError(
+                "Filler CSV is missing columns: "
+                + ", ".join(sorted(missing_columns))
+            )
+
+        for row in reader:
+            item_id = clean(row["ItemID"])
+            audio_path = clean(row["audio_path"])
+
+            if not audio_path:
+                raise ValueError(
+                    f"Filler {item_id} has no audio path."
+                )
+
+            fillers.append({
+                "ItemID": item_id,
+                "Group": "Filler",
+                "Type": clean(row["Type"]),
+                "FillerType": clean(row["FillerType"]),
+                "List": None,
+                "Variant": "filler",
+                "AudioPath": audio_path,
+
+                # Retained for analysis/debugging only.
+                "SpokenSentence": clean(row["Sentence"]),
+
+                "C1": clean(row["C1"]),
+                "C2": clean(row["C2"]),
             })
 
-fillers = [
-
-  {"ItemID":"F01","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"The children stayed inside all day.",
-   "C1":"It was raining heavily outside.",
-   "C2":"The children like eating pasta."},
-
-  {"ItemID":"F02","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"The alarm went off unexpectedly.",
-   "C1":"Someone had opened the back door.",
-   "C2":"The alarm system was recently installed."},
-
-  {"ItemID":"F03","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"Alex missed the bus.",
-   "C1":"He left the house later than usual.",
-   "C2":"The bus route passes through the city centre."},
-
-  {"ItemID":"F04","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"The concert started later than planned.",
-   "C1":"There were technical issues with the sound system.",
-   "C2":"The band practices every week."},
-
-  {"ItemID":"F05","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"The shop closed early that evening.",
-   "C1":"There was a power outage in the area.",
-   "C2":"The shop sells clothing and shoes."},
-
-  {"ItemID":"F06","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"Mia stayed after class.",
-   "C1":"She wanted to ask the teacher a question.",
-   "C2":"The classroom has large windows."},
-
-  {"ItemID":"F07","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"Jonas ordered a coffee.",
-   "C1":"He needed something to stay awake.",
-   "C2":"Coffee is served in many cafés."},
-
-  {"ItemID":"F08","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"The restaurant was fully booked.",
-   "C1":"A large group had made a reservation.",
-   "C2":"The restaurant has a long menu."},
-
-  {"ItemID":"F09","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"The lecture ended earlier than expected.",
-   "C1":"The main topics had already been covered.",
-   "C2":"The lecturer has taught there for years."},
-
-  {"ItemID":"F10","Group":"Filler","Type":"filler","FillerType":"clear",
-   "Sentence":"The package arrived in the morning.",
-   "C1":"It had been shipped earlier than planned.",
-   "C2":"The delivery service operates every day."},
-
-  {"ItemID":"F11","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"Lena bought a new laptop last week.",
-   "C1":"Her old one had stopped working completely.",
-   "C2":"She compared several models online beforehand."},
-
-  {"ItemID":"F12","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"Daniel changed his workout routine.",
-   "C1":"His old one had become too repetitive.",
-   "C2":"He exercises several times a week."},
-
-  {"ItemID":"F13","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"Sophie chose the window seat.",
-   "C1":"She likes having a view during the flight.",
-   "C2":"The window seat was still available."},
-
-  {"ItemID":"F14","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"Max brought a jacket with him.",
-   "C1":"The weather forecast was uncertain.",
-   "C2":"The jacket matched his shoes."},
-
-  {"ItemID":"F15","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"Tom cooked dinner for everyone.",
-   "C1":"He enjoys trying out new recipes.",
-   "C2":"He used ingredients he already had at home."},
-
-  {"ItemID":"F16","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"The train arrived later than expected.",
-   "C1":"There had been an accident on the tracks earlier.",
-   "C2":"The train usually arrives on time."},
-
-  {"ItemID":"F17","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"Laura decided to work from home.",
-   "C1":"She wasn’t feeling very well.",
-   "C2":"She logged into her email that morning."},
-
-  {"ItemID":"F18","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"The restaurant opened a new location.",
-   "C1":"The original one had become very popular.",
-   "C2":"The new location is closer to the city centre."},
-
-  {"ItemID":"F19","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"The children finished their homework early.",
-   "C1":"They wanted to go outside and play.",
-   "C2":"Their homework was not very long."},
-
-  {"ItemID":"F20","Group":"Filler","Type":"filler","FillerType":"nuanced",
-   "Sentence":"The package was delivered to the neighbour.",
-   "C1":"No one was home at the time.",
-   "C2":"The neighbour lives next door."}
-];
+    return fillers
 
 
-stims.extend(fillers)
+def write_stimuli_js(
+    stimuli: list[dict],
+) -> None:
+    OUTPUT_FILE.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
-with open(OUTPUT_FILE, "w", encoding="utf-8") as out:
-    out.write("var all_stims = [\n")
-    for i, o in enumerate(stims):
-        out.write("  {\n")
-        for k in o:
-            v = o[k]
-            if isinstance(v, int):
-                out.write(f'    "{k}": {v},\n')
-            else:
-                out.write(f'    "{k}": "{js_escape(str(v))}",\n')
-        out.write("  }" + ("," if i < len(stims) - 1 else "") + "\n")
-    out.write("];\n")
+    with OUTPUT_FILE.open(
+        "w",
+        encoding="utf-8",
+    ) as output:
+        output.write("var all_stims = [\n")
 
-print("Done.")
-print("Total items:", len(stims))
-print("Critical:", sum(1 for s in stims if s["Type"] == "critical"))
-print("Fillers:", sum(1 for s in stims if s["Type"] == "filler"))
-print("Lists:", sorted({int(s["List"]) for s in stims if s["Type"] == "critical"}))
+        for stimulus_index, stimulus in enumerate(stimuli):
+            output.write("  {\n")
+
+            properties = list(stimulus.items())
+
+            for property_index, (key, value) in enumerate(
+                properties
+            ):
+                comma = (
+                    ","
+                    if property_index < len(properties) - 1
+                    else ""
+                )
+
+                if value is None:
+                    output.write(
+                        f'    "{key}": null{comma}\n'
+                    )
+
+                elif isinstance(value, int):
+                    output.write(
+                        f'    "{key}": {value}{comma}\n'
+                    )
+
+                else:
+                    escaped = js_escape(str(value))
+
+                    output.write(
+                        f'    "{key}": "{escaped}"{comma}\n'
+                    )
+
+            item_comma = (
+                ","
+                if stimulus_index < len(stimuli) - 1
+                else ""
+            )
+
+            output.write(f"  }}{item_comma}\n")
+
+        output.write("];\n")
+
+
+def validate_audio_files(
+    stimuli: list[dict],
+) -> None:
+    experiment_folder = Path("experiments/01_f")
+    missing_audio = []
+
+    for stimulus in stimuli:
+        relative_path = stimulus["AudioPath"]
+        full_path = experiment_folder / relative_path
+
+        if not full_path.exists():
+            missing_audio.append(
+                f"{stimulus['ItemID']}: {full_path}"
+            )
+
+    if missing_audio:
+        formatted = "\n".join(
+            f"- {entry}"
+            for entry in missing_audio
+        )
+
+        raise FileNotFoundError(
+            "The following audio files are missing:\n"
+            + formatted
+        )
+
+
+def main() -> None:
+    critical_items = read_critical_items()
+    validate_critical_items(critical_items)
+
+    critical_stimuli = create_critical_stimuli(
+        critical_items
+    )
+
+    filler_stimuli = read_fillers()
+
+    all_stimuli = (
+        critical_stimuli
+        + filler_stimuli
+    )
+
+    validate_audio_files(all_stimuli)
+    write_stimuli_js(all_stimuli)
+
+    print("Done.")
+    print(f"Output file: {OUTPUT_FILE}")
+    print(f"Critical records: {len(critical_stimuli)}")
+    print(f"Filler records: {len(filler_stimuli)}")
+    print(f"Total records: {len(all_stimuli)}")
+
+    for list_number in range(1, 16):
+        list_items = [
+            stimulus
+            for stimulus in critical_stimuli
+            if stimulus["List"] == list_number
+        ]
+
+        neutral_count = sum(
+            stimulus["Variant"] == "neutral"
+            for stimulus in list_items
+        )
+
+        focus_count = sum(
+            stimulus["Variant"] == "focus"
+            for stimulus in list_items
+        )
+
+        print(
+            f"List {list_number}: "
+            f"{len(list_items)} critical trials, "
+            f"{neutral_count} neutral, "
+            f"{focus_count} focus"
+        )
+
+
+if __name__ == "__main__":
+    main()
