@@ -1,0 +1,21 @@
+ItemID;Type;FillerType;Sentence;C1;C2;audio_path
+F01;filler;clear;The children stayed inside all day.;It was raining heavily outside.;The children like eating pasta.;audio_filler/F01.wav
+F02;filler;clear;The alarm went off unexpectedly.;Someone had opened the back door.;The alarm system was recently installed.;audio_filler/F02.wav
+F03;filler;clear;Alex missed the bus.;He left the house later than usual.;The bus route passes through the city center.;audio_filler/F03.wav
+F04;filler;clear;The concert started later than planned.;There were technical issues with the sound system.;The band practices every week.;audio_filler/F04.wav
+F05;filler;clear;The shop closed early that evening.;There was a power outage in the area.;The shop sells clothing and shoes.;audio_filler/F05.wav
+F06;filler;clear;Mia stayed after class.;She wanted to ask the teacher a question.;The classroom has large windows.;audio_filler/F06.wav
+F07;filler;clear;Jonas ordered a coffee.;He needed something to stay awake.;Coffee is served in many cafes.;audio_filler/F07.wav
+F08;filler;clear;The restaurant was fully booked.;A large group had made a reservation.;The restaurant has a long menu.;audio_filler/F08.wav
+F09;filler;clear;The lecture ended earlier than expected.;The main topics had already been covered.;The lecturer has taught there for years.;audio_filler/F09.wav
+F10;filler;clear;The package arrived in the morning.;It had been shipped earlier than planned.;The delivery service operates every day.;audio_filler/F10.wav
+F11;filler;nuanced;Lena bought a new laptop last week.;Her old one had stopped working completely.;She compared several models online beforehand.;audio_filler/F11.wav
+F12;filler;nuanced;Daniel changed his workout routine.;His old one had become too repetitive.;He exercises several times a week.;audio_filler/F12.wav
+F13;filler;nuanced;Sophie chose the window seat.;She likes having a view during the flight.;The window seat was still available.;audio_filler/F13.wav
+F14;filler;nuanced;Max brought a jacket with him.;The weather forecast was uncertain.;The jacket matched his shoes.;audio_filler/F14.wav
+F15;filler;nuanced;Tom cooked dinner for everyone.;He enjoys trying out new recipes.;He used ingredients he already had at home.;audio_filler/F15.wav
+F16;filler;nuanced;The train arrived later than expected.;There had been an accident on the tracks earlier.;The train usually arrives on time.;audio_filler/F16.wav
+F17;filler;nuanced;Laura decided to work from home.;She wasn't feeling very well.;She logged into her email that morning.;audio_filler/F17.wav
+F18;filler;nuanced;The restaurant opened a new location.;The original one had become very popular.;The new location is closer to the city center.;audio_filler/F18.wav
+F19;filler;nuanced;The children finished their homework early.;They wanted to go outside and play.;Their homework was not very long.;audio_filler/F19.wav
+F20;filler;nuanced;The package was delivered to the neighbor.;No one was home at the time.;The neighbor lives next door.;audio_filler/F20.wav
