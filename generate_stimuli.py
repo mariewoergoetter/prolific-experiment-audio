@@ -2,27 +2,73 @@ import csv
 from pathlib import Path
 
 
-CRITICAL_CSV = Path("data/exp1_dataset_with_audio_paths.csv")
-FILLER_CSV = Path("data/exp1_fillers_with_audio_paths.csv")
-OUTPUT_FILE = Path("experiments/01_f/js/stimuli.js")
+CRITICAL_CSV = "data/exp1_dataset_with_audio_paths.csv"
+FILLER_CSV = "data/exp1_fillers_with_audio_paths.csv"
+
+OUTPUT_FILE = "experiments/01_f/js/stimuli.js"
+EXPERIMENT_DIR = Path("experiments/01_f")
 
 
 GROUP_ID_RANGES = {
-    "Subject": list(map(str, range(1, 16))),
-    "VP": list(map(str, range(16, 31))),
-    "Object": list(map(str, range(31, 46))),
+    "Subject":   list(map(str, range(1, 16))),
+    "VP":        list(map(str, range(16, 31))),
+    "Object":    list(map(str, range(31, 46))),
     "Adjective": list(map(str, range(46, 61))),
-    "Adjunct": list(map(str, range(61, 76))),
+    "Adjunct":   list(map(str, range(61, 76))),
 }
 
 
 GROUP_INDEX = {
     group: {
-        item_id: index + 1
-        for index, item_id in enumerate(item_ids)
+        rid: i + 1
+        for i, rid in enumerate(rids)
     }
-    for group, item_ids in GROUP_ID_RANGES.items()
+    for group, rids in GROUP_ID_RANGES.items()
 }
+
+
+def variant_for_item(
+    list_no: int,
+    item_index_within_group: int,
+) -> str:
+    """
+    Each list contains two consecutive items per group.
+
+    The item whose within-group index matches the list number
+    is presented in the neutral condition.
+
+    The following cyclic item is presented in the focus condition.
+
+    This gives every list:
+    - 5 neutral critical trials
+    - 5 focus critical trials
+
+    Across all lists, every item appears once as neutral and
+    once as focus.
+    """
+    if item_index_within_group == list_no:
+        return "neutral"
+
+    return "focus"
+
+
+def two_items_for_list(
+    rids: list[str],
+    list_no: int,
+) -> list[str]:
+    """
+    List 1 receives items 1 and 2.
+    List 2 receives items 2 and 3.
+    ...
+    List 15 receives items 15 and 1.
+    """
+    i1 = list_no - 1
+    i2 = list_no % 15
+
+    return [
+        rids[i1],
+        rids[i2],
+    ]
 
 
 def clean(value) -> str:
@@ -32,9 +78,9 @@ def clean(value) -> str:
     return str(value).strip()
 
 
-def js_escape(value: str) -> str:
+def js_escape(s: str) -> str:
     return (
-        value
+        s
         .replace("\\", "\\\\")
         .replace('"', '\\"')
         .replace("\n", "\\n")
@@ -42,369 +88,486 @@ def js_escape(value: str) -> str:
     )
 
 
-def variant_for_item(
-    list_number: int,
-    item_index_within_group: int,
-) -> str:
-    """
-    Counterbalance neutral and focus versions across lists.
-    """
-    if (list_number + item_index_within_group) % 2 == 0:
-        return "focus"
+# ---------------------------------------------------------------------
+# Read critical items
+# ---------------------------------------------------------------------
 
-    return "neutral"
+rows = {}
 
+with open(
+    CRITICAL_CSV,
+    newline="",
+    encoding="utf-8-sig",
+) as f:
+    reader = csv.DictReader(
+        f,
+        delimiter=";",
+    )
 
-def two_items_for_list(
-    item_ids: list[str],
-    list_number: int,
-) -> list[str]:
-    """
-    Select two cyclic items from each syntactic group.
-    """
-    first_index = list_number - 1
-    second_index = list_number % len(item_ids)
+    required_columns = {
+        "ID",
+        "group",
+        "neutral_s",
+        "focus_s",
+        "f_marking (via all caps)",
+        "C1 (focus-supported)",
+        "C2 (focus-contradicting)",
+        "neutral_audio_path",
+        "focus_audio_path",
+    }
 
-    return [
-        item_ids[first_index],
-        item_ids[second_index],
-    ]
+    missing_columns = required_columns - set(
+        reader.fieldnames or []
+    )
 
+    if missing_columns:
+        raise ValueError(
+            "Critical CSV is missing columns: "
+            + ", ".join(sorted(missing_columns))
+        )
 
-def read_critical_items() -> dict[str, dict]:
-    items = {}
+    for r in reader:
+        rid = clean(r["ID"])
 
-    with CRITICAL_CSV.open(
-        newline="",
-        encoding="utf-8-sig",
-    ) as file:
-        reader = csv.DictReader(file, delimiter=";")
+        if not rid:
+            continue
 
-        required_columns = {
-            "ID",
-            "group",
-            "neutral_s",
-            "focus_s",
-            "f_marking (via all caps)",
-            "C1 (focus-supported)",
-            "C2 (focus-contradicting)",
-            "neutral_audio_path",
-            "focus_audio_path",
+        rows[rid] = {
+            "Group": clean(r["group"]),
+            "NeutralSentence": clean(r["neutral_s"]),
+            "CleftSentence": clean(r["focus_s"]),
+            "FocusedSentence": clean(
+                r["f_marking (via all caps)"]
+            ),
+            "C1": clean(
+                r["C1 (focus-supported)"]
+            ),
+            "C2": clean(
+                r["C2 (focus-contradicting)"]
+            ),
+            "neutral_audio_path": clean(
+                r["neutral_audio_path"]
+            ),
+            "focus_audio_path": clean(
+                r["focus_audio_path"]
+            ),
         }
 
-        missing_columns = required_columns - set(
-            reader.fieldnames or []
-        )
 
-        if missing_columns:
-            raise ValueError(
-                "Critical CSV is missing columns: "
-                + ", ".join(sorted(missing_columns))
+# ---------------------------------------------------------------------
+# Check that all 75 required critical items exist
+# ---------------------------------------------------------------------
+
+missing = []
+
+for group, rids in GROUP_ID_RANGES.items():
+    for rid in rids:
+        if rid not in rows:
+            missing.append(
+                (group, rid)
             )
 
-        for row in reader:
-            item_id = clean(row["ID"])
+if missing:
+    msg = "\n".join(
+        f"- Missing ID {rid} for group {group}"
+        for group, rid in missing
+    )
 
-            items[item_id] = {
-                "Group": clean(row["group"]),
-                "NeutralSentence": clean(row["neutral_s"]),
-                "CleftSentence": clean(row["focus_s"]),
-                "FocusedSentence": clean(
-                    row["f_marking (via all caps)"]
-                ),
-                "C1": clean(
-                    row["C1 (focus-supported)"]
-                ),
-                "C2": clean(
-                    row["C2 (focus-contradicting)"]
-                ),
-                "NeutralAudioPath": clean(
-                    row["neutral_audio_path"]
-                ),
-                "FocusAudioPath": clean(
-                    row["focus_audio_path"]
-                ),
-            }
-
-    return items
+    raise ValueError(
+        "Your CSV is missing required IDs "
+        "for the 15-list design:\n"
+        + msg
+    )
 
 
-def validate_critical_items(
-    items: dict[str, dict],
-) -> None:
-    missing_items = []
+# ---------------------------------------------------------------------
+# Generate critical stimuli
+# ---------------------------------------------------------------------
 
-    for group, item_ids in GROUP_ID_RANGES.items():
-        for item_id in item_ids:
-            if item_id not in items:
-                missing_items.append((group, item_id))
+stims = []
 
-    if missing_items:
-        formatted = "\n".join(
-            f"- Missing ID {item_id} for group {group}"
-            for group, item_id in missing_items
-        )
-
-        raise ValueError(
-            "The critical CSV is missing required items:\n"
-            + formatted
-        )
-
-    for item_id, item in items.items():
-        if not item["NeutralAudioPath"]:
-            raise ValueError(
-                f"Item {item_id} has no neutral audio path."
-            )
-
-        if not item["FocusAudioPath"]:
-            raise ValueError(
-                f"Item {item_id} has no focus audio path."
-            )
-
-
-def create_critical_stimuli(
-    items: dict[str, dict],
-) -> list[dict]:
-    stimuli = []
-
-    group_order = [
+for list_no in range(1, 16):
+    for group in [
         "Subject",
         "VP",
         "Object",
         "Adjective",
         "Adjunct",
-    ]
+    ]:
+        rids = GROUP_ID_RANGES[group]
 
-    for list_number in range(1, 16):
-        for group in group_order:
-            selected_ids = two_items_for_list(
-                GROUP_ID_RANGES[group],
-                list_number,
-            )
-
-            for item_id in selected_ids:
-                item_index = GROUP_INDEX[group][item_id]
-
-                variant = variant_for_item(
-                    list_number,
-                    item_index,
-                )
-
-                item = items[item_id]
-
-                if variant == "focus":
-                    audio_path = item["FocusAudioPath"]
-                else:
-                    audio_path = item["NeutralAudioPath"]
-
-                stimuli.append({
-                    "ItemID": item_id,
-                    "Group": group,
-                    "Type": "critical",
-                    "List": list_number,
-                    "Variant": variant,
-                    "AudioPath": audio_path,
-
-                    # Retained for analysis/debugging only.
-                    "NeutralSentence": item["NeutralSentence"],
-                    "CleftSentence": item["CleftSentence"],
-                    "FocusedSentence": item["FocusedSentence"],
-
-                    "C1": item["C1"],
-                    "C2": item["C2"],
-                })
-
-    return stimuli
-
-
-def read_fillers() -> list[dict]:
-    fillers = []
-
-    with FILLER_CSV.open(
-        newline="",
-        encoding="utf-8-sig",
-    ) as file:
-        reader = csv.DictReader(file, delimiter=";")
-
-        required_columns = {
-            "ItemID",
-            "Type",
-            "FillerType",
-            "Sentence",
-            "C1",
-            "C2",
-            "audio_path",
-        }
-
-        missing_columns = required_columns - set(
-            reader.fieldnames or []
+        chosen_rids = two_items_for_list(
+            rids,
+            list_no,
         )
 
-        if missing_columns:
-            raise ValueError(
-                "Filler CSV is missing columns: "
-                + ", ".join(sorted(missing_columns))
+        for rid in chosen_rids:
+            idx = GROUP_INDEX[group][rid]
+
+            variant = variant_for_item(
+                list_no,
+                idx,
             )
 
-        for row in reader:
-            item_id = clean(row["ItemID"])
-            audio_path = clean(row["audio_path"])
+            if variant == "neutral":
+                audio_path = rows[rid][
+                    "neutral_audio_path"
+                ]
+            else:
+                audio_path = rows[rid][
+                    "focus_audio_path"
+                ]
 
             if not audio_path:
                 raise ValueError(
-                    f"Filler {item_id} has no audio path."
+                    f"Missing {variant} audio path "
+                    f"for critical item {rid}."
                 )
 
-            fillers.append({
-                "ItemID": item_id,
-                "Group": "Filler",
-                "Type": clean(row["Type"]),
-                "FillerType": clean(row["FillerType"]),
-                "List": None,
-                "Variant": "filler",
+            stims.append({
+                "ItemID": rid,
+                "Group": group,
+                "Type": "critical",
+                "List": list_no,
+                "Variant": variant,
                 "AudioPath": audio_path,
 
-                # Retained for analysis/debugging only.
-                "SpokenSentence": clean(row["Sentence"]),
+                # Retained in the results for checking and analysis.
+                # These fields are not shown to participants.
+                "NeutralSentence": rows[rid][
+                    "NeutralSentence"
+                ],
+                "CleftSentence": rows[rid][
+                    "CleftSentence"
+                ],
+                "FocusedSentence": rows[rid][
+                    "FocusedSentence"
+                ],
 
-                "C1": clean(row["C1"]),
-                "C2": clean(row["C2"]),
+                "C1": rows[rid]["C1"],
+                "C2": rows[rid]["C2"],
             })
 
-    return fillers
 
+# ---------------------------------------------------------------------
+# Read filler stimuli
+# ---------------------------------------------------------------------
 
-def write_stimuli_js(
-    stimuli: list[dict],
-) -> None:
-    OUTPUT_FILE.parent.mkdir(
-        parents=True,
-        exist_ok=True,
+fillers = []
+
+with open(
+    FILLER_CSV,
+    newline="",
+    encoding="utf-8-sig",
+) as f:
+    reader = csv.DictReader(
+        f,
+        delimiter=";",
     )
 
-    with OUTPUT_FILE.open(
-        "w",
-        encoding="utf-8",
-    ) as output:
-        output.write("var all_stims = [\n")
+    required_columns = {
+        "ItemID",
+        "Type",
+        "FillerType",
+        "Sentence",
+        "C1",
+        "C2",
+        "audio_path",
+    }
 
-        for stimulus_index, stimulus in enumerate(stimuli):
-            output.write("  {\n")
+    missing_columns = required_columns - set(
+        reader.fieldnames or []
+    )
 
-            properties = list(stimulus.items())
+    if missing_columns:
+        raise ValueError(
+            "Filler CSV is missing columns: "
+            + ", ".join(sorted(missing_columns))
+        )
 
-            for property_index, (key, value) in enumerate(
-                properties
-            ):
-                comma = (
-                    ","
-                    if property_index < len(properties) - 1
-                    else ""
-                )
+    for r in reader:
+        item_id = clean(r["ItemID"])
 
-                if value is None:
-                    output.write(
-                        f'    "{key}": null{comma}\n'
-                    )
+        if not item_id:
+            continue
 
-                elif isinstance(value, int):
-                    output.write(
-                        f'    "{key}": {value}{comma}\n'
-                    )
+        audio_path = clean(
+            r["audio_path"]
+        )
 
-                else:
-                    escaped = js_escape(str(value))
+        if not audio_path:
+            raise ValueError(
+                f"Missing audio path for filler {item_id}."
+            )
 
-                    output.write(
-                        f'    "{key}": "{escaped}"{comma}\n'
-                    )
+        fillers.append({
+            "ItemID": item_id,
+            "Group": "Filler",
+            "Type": "filler",
+            "FillerType": clean(
+                r["FillerType"]
+            ),
+            "List": None,
+            "Variant": "filler",
+            "AudioPath": audio_path,
+            "SpokenSentence": clean(
+                r["Sentence"]
+            ),
+            "C1": clean(r["C1"]),
+            "C2": clean(r["C2"]),
+        })
 
-            item_comma = (
+
+stims.extend(fillers)
+
+
+# ---------------------------------------------------------------------
+# Check that all referenced audio files exist
+# ---------------------------------------------------------------------
+
+missing_audio = []
+
+for stim in stims:
+    audio_path = stim["AudioPath"]
+    full_path = EXPERIMENT_DIR / audio_path
+
+    if not full_path.exists():
+        missing_audio.append(
+            (
+                stim["ItemID"],
+                stim["Variant"],
+                str(full_path),
+            )
+        )
+
+if missing_audio:
+    msg = "\n".join(
+        f"- {item_id} ({variant}): {path}"
+        for item_id, variant, path in missing_audio
+    )
+
+    raise FileNotFoundError(
+        "The following referenced audio files "
+        "do not exist:\n"
+        + msg
+    )
+
+
+# ---------------------------------------------------------------------
+# Validate the counterbalancing
+# ---------------------------------------------------------------------
+
+counterbalancing_errors = []
+
+for list_no in range(1, 16):
+    list_stims = [
+        stim
+        for stim in stims
+        if (
+            stim["Type"] == "critical"
+            and stim["List"] == list_no
+        )
+    ]
+
+    neutral_count = sum(
+        stim["Variant"] == "neutral"
+        for stim in list_stims
+    )
+
+    focus_count = sum(
+        stim["Variant"] == "focus"
+        for stim in list_stims
+    )
+
+    if len(list_stims) != 10:
+        counterbalancing_errors.append(
+            f"List {list_no} contains "
+            f"{len(list_stims)} critical trials."
+        )
+
+    if neutral_count != 5:
+        counterbalancing_errors.append(
+            f"List {list_no} contains "
+            f"{neutral_count} neutral trials."
+        )
+
+    if focus_count != 5:
+        counterbalancing_errors.append(
+            f"List {list_no} contains "
+            f"{focus_count} focus trials."
+        )
+
+
+item_condition_counts = {
+    rid: {
+        "neutral": 0,
+        "focus": 0,
+    }
+    for group_rids in GROUP_ID_RANGES.values()
+    for rid in group_rids
+}
+
+for stim in stims:
+    if stim["Type"] != "critical":
+        continue
+
+    item_condition_counts[
+        stim["ItemID"]
+    ][
+        stim["Variant"]
+    ] += 1
+
+
+for rid, counts in item_condition_counts.items():
+    if counts["neutral"] != 1:
+        counterbalancing_errors.append(
+            f"Item {rid} occurs "
+            f"{counts['neutral']} times as neutral."
+        )
+
+    if counts["focus"] != 1:
+        counterbalancing_errors.append(
+            f"Item {rid} occurs "
+            f"{counts['focus']} times as focus."
+        )
+
+
+if counterbalancing_errors:
+    raise ValueError(
+        "Counterbalancing validation failed:\n"
+        + "\n".join(
+            f"- {error}"
+            for error in counterbalancing_errors
+        )
+    )
+
+
+# ---------------------------------------------------------------------
+# Write stimuli.js
+# ---------------------------------------------------------------------
+
+with open(
+    OUTPUT_FILE,
+    "w",
+    encoding="utf-8",
+) as out:
+    out.write(
+        "var all_stims = [\n"
+    )
+
+    for i, o in enumerate(stims):
+        out.write("  {\n")
+
+        entries = list(o.items())
+
+        for entry_index, (key, value) in enumerate(
+            entries
+        ):
+            comma = (
                 ","
-                if stimulus_index < len(stimuli) - 1
+                if entry_index < len(entries) - 1
                 else ""
             )
 
-            output.write(f"  }}{item_comma}\n")
+            if value is None:
+                out.write(
+                    f'    "{key}": null{comma}\n'
+                )
 
-        output.write("];\n")
+            elif isinstance(value, int):
+                out.write(
+                    f'    "{key}": {value}{comma}\n'
+                )
 
+            else:
+                escaped_value = js_escape(
+                    str(value)
+                )
 
-def validate_audio_files(
-    stimuli: list[dict],
-) -> None:
-    experiment_folder = Path("experiments/01_f")
-    missing_audio = []
+                out.write(
+                    f'    "{key}": '
+                    f'"{escaped_value}"{comma}\n'
+                )
 
-    for stimulus in stimuli:
-        relative_path = stimulus["AudioPath"]
-        full_path = experiment_folder / relative_path
-
-        if not full_path.exists():
-            missing_audio.append(
-                f"{stimulus['ItemID']}: {full_path}"
-            )
-
-    if missing_audio:
-        formatted = "\n".join(
-            f"- {entry}"
-            for entry in missing_audio
+        final_comma = (
+            ","
+            if i < len(stims) - 1
+            else ""
         )
 
-        raise FileNotFoundError(
-            "The following audio files are missing:\n"
-            + formatted
+        out.write(
+            f"  }}{final_comma}\n"
         )
 
+    out.write("];\n")
 
-def main() -> None:
-    critical_items = read_critical_items()
-    validate_critical_items(critical_items)
 
-    critical_stimuli = create_critical_stimuli(
-        critical_items
+# ---------------------------------------------------------------------
+# Print summary
+# ---------------------------------------------------------------------
+
+print("Done.")
+print("Output file:", OUTPUT_FILE)
+print("Total items:", len(stims))
+
+print(
+    "Critical:",
+    sum(
+        1
+        for stim in stims
+        if stim["Type"] == "critical"
+    ),
+)
+
+print(
+    "Fillers:",
+    sum(
+        1
+        for stim in stims
+        if stim["Type"] == "filler"
+    ),
+)
+
+print(
+    "Lists:",
+    sorted({
+        int(stim["List"])
+        for stim in stims
+        if stim["Type"] == "critical"
+    }),
+)
+
+
+for list_no in range(1, 16):
+    list_stims = [
+        stim
+        for stim in stims
+        if (
+            stim["Type"] == "critical"
+            and stim["List"] == list_no
+        )
+    ]
+
+    neutral_count = sum(
+        stim["Variant"] == "neutral"
+        for stim in list_stims
     )
 
-    filler_stimuli = read_fillers()
-
-    all_stimuli = (
-        critical_stimuli
-        + filler_stimuli
+    focus_count = sum(
+        stim["Variant"] == "focus"
+        for stim in list_stims
     )
 
-    validate_audio_files(all_stimuli)
-    write_stimuli_js(all_stimuli)
-
-    print("Done.")
-    print(f"Output file: {OUTPUT_FILE}")
-    print(f"Critical records: {len(critical_stimuli)}")
-    print(f"Filler records: {len(filler_stimuli)}")
-    print(f"Total records: {len(all_stimuli)}")
-
-    for list_number in range(1, 16):
-        list_items = [
-            stimulus
-            for stimulus in critical_stimuli
-            if stimulus["List"] == list_number
-        ]
-
-        neutral_count = sum(
-            stimulus["Variant"] == "neutral"
-            for stimulus in list_items
-        )
-
-        focus_count = sum(
-            stimulus["Variant"] == "focus"
-            for stimulus in list_items
-        )
-
-        print(
-            f"List {list_number}: "
-            f"{len(list_items)} critical trials, "
-            f"{neutral_count} neutral, "
-            f"{focus_count} focus"
-        )
+    print(
+        f"List {list_no}: "
+        f"{len(list_stims)} critical trials, "
+        f"{neutral_count} neutral, "
+        f"{focus_count} focus"
+    )
 
 
-if __name__ == "__main__":
-    main()
+print(
+    "Counterbalancing check passed: "
+    "every critical item occurs once as neutral "
+    "and once as focus."
+)
