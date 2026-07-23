@@ -35,7 +35,7 @@ function prepareAudio(options) {
   };
 
   status
-    .text("Please listen to the complete sentence.")
+    .text("")
     .removeClass("audioError");
 
   audio.onplay = function () {
