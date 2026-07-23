@@ -51,9 +51,7 @@ function prepareAudio(options) {
     state.finished = true;
 
     status
-      .text(
-        ""
-      )
+      .text("")
       .removeClass("audioError");
 
     slider.prop("disabled", false);
@@ -446,15 +444,13 @@ function make_slides(f) {
       var raw_score = v - 4;
 
       /*
-       * C1 is the focus-supported continuation.
+       * C1-oriented score:
        *
-       * This score is oriented so that:
        * positive = movement toward C1
        * negative = movement toward C2
        *
-       * This orientation is the same for neutral and focus
-       * conditions, allowing the focus effect to be calculated
-       * by comparing C1-oriented scores across variants.
+       * This remains useful for comparing neutral and focus
+       * critical trials directly.
        */
       var c1_option =
         this.A_key === "C1"
@@ -467,12 +463,70 @@ function make_slides(f) {
           : raw_score;
 
       /*
-       * Retain the older expected-choice columns for
-       * compatibility, but define C1 as the target continuation.
+       * Determine the expected response for each trial type.
+       *
+       * Critical focus:
+       *   C1 is expected.
+       *
+       * Critical neutral:
+       *   C2 is expected.
+       *
+       * Clear filler:
+       *   C1 is the clearly coherent continuation.
+       *
+       * Nuanced filler:
+       *   No single response is treated as expected.
        */
-      var expected_key = "C1";
-      var expected_option = c1_option;
-      var score_rel_expected = score_rel_c1;
+      var expected_key = null;
+
+      if (this.stim.Type === "critical") {
+        if (this.stim.Variant === "focus") {
+          expected_key = "C1";
+        } else if (this.stim.Variant === "neutral") {
+          expected_key = "C2";
+        }
+      }
+
+      if (
+        this.stim.Type === "filler" &&
+        this.stim.FillerType === "clear"
+      ) {
+        expected_key = "C1";
+      }
+
+      /*
+       * Orient the response relative to the expected answer.
+       *
+       * positive = movement toward the expected continuation
+       * negative = movement away from the expected continuation
+       * null     = no expected answer, as for nuanced fillers
+       */
+      var expected_option = null;
+      var score_rel_expected = null;
+
+      if (expected_key === "C1") {
+        expected_option =
+          this.A_key === "C1"
+            ? "A"
+            : "B";
+
+        score_rel_expected =
+          expected_option === "A"
+            ? -raw_score
+            : raw_score;
+      }
+
+      if (expected_key === "C2") {
+        expected_option =
+          this.A_key === "C2"
+            ? "A"
+            : "B";
+
+        score_rel_expected =
+          expected_option === "A"
+            ? -raw_score
+            : raw_score;
+      }
 
       exp.data_trials.push({
         slide_number_in_experiment: exp.phase,
