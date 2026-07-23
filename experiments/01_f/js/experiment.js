@@ -43,7 +43,7 @@ function prepareAudio(options) {
     state.playCount += 1;
 
     status
-      .text("Audio is playing.")
+      .text("")
       .removeClass("audioError");
   };
 
@@ -52,8 +52,7 @@ function prepareAudio(options) {
 
     status
       .text(
-        "You have heard the complete sentence. " +
-        "You can now move the slider."
+        ""
       )
       .removeClass("audioError");
 
