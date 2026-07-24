@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8" />
 
@@ -14,20 +15,11 @@
   <script src="shared/js/browserCheck.js"></script>
   <script src="shared/js/utils.js"></script>
 
-  <link
-    href="shared/full-projects/jquery-ui/jquery-ui.min.css"
-    rel="stylesheet"
-  />
+  <link href="shared/full-projects/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
 
-  <link
-    href="shared/css/cocolab-style.css"
-    rel="stylesheet"
-  />
+  <link href="shared/css/cocolab-style.css" rel="stylesheet" />
 
-  <link
-    href="css/local-style.css"
-    rel="stylesheet"
-  />
+  <link href="css/local-style.css" rel="stylesheet" />
 
   <script src="js/experiment.js"></script>
   <script src="js/stimuli.js"></script>
@@ -56,24 +48,18 @@
       <br /><br />
 
       Move the slider toward the continuation that sounds more natural.
-      The further you move the slider to one side, the more natural that
-      continuation sounds compared to the other.
-
+      The more natural one continuation sounds compared to the other,
+      the further you should move the slider in its direction.
       <br /><br />
 
-      Please complete the experiment in a quiet
-      environment.
-
+      Please make sure to have your speakers turned on and to complete the experiment in a quiet
+      environment. We recommend using headphones.
       <br /><br />
 
-      The experiment takes approximately 10 minutes. We will start with two
-      examples.
+      The experiment takes approximately 10 minutes. The experiment will begin with two practice rounds.
     </p>
 
-    <button
-      id="start_button"
-      type="button"
-    >
+    <button id="start_button" type="button">
       Start experiment
     </button>
 
@@ -137,7 +123,7 @@
         people working on the study, unless you give permission for other
         people to see the records. Any study records that include
         identifiable information will be kept in a password-protected
-        database. On all records of test results we will use a code number
+        database. On all records of test results we will use a random number
         rather than your Prolific ID.
       </p>
 
@@ -173,28 +159,19 @@
     <div class="trialWrap">
 
       <div class="trialPrompt">
-        Listen to the complete sentence and then read the two possible
+        Listen to the entire sentence and then read the two
         continuations. Move the slider toward the continuation that sounds
         more natural given the sentence you heard.
       </div>
 
       <div class="audioStimulus">
 
-        <audio
-          id="example1-audio"
-          controls
-          preload="auto"
-          src="audio_examples/example_01.wav"
-        >
-          
+        <audio id="example1-audio" controls preload="auto" src="audio_examples/example_01.wav">
+
         </audio>
 
-        <div
-          id="example1-audio-status"
-          class="audioStatus"
-          aria-live="polite"
-        >
-          Please listen to the complete sentence.
+        <div id="example1-audio-status" class="audioStatus" aria-live="polite">
+          Please listen to the entire sentence.
         </div>
 
       </div>
@@ -213,7 +190,7 @@
           <span class="abLabel">B:</span>
 
           <span class="abText">
-            The meeting was scheduled to last an hour.
+            The party was scheduled to last an hour.
           </span>
         </div>
 
@@ -229,10 +206,7 @@
 
         <div class="likertSliderRow">
 
-          <div
-            class="likertDots"
-            aria-hidden="true"
-          >
+          <div class="likertDots" aria-hidden="true">
             <span></span>
             <span></span>
             <span></span>
@@ -242,14 +216,7 @@
             <span></span>
           </div>
 
-          <input
-            type="range"
-            min="1"
-            max="7"
-            step="1"
-            value="4"
-            id="ex1_slider"
-          />
+          <input type="range" min="1" max="7" step="1" value="4" id="ex1_slider" />
 
         </div>
 
@@ -262,17 +229,13 @@
       </div>
 
       <div class="center">
-        <button
-          class="continueButton"
-          onclick="_s.button()"
-        >
+        <button class="continueButton" onclick="_s.button()">
           Continue
         </button>
       </div>
 
       <div class="err">
-        Please listen to the complete sentence and move the slider before
-        continuing.
+        Please listen to the entire sentence and move the slider before continuing.
       </div>
 
     </div>
@@ -295,20 +258,11 @@
 
       <div class="audioStimulus">
 
-        <audio
-          id="example2-audio"
-          controls
-          preload="auto"
-          src="audio_examples/example_02.wav"
-        >
+        <audio id="example2-audio" controls preload="auto" src="audio_examples/example_02.wav">
           Your browser does not support audio playback.
         </audio>
 
-        <div
-          id="example2-audio-status"
-          class="audioStatus"
-          aria-live="polite"
-        >
+        <div id="example2-audio-status" class="audioStatus" aria-live="polite">
           Please listen to the complete sentence.
         </div>
 
@@ -316,19 +270,20 @@
 
       <div class="abUnderSentence">
 
+
+
         <div class="abLine">
           <span class="abLabel">A:</span>
 
           <span class="abText">
-            There was a technical problem with the heating.
+            It was open until late.
           </span>
         </div>
-
         <div class="abLine">
           <span class="abLabel">B:</span>
 
           <span class="abText">
-            The library has many books.
+            It was the third time this month that this had happened.
           </span>
         </div>
 
@@ -344,10 +299,7 @@
 
         <div class="likertSliderRow">
 
-          <div
-            class="likertDots"
-            aria-hidden="true"
-          >
+          <div class="likertDots" aria-hidden="true">
             <span></span>
             <span></span>
             <span></span>
@@ -357,14 +309,7 @@
             <span></span>
           </div>
 
-          <input
-            type="range"
-            min="1"
-            max="7"
-            step="1"
-            value="4"
-            id="ex2_slider"
-          />
+          <input type="range" min="1" max="7" step="1" value="4" id="ex2_slider" />
 
         </div>
 
@@ -377,16 +322,13 @@
       </div>
 
       <div class="center">
-        <button
-          class="continueButton"
-          onclick="_s.button()"
-        >
+        <button class="continueButton" onclick="_s.button()">
           Continue
         </button>
       </div>
 
       <div class="err">
-        Please listen to the complete sentence and move the slider before
+        Please listen to the entire sentence and move the slider before
         continuing.
       </div>
 
@@ -403,23 +345,18 @@
 
       <br /><br />
 
-      On every trial, you will hear the first sentence as an audio
-      recording. Please listen to the complete recording and then read the
-      two possible continuations.
-
+      On each page, you will listen to an audio recording of a sentence. Please listen to the recording and then
+      read the two possible continuations.
       <br /><br />
 
-      You will complete 30 trials in total. Move the slider toward the
+      You will complete 30 rounds of this task in total. Move the slider toward the
       continuation that sounds more natural given the sentence you heard.
-      The further you move the slider to one side, the more natural that
-      continuation sounds compared with the other.
+      The more natural that continuation sounds compared to the other, the further you should move the slider in its
+      direction.
     </p>
 
     <div class="center">
-      <button
-        class="continueButton"
-        onclick="_s.button()"
-      >
+      <button class="continueButton" onclick="_s.button()">
         Continue
       </button>
     </div>
@@ -433,27 +370,19 @@
     <div class="trialWrap">
 
       <div class="trialPrompt">
-        Please listen to the complete sentence and then read the two
+        Please listen to the sentence and then read the two
         possible continuations. Move the slider toward the continuation
         that sounds more natural given the sentence you heard.
       </div>
 
       <div class="audioStimulus">
 
-        <audio
-          id="trial-audio"
-          controls
-          preload="auto"
-        >
+        <audio id="trial-audio" controls preload="auto">
           Your browser does not support audio playback.
         </audio>
 
-        <div
-          id="audio-status"
-          class="audioStatus"
-          aria-live="polite"
-        >
-          Please listen to the complete sentence.
+        <div id="audio-status" class="audioStatus" aria-live="polite">
+          Please listen to the entire sentence.
         </div>
 
       </div>
@@ -463,10 +392,7 @@
         <div class="abLine">
           <span class="abLabel">A:</span>
 
-          <span
-            class="abText"
-            id="A_text"
-          >
+          <span class="abText" id="A_text">
             {{A}}
           </span>
         </div>
@@ -474,10 +400,7 @@
         <div class="abLine">
           <span class="abLabel">B:</span>
 
-          <span
-            class="abText"
-            id="B_text"
-          >
+          <span class="abText" id="B_text">
             {{B}}
           </span>
         </div>
@@ -494,10 +417,7 @@
 
         <div class="likertSliderRow">
 
-          <div
-            class="likertDots"
-            aria-hidden="true"
-          >
+          <div class="likertDots" aria-hidden="true">
             <span></span>
             <span></span>
             <span></span>
@@ -507,14 +427,7 @@
             <span></span>
           </div>
 
-          <input
-            type="range"
-            min="1"
-            max="7"
-            step="1"
-            value="4"
-            id="trial_slider"
-          />
+          <input type="range" min="1" max="7" step="1" value="4" id="trial_slider" />
 
         </div>
 
@@ -527,16 +440,13 @@
       </div>
 
       <div class="center">
-        <button
-          class="continueButton"
-          onclick="_s.button()"
-        >
+        <button class="continueButton" onclick="_s.button()">
           Continue
         </button>
       </div>
 
       <div class="err">
-        Please listen to the complete sentence and move the slider before
+        Please listen to the entire sentence and move the slider before
         continuing.
       </div>
 
@@ -546,12 +456,8 @@
           <small>Optional comments:</small>
         </p>
 
-        <textarea
-          id="trial_feedback"
-          rows="4"
-          cols="60"
-          placeholder="If you have any comments about the audio, the continuations, or your choice, you can let us know here."
-        ></textarea>
+        <textarea id="trial_feedback" rows="4" cols="60"
+          placeholder="If you have any comments about the audio, the continuations, or your choice, you can let us know here."></textarea>
 
       </div>
 
@@ -574,29 +480,17 @@
       </p>
 
       <label>
-        <input
-          type="radio"
-          name="assess"
-          value="No"
-        />
+        <input type="radio" name="assess" value="No" />
         No
       </label>
 
       <label>
-        <input
-          type="radio"
-          name="assess"
-          value="Yes"
-        />
+        <input type="radio" name="assess" value="Yes" />
         Yes
       </label>
 
       <label>
-        <input
-          type="radio"
-          name="assess"
-          value="Confused"
-        />
+        <input type="radio" name="assess" value="Confused" />
         I was confused
       </label>
 
@@ -604,10 +498,7 @@
         Native language:
       </p>
 
-      <input
-        type="text"
-        id="language"
-      />
+      <input type="text" id="language" />
 
       <p>
         Was the payment fair?
@@ -634,21 +525,13 @@
         What do you think this experiment was about?
       </p>
 
-      <textarea
-        id="experiment_about"
-        rows="3"
-        cols="50"
-      ></textarea>
+      <textarea id="experiment_about" rows="3" cols="50"></textarea>
 
       <p>
         Any additional comments?
       </p>
 
-      <textarea
-        id="comments"
-        rows="3"
-        cols="50"
-      ></textarea>
+      <textarea id="comments" rows="3" cols="50"></textarea>
 
       <br />
 
@@ -662,10 +545,7 @@
 
   <!-- THANK-YOU SCREEN -->
 
-  <div
-    id="thanks"
-    class="slide js"
-  >
+  <div id="thanks" class="slide js">
     <p class="big">
       Thanks for your time!
     </p>
@@ -680,13 +560,11 @@
     </span>
 
     <div class="bar-wrapper">
-      <div
-        class="bar"
-        style="width: 0%"
-      ></div>
+      <div class="bar" style="width: 0%"></div>
     </div>
 
   </div>
 
 </body>
+
 </html>

@@ -38,6 +38,12 @@ function prepareAudio(options) {
     .text("")
     .removeClass("audioError");
 
+
+  audio.oncanplaythrough = function () {
+    console.log("loaded");
+    audio.play();
+  }
+
   audio.onplay = function () {
     state.played = true;
     state.playCount += 1;
@@ -83,6 +89,7 @@ function stopAudio(audio) {
   }
 
   audio.pause();
+  audio.src = "";
   audio.currentTime = 0;
 }
 
@@ -184,8 +191,7 @@ function make_slides(f) {
         $("#example1 .err")
           .text(
             "Not quite. In this example, continuation A is " +
-            "more natural because it adds relevant information " +
-            "about why the meeting was moved. Please try again."
+            "more natural because it stays on topic. The second continuation mentions a party instead of a meeting. Please try again."
           )
           .show();
 
@@ -195,7 +201,8 @@ function make_slides(f) {
       $("#example1 .err").hide();
 
       stopAudio(this.audioData.audio);
-
+      this.audioData.audio.remove();
+      this.audioData = null;
       exp.go();
     }
   });
@@ -266,15 +273,16 @@ function make_slides(f) {
       }
 
       /*
-       * A is on the left, so values 1–3 select A.
-       * In this example, A is the intended answer.
+       * B is on the right, so values 5–7 select B.
+       * In this example, B is the intended answer.
        */
-      if (v >= 5) {
+      if (v <= 4) {
         $("#example2 .err")
           .text(
-            "Not quite. In this example, continuation A is " +
-            "more natural because it explains why the library " +
-            "closed early. Please try again."
+            "Not quite. In this example, continuation B is " +
+            "more natural because it provides more information " +
+            "around library closures. Continuation A contradicts " +
+            "the statement in the audio. Please try again."
           )
           .show();
 
@@ -284,7 +292,8 @@ function make_slides(f) {
       $("#example2 .err").hide();
 
       stopAudio(this.audioData.audio);
-
+      this.audioData.audio.remove();
+      this.audioData = null;
       exp.go();
     }
   });
